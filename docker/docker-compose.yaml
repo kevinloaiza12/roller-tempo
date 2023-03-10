@@ -1,0 +1,21 @@
+version: '3.1'
+
+networks:
+  rollertempo_postgresql:
+    external: false
+
+services: 
+  db-server:
+    container_name: rollertempo_postgresql
+    image: postgres:12.7
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pass
+      POSTGRES_USER: postgres
+      POSTGRES_DB: rollertempo
+    networks:
+      - rollertempo_postgresql
+    volumes:
+      - ${PSQL_DATA_DIR}:/var/lib/postgresql/data

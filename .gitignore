@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+#Database config
+docker/config.env
+docker/data
