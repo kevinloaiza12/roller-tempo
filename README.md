@@ -4,4 +4,5 @@
 - Julian Giraldo Perez, jgiraldop@eafit.edu.co
 - Kevin Mauricio Loaiza Arango, kmloaizaa@eafit.edu.co
 - David José Cardona Nieves, djcardonan@eafit.edu.co
+- Daniel Arango Hoyos, darangoh@eafit.edu.co
 ```
