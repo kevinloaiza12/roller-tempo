@@ -1,20 +1,19 @@
 version: '3.1'
-
 networks:
   rollertempo_postgresql:
     external: false
 
-services: 
+services:
   db-server:
     container_name: rollertempo_postgresql
-    image: postgres:12.7
+    image: postgres:latest
     ports:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_PASSWORD: pass
       POSTGRES_USER: postgres
       POSTGRES_DB: rollertempo
+      POSTGRES_PASSWORD: secret
     networks:
       - rollertempo_postgresql
     volumes:
