@@ -14,6 +14,7 @@ fi
 # Install Go
 ${SUDO} apt update
 ${SUDO} apt-get install -y curl tar
+${SUDO} apt-get update
 
 ${SUDO} rm -rf /usr/local/go
 wget https://go.dev/dl/go1.20.2.linux-amd64.tar.gz
@@ -27,6 +28,12 @@ rm go1.20.2.linux-amd64.tar.gz
 ${SUDO} apt-get install -y libpq-dev
 
 (cd app/src && go get github.com/lib/pq)
+
+wget http://github.com/golang-migrate/migrate/releases/latest/download/migrate.linux-amd64.deb
+sudo dpkg -i migrate.linux-amd64.deb
+rm migrate.linux-amd64.deb
+
+sudo apt-get install -y postgresql-client
 
 # Install Docker
 if ! type "docker" > /dev/null; then
