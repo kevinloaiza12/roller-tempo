@@ -7,7 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func GetUserCoins(ctx context.Context, userID int, db *sql.DB) (int, error) {
+func GetUserCoins(ctx context.Context, db *sql.DB, userID int) (int, error) {
 	var coins int
 	err := db.QueryRowContext(ctx, "SELECT monedas FROM usuarios WHERE id = $1", userID).Scan(&coins)
 	if err != nil {
