@@ -10,4 +10,4 @@ DB_NAME=rollertempo
 
 export DATABASE_URL="postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable&search_path=public"
 
-migrate -path ${ROOT}/scripts -database $DATABASE_URL down
+migrate -path ${ROOT}/scripts -database $DATABASE_URL force 1
