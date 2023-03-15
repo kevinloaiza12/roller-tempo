@@ -7,7 +7,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func attractionsQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {
+func attractionsGetQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {
 	var data interface{}
 	err := db.QueryRowContext(ctx, "SELECT $1 FROM atracciones WHERE id = $2", column, attractionID).Scan(&data)
 	if err != nil {
@@ -17,26 +17,26 @@ func attractionsQuery(ctx context.Context, db *sql.DB, attractionID int, column 
 }
 
 func GetAttractionNameByID(ctx context.Context, db *sql.DB, attractionID int) (string, error) {
-	result, err := attractionsQuery(ctx, db, attractionID, "nombre")
+	result, err := attractionsGetQuery(ctx, db, attractionID, "nombre")
 	return result.(string), err
 }
 
 func GetAttractionDescriptionByID(ctx context.Context, db *sql.DB, attractionID int) (string, error) {
-	result, err := attractionsQuery(ctx, db, attractionID, "descripcion")
+	result, err := attractionsGetQuery(ctx, db, attractionID, "descripcion")
 	return result.(string), err
 }
 
 func GetAttractionDurationByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
-	result, err := attractionsQuery(ctx, db, attractionID, "duracion")
+	result, err := attractionsGetQuery(ctx, db, attractionID, "duracion")
 	return result.(int), err
 }
 
 func GetAttractionCapacityByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
-	result, err := attractionsQuery(ctx, db, attractionID, "capacidad")
+	result, err := attractionsGetQuery(ctx, db, attractionID, "capacidad")
 	return result.(int), err
 }
 
 func GetAttractionNextTurnByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
-	result, err := attractionsQuery(ctx, db, attractionID, "siguiente_turno")
+	result, err := attractionsGetQuery(ctx, db, attractionID, "siguiente_turno")
 	return result.(int), err
 }

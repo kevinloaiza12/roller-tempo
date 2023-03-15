@@ -18,6 +18,7 @@ const (
 
 func main() {
 
+	//ctx := context.Background()
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", DBUser, DBPassword, DBHost, DBPort, DBName)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
