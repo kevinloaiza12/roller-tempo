@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS atracciones (
-  ID                 INT PRIMARY KEY,
+  ID                 SERIAL INT PRIMARY KEY,
   Nombre             VARCHAR(255) NOT NULL,
   Descripcion        VARCHAR(255) NULL,
   Duracion           INT NOT NULL,

@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS usuarios (
-  ID                 INT PRIMARY KEY,
+  ID                 SERIAL INT PRIMARY KEY,
   Turno              INT NULL,
-  Cantidad_Monedas   INT DEFAULT 0
+  Monedas            INT DEFAULT 0
 );
