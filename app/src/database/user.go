@@ -13,7 +13,7 @@ func usersGetQuery(ctx context.Context, db *sql.DB, attractionID int, column str
 	query := fmt.Sprintf("SELECT %s FROM usuarios WHERE id = $1", column)
 	err := db.QueryRowContext(ctx, query, attractionID).Scan(&data)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	return data, nil
 }

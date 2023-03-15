@@ -3,15 +3,17 @@ package database
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	_ "github.com/lib/pq"
 )
 
 func attractionsGetQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {
 	var data interface{}
-	err := db.QueryRowContext(ctx, "SELECT $1 FROM atracciones WHERE id = $2", column, attractionID).Scan(&data)
+	query := fmt.Sprintf("SELECT %s FROM atracciones WHERE id = $1", column)
+	err := db.QueryRowContext(ctx, query, attractionID).Scan(&data)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	return data, nil
 }
