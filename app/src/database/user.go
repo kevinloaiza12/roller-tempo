@@ -7,20 +7,21 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func GetUserCoinsByID(ctx context.Context, db *sql.DB, userID int) (int, error) {
-	var coins int
-	err := db.QueryRowContext(ctx, "SELECT monedas FROM usuarios WHERE id = $1", userID).Scan(&coins)
+func usersQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {
+	var data interface{}
+	err := db.QueryRowContext(ctx, "SELECT $1 FROM usuarios WHERE id = $2", column, attractionID).Scan(&data)
 	if err != nil {
 		return 0, err
 	}
-	return coins, nil
+	return data, nil
 }
 
-func GetUserTurnByID(ctx context.Context, db *sql.DB, userID int) (int, error) {
-	var turn int
-	err := db.QueryRowContext(ctx, "SELECT turno FROM usuarios WHERE id = $1", userID).Scan(&turn)
-	if err != nil {
-		return 0, err
-	}
-	return turn, nil
+func GetUserCoinsByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
+	result, err := usersQuery(ctx, db, attractionID, "monedas")
+	return result.(int), err
+}
+
+func GetUserTurnByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
+	result, err := usersQuery(ctx, db, attractionID, "turno")
+	return result.(int), err
 }
