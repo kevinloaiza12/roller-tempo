@@ -9,6 +9,7 @@ import (
 )
 
 type Attraction struct {
+	id          int64
 	name        string
 	description string
 	duration    int
@@ -18,8 +19,9 @@ type Attraction struct {
 
 // Creation
 
-func NewAttraction(name string, description string, duration int, capacity int, nextTurn int) *Attraction {
+func NewAttraction(id int64, name string, description string, duration int, capacity int, nextTurn int) *Attraction {
 	return &Attraction{
+		id,
 		name,
 		description,
 		duration,
@@ -111,6 +113,36 @@ func SetAttractionNextTurnByID(ctx context.Context, db *sql.DB, attractionID int
 }
 
 // Getters
+
+func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*Attraction, error) {
+
+	var attraction Attraction
+
+	query := fmt.Sprintf(
+		"SELECT %s,%s,%s,%s,%s,%s FROM atracciones WHERE id = $1",
+		"id",
+		"nombre",
+		"descripcion",
+		"duracion",
+		"capacidad",
+		"siguiente_turno",
+	)
+
+	err := db.QueryRowContext(ctx, query, attractionID).Scan(
+		&attraction.id,
+		&attraction.name,
+		&attraction.description,
+		&attraction.duration,
+		&attraction.capacity,
+		&attraction.nextTurn,
+	)
+
+	if err != nil {
+		return nil, err
+	} else {
+		return &attraction, nil
+	}
+}
 
 func GetAttractionNameByID(ctx context.Context, db *sql.DB, attractionID int) (string, error) {
 	result, err := attractionsGetQuery(ctx, db, attractionID, "nombre")
