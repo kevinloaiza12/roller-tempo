@@ -6,21 +6,27 @@ import (
 	"fmt"
 )
 
+type Reward struct {
+	name        string
+	description string
+	price       int
+}
+
 // Creation
 
-func NewRewardMap(name string, description string, price int) map[string]interface{} {
-	return map[string]interface{}{
-		"nombre":      name,
-		"descripcion": description,
-		"precio":      price,
+func NewReward(name string, description string, price int) *Reward {
+	return &Reward{
+		name,
+		description,
+		price,
 	}
 }
 
-func CreateNewReward(ctx context.Context, db *sql.DB, data map[string]interface{}) (bool, error) {
+func CreateNewReward(ctx context.Context, db *sql.DB, data *Reward) (bool, error) {
 
-	nombre := data["nombre"]
-	descripcion := data["descripcion"]
-	precio := data["precio"]
+	nombre := data.name
+	descripcion := data.description
+	precio := data.price
 
 	_, err := db.ExecContext(
 		ctx,

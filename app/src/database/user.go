@@ -8,21 +8,27 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type User struct {
+	id    int
+	coins int
+	turn  int
+}
+
 // Creation
 
-func NewUserMap(id int, coins int, turn int) map[string]interface{} {
-	return map[string]interface{}{
-		"id":      id,
-		"monedas": coins,
-		"turno":   turn,
+func NewUser(id int, coins int, turn int) *User {
+	return &User{
+		id,
+		coins,
+		turn,
 	}
 }
 
-func CreateNewUser(ctx context.Context, db *sql.DB, data map[string]interface{}) (bool, error) {
+func CreateNewUser(ctx context.Context, db *sql.DB, data *User) (bool, error) {
 
-	id := data["id"]
-	monedas := data["monedas"]
-	turno := data["turno"]
+	id := data.id
+	monedas := data.coins
+	turno := data.turn
 
 	_, err := db.ExecContext(
 		ctx,

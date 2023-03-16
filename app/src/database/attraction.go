@@ -8,25 +8,33 @@ import (
 	_ "github.com/lib/pq"
 )
 
+type Attraction struct {
+	name        string
+	description string
+	duration    int
+	capacity    int
+	nextTurn    int
+}
+
 // Creation
 
-func NewAttractionMap(name string, description string, duration int, capacity int, nextTurn int) map[string]interface{} {
-	return map[string]interface{}{
-		"nombre":          name,
-		"descripcion":     description,
-		"duracion":        duration,
-		"capacidad":       capacity,
-		"siguiente_turno": nextTurn,
+func NewAttraction(name string, description string, duration int, capacity int, nextTurn int) *Attraction {
+	return &Attraction{
+		name,
+		description,
+		duration,
+		capacity,
+		nextTurn,
 	}
 }
 
-func CreateNewAttraction(ctx context.Context, db *sql.DB, data map[string]interface{}) (bool, error) {
+func CreateNewAttraction(ctx context.Context, db *sql.DB, data *Attraction) (bool, error) {
 
-	nombre := data["nombre"]
-	descripcion := data["descripcion"]
-	duracion := data["duracion"]
-	capacidad := data["capacidad"]
-	siguiente_turno := data["siguiente_turno"]
+	nombre := data.name
+	descripcion := data.description
+	duracion := data.duration
+	capacidad := data.capacity
+	siguiente_turno := data.nextTurn
 
 	_, err := db.ExecContext(
 		ctx,
