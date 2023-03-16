@@ -6,6 +6,37 @@ import (
 	"fmt"
 )
 
+// Creation
+
+func NewRewardMap(name string, description string, price int) map[string]interface{} {
+	return map[string]interface{}{
+		"nombre":      name,
+		"descripcion": description,
+		"precio":      price,
+	}
+}
+
+func CreateNewReward(ctx context.Context, db *sql.DB, data map[string]interface{}) (bool, error) {
+
+	nombre := data["nombre"]
+	descripcion := data["descripcion"]
+	precio := data["precio"]
+
+	_, err := db.ExecContext(
+		ctx,
+		"INSERT INTO premios (nombre, descripcion, precio) VALUES ($1,$2,$3)",
+		nombre,
+		descripcion,
+		precio,
+	)
+
+	if err != nil {
+		return false, err
+	} else {
+		return true, nil
+	}
+}
+
 // Utils
 
 func rewardsGetQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {

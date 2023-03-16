@@ -8,6 +8,43 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Creation
+
+func NewAttractionMap(name string, description string, duration int, capacity int, nextTurn int) map[string]interface{} {
+	return map[string]interface{}{
+		"nombre":          name,
+		"descripcion":     description,
+		"duracion":        duration,
+		"capacidad":       capacity,
+		"siguiente_turno": nextTurn,
+	}
+}
+
+func CreateNewAttraction(ctx context.Context, db *sql.DB, data map[string]interface{}) (bool, error) {
+
+	nombre := data["nombre"]
+	descripcion := data["descripcion"]
+	duracion := data["duracion"]
+	capacidad := data["capacidad"]
+	siguiente_turno := data["siguiente_turno"]
+
+	_, err := db.ExecContext(
+		ctx,
+		"INSERT INTO atracciones (nombre, descripcion, duracion, capacidad, siguiente_turno) VALUES ($1,$2,$3,$4,$5)",
+		nombre,
+		descripcion,
+		duracion,
+		capacidad,
+		siguiente_turno,
+	)
+
+	if err != nil {
+		return false, err
+	} else {
+		return true, nil
+	}
+}
+
 // Utils
 
 func attractionsGetQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {
@@ -31,7 +68,7 @@ func attractionsSetQuery(ctx context.Context, db *sql.DB, attractionID int, colu
 		query = fmt.Sprintf("UPDATE atracciones SET %s = '%s' WHERE id = $1", column, value)
 	}
 
-	if err := db.QueryRowContext(ctx, query, attractionID).Err(); err != nil {
+	if _, err := db.ExecContext(ctx, query, attractionID); err != nil {
 		return false, err
 	} else {
 		return true, nil

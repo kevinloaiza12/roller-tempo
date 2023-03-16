@@ -8,6 +8,37 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Creation
+
+func NewUserMap(id int, coins int, turn int) map[string]interface{} {
+	return map[string]interface{}{
+		"id":      id,
+		"monedas": coins,
+		"turno":   turn,
+	}
+}
+
+func CreateNewUser(ctx context.Context, db *sql.DB, data map[string]interface{}) (bool, error) {
+
+	id := data["id"]
+	monedas := data["monedas"]
+	turno := data["turno"]
+
+	_, err := db.ExecContext(
+		ctx,
+		"INSERT INTO usuarios (id, monedas, turno) VALUES ($1,$2,$3)",
+		id,
+		monedas,
+		turno,
+	)
+
+	if err != nil {
+		return false, err
+	} else {
+		return true, nil
+	}
+}
+
 // Utils
 
 func usersGetQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {
