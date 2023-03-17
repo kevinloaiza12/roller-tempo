@@ -5,38 +5,19 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/kevinloaiza12/roller-tempo/app/resources"
 	_ "github.com/lib/pq"
 )
 
-type Attraction struct {
-	id          int64
-	name        string
-	description string
-	duration    int
-	capacity    int
-	nextTurn    int
-}
-
 // Creation
 
-func NewAttraction(id int64, name string, description string, duration int, capacity int, nextTurn int) *Attraction {
-	return &Attraction{
-		id,
-		name,
-		description,
-		duration,
-		capacity,
-		nextTurn,
-	}
-}
+func CreateNewAttraction(ctx context.Context, db *sql.DB, data *resources.Attraction) (bool, error) {
 
-func CreateNewAttraction(ctx context.Context, db *sql.DB, data *Attraction) (bool, error) {
-
-	nombre := data.name
-	descripcion := data.description
-	duracion := data.duration
-	capacidad := data.capacity
-	siguiente_turno := data.nextTurn
+	nombre := data.GetAttractionName()
+	descripcion := data.GetAttractionDescription()
+	duracion := data.GetAttractionDuration()
+	capacidad := data.GetAttractionCapacity()
+	siguiente_turno := data.GetAttractionNextTurn()
 
 	_, err := db.ExecContext(
 		ctx,
@@ -114,9 +95,7 @@ func SetAttractionNextTurnByID(ctx context.Context, db *sql.DB, attractionID int
 
 // Getters
 
-func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*Attraction, error) {
-
-	var attraction Attraction
+func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*resources.Attraction, error) {
 
 	query := fmt.Sprintf(
 		"SELECT %s,%s,%s,%s,%s,%s FROM atracciones WHERE id = $1",
@@ -128,19 +107,33 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*Attr
 		"siguiente_turno",
 	)
 
+	var id int64
+	var name string
+	var description string
+	var duration int
+	var capacity int
+	var nextTurn int
+
 	err := db.QueryRowContext(ctx, query, attractionID).Scan(
-		&attraction.id,
-		&attraction.name,
-		&attraction.description,
-		&attraction.duration,
-		&attraction.capacity,
-		&attraction.nextTurn,
+		&id,
+		&name,
+		&description,
+		&duration,
+		&capacity,
+		&nextTurn,
 	)
 
 	if err != nil {
 		return nil, err
 	} else {
-		return &attraction, nil
+		return resources.NewAttraction(
+			id,
+			name,
+			description,
+			duration,
+			capacity,
+			nextTurn,
+		), nil
 	}
 }
 

@@ -4,31 +4,17 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-)
 
-type Reward struct {
-	id          int64
-	name        string
-	description string
-	price       int
-}
+	"github.com/kevinloaiza12/roller-tempo/app/resources"
+)
 
 // Creation
 
-func NewReward(id int64, name string, description string, price int) *Reward {
-	return &Reward{
-		id,
-		name,
-		description,
-		price,
-	}
-}
+func CreateNewReward(ctx context.Context, db *sql.DB, data *resources.Reward) (bool, error) {
 
-func CreateNewReward(ctx context.Context, db *sql.DB, data *Reward) (bool, error) {
-
-	nombre := data.name
-	descripcion := data.description
-	precio := data.price
+	nombre := data.GetRewardName()
+	descripcion := data.GetRewardDescription()
+	precio := data.GetRewardPrice()
 
 	_, err := db.ExecContext(
 		ctx,
@@ -94,9 +80,7 @@ func SetRewardPriceByID(ctx context.Context, db *sql.DB, attractionID int, value
 
 // Getters
 
-func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*Reward, error) {
-
-	var reward Reward
+func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*resources.Reward, error) {
 
 	query := fmt.Sprintf(
 		"SELECT %s,%s,%s,%s FROM premios WHERE id = $1",
@@ -106,17 +90,27 @@ func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*Reward, erro
 		"precio",
 	)
 
+	var id int64
+	var name string
+	var description string
+	var price int
+
 	err := db.QueryRowContext(ctx, query, rewardID).Scan(
-		&reward.id,
-		&reward.name,
-		&reward.description,
-		&reward.price,
+		&id,
+		&name,
+		&description,
+		&price,
 	)
 
 	if err != nil {
 		return nil, err
 	} else {
-		return &reward, nil
+		return resources.NewReward(
+			id,
+			name,
+			description,
+			price,
+		), nil
 	}
 }
 

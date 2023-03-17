@@ -5,30 +5,17 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/kevinloaiza12/roller-tempo/app/resources"
 	_ "github.com/lib/pq"
 )
 
-type User struct {
-	id    int
-	coins int
-	turn  int
-}
-
 // Creation
 
-func NewUser(id int, coins int, turn int) *User {
-	return &User{
-		id,
-		coins,
-		turn,
-	}
-}
+func CreateNewUser(ctx context.Context, db *sql.DB, data *resources.User) (bool, error) {
 
-func CreateNewUser(ctx context.Context, db *sql.DB, data *User) (bool, error) {
-
-	id := data.id
-	monedas := data.coins
-	turno := data.turn
+	id := data.GetUserID()
+	monedas := data.GetUserCoins()
+	turno := data.GetUserTurn()
 
 	_, err := db.ExecContext(
 		ctx,
@@ -89,9 +76,7 @@ func SetUserTurnByID(ctx context.Context, db *sql.DB, userID int, value string) 
 
 // Getters
 
-func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*User, error) {
-
-	var user User
+func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*resources.User, error) {
 
 	query := fmt.Sprintf(
 		"SELECT %s,%s,%s FROM usuarios WHERE id = $1",
@@ -100,16 +85,24 @@ func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*User, error) {
 		"turno",
 	)
 
+	var id int
+	var coins int
+	var turn int
+
 	err := db.QueryRowContext(ctx, query, userID).Scan(
-		&user.id,
-		&user.coins,
-		&user.turn,
+		&id,
+		&coins,
+		&turn,
 	)
 
 	if err != nil {
 		return nil, err
 	} else {
-		return &user, nil
+		return resources.NewUser(
+			id,
+			coins,
+			turn,
+		), nil
 	}
 }
 
