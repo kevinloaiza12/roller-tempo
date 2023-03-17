@@ -6,21 +6,29 @@ import (
 	"fmt"
 )
 
+type Reward struct {
+	id          int64
+	name        string
+	description string
+	price       int
+}
+
 // Creation
 
-func NewRewardMap(name string, description string, price int) map[string]interface{} {
-	return map[string]interface{}{
-		"nombre":      name,
-		"descripcion": description,
-		"precio":      price,
+func NewReward(id int64, name string, description string, price int) *Reward {
+	return &Reward{
+		id,
+		name,
+		description,
+		price,
 	}
 }
 
-func CreateNewReward(ctx context.Context, db *sql.DB, data map[string]interface{}) (bool, error) {
+func CreateNewReward(ctx context.Context, db *sql.DB, data *Reward) (bool, error) {
 
-	nombre := data["nombre"]
-	descripcion := data["descripcion"]
-	precio := data["precio"]
+	nombre := data.name
+	descripcion := data.description
+	precio := data.price
 
 	_, err := db.ExecContext(
 		ctx,
@@ -86,17 +94,43 @@ func SetRewardPriceByID(ctx context.Context, db *sql.DB, attractionID int, value
 
 // Getters
 
-func GetRewardNameByID(ctx context.Context, db *sql.DB, attractionID int) (string, error) {
-	result, err := rewardsGetQuery(ctx, db, attractionID, "nombre")
+func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*Reward, error) {
+
+	var reward Reward
+
+	query := fmt.Sprintf(
+		"SELECT %s,%s,%s,%s FROM premios WHERE id = $1",
+		"id",
+		"nombre",
+		"descripcion",
+		"precio",
+	)
+
+	err := db.QueryRowContext(ctx, query, rewardID).Scan(
+		&reward.id,
+		&reward.name,
+		&reward.description,
+		&reward.price,
+	)
+
+	if err != nil {
+		return nil, err
+	} else {
+		return &reward, nil
+	}
+}
+
+func GetRewardNameByID(ctx context.Context, db *sql.DB, rewardID int) (string, error) {
+	result, err := rewardsGetQuery(ctx, db, rewardID, "nombre")
 	return result.(string), err
 }
 
-func GetRewardDescriptionByID(ctx context.Context, db *sql.DB, attractionID int) (string, error) {
-	result, err := rewardsGetQuery(ctx, db, attractionID, "descripcion")
+func GetRewardDescriptionByID(ctx context.Context, db *sql.DB, rewardID int) (string, error) {
+	result, err := rewardsGetQuery(ctx, db, rewardID, "descripcion")
 	return result.(string), err
 }
 
-func GetRewardPriceByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
-	result, err := rewardsGetQuery(ctx, db, attractionID, "precio")
+func GetRewardPriceByID(ctx context.Context, db *sql.DB, rewardID int) (int, error) {
+	result, err := rewardsGetQuery(ctx, db, rewardID, "precio")
 	return result.(int), err
 }
