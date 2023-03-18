@@ -1,4 +1,4 @@
-package resources
+package models
 
 type Attraction struct {
 	id          int64

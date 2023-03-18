@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/kevinloaiza12/roller-tempo/app/resources"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 	_ "github.com/lib/pq"
 )
 
 // Creation
 
-func CreateNewAttraction(ctx context.Context, db *sql.DB, data *resources.Attraction) (bool, error) {
+func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attraction) (bool, error) {
 
 	nombre := data.GetAttractionName()
 	descripcion := data.GetAttractionDescription()
@@ -36,66 +36,9 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *resources.Attrac
 	}
 }
 
-// Utils
+// Getter
 
-func attractionsGetQuery(ctx context.Context, db *sql.DB, attractionID int, column string) (interface{}, error) {
-	var data interface{}
-	query := fmt.Sprintf("SELECT %s FROM atracciones WHERE id = $1", column)
-	err := db.QueryRowContext(ctx, query, attractionID).Scan(&data)
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
-func attractionsSetQuery(ctx context.Context, db *sql.DB, attractionID int, column string, value interface{}) (bool, error) {
-
-	var query string
-
-	switch value.(type) {
-	case int:
-		query = fmt.Sprintf("UPDATE atracciones SET %s = %s WHERE id = $1", column, value)
-	case string:
-		query = fmt.Sprintf("UPDATE atracciones SET %s = '%s' WHERE id = $1", column, value)
-	}
-
-	if _, err := db.ExecContext(ctx, query, attractionID); err != nil {
-		return false, err
-	} else {
-		return true, nil
-	}
-}
-
-// Setters
-
-func SetAttractionNameByID(ctx context.Context, db *sql.DB, attractionID int, value string) (bool, error) {
-	result, err := attractionsSetQuery(ctx, db, attractionID, "nombre", value)
-	return result, err
-}
-
-func SetAttractionDescriptionByID(ctx context.Context, db *sql.DB, attractionID int, value string) (bool, error) {
-	result, err := attractionsSetQuery(ctx, db, attractionID, "descripcion", value)
-	return result, err
-}
-
-func SetAttractionDurationByID(ctx context.Context, db *sql.DB, attractionID int, value int) (bool, error) {
-	result, err := attractionsSetQuery(ctx, db, attractionID, "duracion", value)
-	return result, err
-}
-
-func SetAttractionCapacityByID(ctx context.Context, db *sql.DB, attractionID int, value int) (bool, error) {
-	result, err := attractionsSetQuery(ctx, db, attractionID, "capacidad", value)
-	return result, err
-}
-
-func SetAttractionNextTurnByID(ctx context.Context, db *sql.DB, attractionID int, value int) (bool, error) {
-	result, err := attractionsSetQuery(ctx, db, attractionID, "siguiente_turno", value)
-	return result, err
-}
-
-// Getters
-
-func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*resources.Attraction, error) {
+func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*models.Attraction, error) {
 
 	query := fmt.Sprintf(
 		"SELECT %s,%s,%s,%s,%s,%s FROM atracciones WHERE id = $1",
@@ -126,7 +69,7 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*reso
 	if err != nil {
 		return nil, err
 	} else {
-		return resources.NewAttraction(
+		return models.NewAttraction(
 			id,
 			name,
 			description,
@@ -137,27 +80,24 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*reso
 	}
 }
 
-func GetAttractionNameByID(ctx context.Context, db *sql.DB, attractionID int) (string, error) {
-	result, err := attractionsGetQuery(ctx, db, attractionID, "nombre")
-	return result.(string), err
-}
+// Update
 
-func GetAttractionDescriptionByID(ctx context.Context, db *sql.DB, attractionID int) (string, error) {
-	result, err := attractionsGetQuery(ctx, db, attractionID, "descripcion")
-	return result.(string), err
-}
+func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.Attraction) (bool, error) {
 
-func GetAttractionDurationByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
-	result, err := attractionsGetQuery(ctx, db, attractionID, "duracion")
-	return result.(int), err
-}
+	var query string
+	query = fmt.Sprintf(
+		"UPDATE atracciones SET nombre = '%s', descripcion = '%s' , duracion = %d, capacidad = %d, siguiente_turno = %d "+
+			"WHERE id = $1",
+		attraction.GetAttractionName(),
+		attraction.GetAttractionDescription(),
+		attraction.GetAttractionDuration(),
+		attraction.GetAttractionCapacity(),
+		attraction.GetAttractionNextTurn(),
+	)
 
-func GetAttractionCapacityByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
-	result, err := attractionsGetQuery(ctx, db, attractionID, "capacidad")
-	return result.(int), err
-}
-
-func GetAttractionNextTurnByID(ctx context.Context, db *sql.DB, attractionID int) (int, error) {
-	result, err := attractionsGetQuery(ctx, db, attractionID, "siguiente_turno")
-	return result.(int), err
+	if _, err := db.ExecContext(ctx, query, attraction.GetAttractionID()); err != nil {
+		return false, err
+	} else {
+		return true, nil
+	}
 }

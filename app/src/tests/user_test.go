@@ -9,12 +9,12 @@ import (
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
-	"github.com/kevinloaiza12/roller-tempo/app/resources"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 )
 
 func TestUser(t *testing.T) {
 
-	input := resources.NewUser(1193132710, 15000, 0)
+	input := models.NewUser(1193132710, 15000, 0)
 
 	ctx := context.Background()
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", DBUser, DBPassword, DBHost, DBPort, DBName)
