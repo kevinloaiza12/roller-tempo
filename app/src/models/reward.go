@@ -1,4 +1,4 @@
-package resources
+package models
 
 type Reward struct {
 	id          int64

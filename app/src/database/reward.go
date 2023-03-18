@@ -5,12 +5,12 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/kevinloaiza12/roller-tempo/app/resources"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 )
 
 // Creation
 
-func CreateNewReward(ctx context.Context, db *sql.DB, data *resources.Reward) (bool, error) {
+func CreateNewReward(ctx context.Context, db *sql.DB, data *models.Reward) (bool, error) {
 
 	nombre := data.GetRewardName()
 	descripcion := data.GetRewardDescription()
@@ -33,7 +33,7 @@ func CreateNewReward(ctx context.Context, db *sql.DB, data *resources.Reward) (b
 
 // Getter
 
-func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*resources.Reward, error) {
+func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*models.Reward, error) {
 
 	query := fmt.Sprintf(
 		"SELECT %s,%s,%s,%s FROM premios WHERE id = $1",
@@ -58,7 +58,7 @@ func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*resources.Re
 	if err != nil {
 		return nil, err
 	} else {
-		return resources.NewReward(
+		return models.NewReward(
 			id,
 			name,
 			description,
@@ -69,7 +69,7 @@ func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*resources.Re
 
 // Update
 
-func RewardsUpdateQuery(ctx context.Context, db *sql.DB, reward *resources.Reward) (bool, error) {
+func RewardsUpdateQuery(ctx context.Context, db *sql.DB, reward *models.Reward) (bool, error) {
 	var query string
 	query = fmt.Sprintf(
 		"UPDATE premios SET nombre = '%s', descripcion = '%s' , precio = %d "+

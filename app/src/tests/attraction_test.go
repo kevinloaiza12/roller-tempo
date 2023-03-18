@@ -9,12 +9,12 @@ import (
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
-	"github.com/kevinloaiza12/roller-tempo/app/resources"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 )
 
 func TestAttraction(t *testing.T) {
 
-	input := resources.NewAttraction(1, "Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
+	input := models.NewAttraction(1, "Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
 
 	ctx := context.Background()
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", DBUser, DBPassword, DBHost, DBPort, DBName)

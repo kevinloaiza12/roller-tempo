@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/kevinloaiza12/roller-tempo/app/resources"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 	_ "github.com/lib/pq"
 )
 
 // Creation
 
-func CreateNewAttraction(ctx context.Context, db *sql.DB, data *resources.Attraction) (bool, error) {
+func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attraction) (bool, error) {
 
 	nombre := data.GetAttractionName()
 	descripcion := data.GetAttractionDescription()
@@ -38,7 +38,7 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *resources.Attrac
 
 // Getter
 
-func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*resources.Attraction, error) {
+func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*models.Attraction, error) {
 
 	query := fmt.Sprintf(
 		"SELECT %s,%s,%s,%s,%s,%s FROM atracciones WHERE id = $1",
@@ -69,7 +69,7 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*reso
 	if err != nil {
 		return nil, err
 	} else {
-		return resources.NewAttraction(
+		return models.NewAttraction(
 			id,
 			name,
 			description,
@@ -82,7 +82,7 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*reso
 
 // Update
 
-func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *resources.Attraction) (bool, error) {
+func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.Attraction) (bool, error) {
 
 	var query string
 	query = fmt.Sprintf(

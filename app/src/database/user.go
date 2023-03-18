@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/kevinloaiza12/roller-tempo/app/resources"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 	_ "github.com/lib/pq"
 )
 
 // Creation
 
-func CreateNewUser(ctx context.Context, db *sql.DB, data *resources.User) (bool, error) {
+func CreateNewUser(ctx context.Context, db *sql.DB, data *models.User) (bool, error) {
 
 	id := data.GetUserID()
 	monedas := data.GetUserCoins()
@@ -34,7 +34,7 @@ func CreateNewUser(ctx context.Context, db *sql.DB, data *resources.User) (bool,
 
 // Getters
 
-func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*resources.User, error) {
+func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*models.User, error) {
 
 	query := fmt.Sprintf(
 		"SELECT %s,%s,%s FROM usuarios WHERE id = $1",
@@ -56,7 +56,7 @@ func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*resources.User, 
 	if err != nil {
 		return nil, err
 	} else {
-		return resources.NewUser(
+		return models.NewUser(
 			id,
 			coins,
 			turn,
@@ -66,7 +66,7 @@ func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*resources.User, 
 
 // Update
 
-func UsersUpdateQuery(ctx context.Context, db *sql.DB, user *resources.User) (bool, error) {
+func UsersUpdateQuery(ctx context.Context, db *sql.DB, user *models.User) (bool, error) {
 	var query string
 	query = fmt.Sprintf(
 		"UPDATE usuarios SET monedas = %d, turno = %d "+
