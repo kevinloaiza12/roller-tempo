@@ -7,12 +7,29 @@ type Reward struct {
 	price       int
 }
 
+func (obj *Reward) ToJSON() map[string]interface{} {
+	return map[string]interface{}{
+		"id":          obj.id,
+		"name":        obj.name,
+		"description": obj.description,
+		"price":       obj.price,
+	}
+}
+
 func NewReward(id int64, name string, description string, price int) *Reward {
 	return &Reward{
 		id,
 		name,
 		description,
 		price,
+	}
+}
+
+func (u *User) ToJSON() map[string]interface{} {
+	return map[string]interface{}{
+		"id":    u.id,
+		"coins": u.coins,
+		"turn":  u.turn,
 	}
 }
 
