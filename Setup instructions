@@ -4,18 +4,23 @@ notes
 
 2. Once you run it you should restart your computer
 
-3. Now you will have to run the dockercompose.yaml file located inside the docker folder.
+3. Make sure you have docker running
+
+4. Now you will have to run the dockercompose.yaml file located inside the docker folder.
 	run: docker-compose -f docker-compose.yaml up -d 
 	
-4. After this you will have a postgres container listening on port 5432
+5. After this you will have a postgres container listening on port 5432
 
-5. To enter the container terminal
+6. To enter the container terminal
 	run: docker exec -it "id or name of containe" bash
 	
-6. Inside the container to access the db console 
+7. Inside the container to access the db console 
 	run: su postgres
 	run: psql
 	
-7. Run the psql commands you want to do tests
+8. Run the psql commands you want to do tests
 
-8. To exit press control+d
+9. To exit press control+d
+
+10. to stop the container from executing
+	 run: docker-compose -f docker-compose.yaml down 
