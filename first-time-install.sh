@@ -27,7 +27,7 @@ rm go1.20.2.linux-amd64.tar.gz
 
 ${SUDO} apt-get install -y libpq-dev
 
-(cd app/src && go get github.com/lib/pq)
+(cd app/src && go get github.com/lib/pq && go get github.com/golang-migrate/migrate/v4)
 
 wget http://github.com/golang-migrate/migrate/releases/latest/download/migrate.linux-amd64.deb
 sudo dpkg -i migrate.linux-amd64.deb
