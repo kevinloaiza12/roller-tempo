@@ -9,6 +9,15 @@ type Attraction struct {
 	nextTurn    int
 }
 
+func (obj *Attraction) AttractionToJSON() map[string]interface{} {
+	return map[string]interface{}{
+		"id":          obj.id,
+		"name":        obj.name,
+		"description": obj.description,
+		"nextTurn":    obj.nextTurn,
+	}
+}
+
 func NewAttraction(id int64, name string, description string, duration int, capacity int, nextTurn int) *Attraction {
 	return &Attraction{
 		id,

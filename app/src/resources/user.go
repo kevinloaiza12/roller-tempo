@@ -14,6 +14,14 @@ func NewUser(id int, coins int, turn int) *User {
 	}
 }
 
+func (obj *User) UserToJSON() map[string]interface{} {
+	return map[string]interface{}{
+		"id":    obj.id,
+		"coins": obj.coins,
+		"turn":  obj.turn,
+	}
+}
+
 // Setters
 
 func (obj *User) SetUserID(id int) {
