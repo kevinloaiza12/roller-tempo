@@ -6,7 +6,7 @@ networks:
 services:
   db-server:
     container_name: rollertempo_postgresql
-    image: postgres:latest
+    image: postgres:alpine3.17
     ports:
       - "5432:5432"
     restart: always
@@ -17,4 +17,7 @@ services:
     networks:
       - rollertempo_postgresql
     volumes:
-      - ${PSQL_DATA_DIR}:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
+    driver: local

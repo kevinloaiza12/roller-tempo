@@ -1,0 +1,26 @@
+notes
+
+1. Run first-time install to have go, docker and docker compose on your machine
+
+2. Once you run it you should restart your computer
+
+3. Make sure you have docker running
+
+4. Now you will have to run the dockercompose.yaml file located inside the docker folder.
+	run: docker-compose -f docker-compose.yaml up -d 
+	
+5. After this you will have a postgres container listening on port 5432
+
+6. To enter the container terminal
+	run: docker exec -it "id or name of containe" bash
+	
+7. Inside the container to access the db console 
+	run: su postgres
+	run: psql
+	
+8. Run the psql commands you want to do tests
+
+9. To exit press control+d
+
+10. to stop the container from executing
+	 run: docker-compose -f docker-compose.yaml down 

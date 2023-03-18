@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ROOT="$( readlink -f "$( dirname "${BASH_SOURCE[0]}" )" )"
+export ROOT=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 DB_HOST=localhost
 DB_PORT=5432
