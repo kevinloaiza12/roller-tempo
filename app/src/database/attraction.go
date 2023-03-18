@@ -49,7 +49,6 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*reso
 		"capacidad",
 		"siguiente_turno",
 	)
-	fmt.Println(query)
 
 	var id int64
 	var name string
