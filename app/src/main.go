@@ -1,10 +1,6 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
-	"log"
-
 	_ "github.com/lib/pq"
 )
 
@@ -16,13 +12,4 @@ const (
 	DBName     = "rollertempo"
 )
 
-func main() {
-
-	//ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", DBUser, DBPassword, DBHost, DBPort, DBName)
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-}
+func main() {}
