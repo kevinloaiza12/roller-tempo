@@ -95,7 +95,7 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *resourc
 		attraction.GetAttractionCapacity(),
 		attraction.GetAttractionNextTurn(),
 	)
-	fmt.Println(query)
+
 	if _, err := db.ExecContext(ctx, query, attraction.GetAttractionID()); err != nil {
 		return false, err
 	} else {

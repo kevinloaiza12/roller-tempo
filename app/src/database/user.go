@@ -74,7 +74,7 @@ func UsersUpdateQuery(ctx context.Context, db *sql.DB, user *resources.User) (bo
 		user.GetUserCoins(),
 		user.GetUserTurn(),
 	)
-	fmt.Println(query)
+
 	if _, err := db.ExecContext(ctx, query, user.GetUserID()); err != nil {
 		return false, err
 	} else {

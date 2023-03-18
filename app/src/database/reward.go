@@ -78,7 +78,7 @@ func RewardsUpdateQuery(ctx context.Context, db *sql.DB, reward *resources.Rewar
 		reward.GetRewardDescription(),
 		reward.GetRewardPrice(),
 	)
-	fmt.Println(query)
+
 	if _, err := db.ExecContext(ctx, query, reward.GetRewardID()); err != nil {
 		return false, err
 	} else {
