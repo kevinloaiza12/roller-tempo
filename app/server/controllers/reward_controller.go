@@ -20,11 +20,11 @@ func GetRewardInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 		idStr := c.Params("id")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, ErrorMessage400)
+			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessage400))
 		}
 		result, err := database.GetRewardByID(ctx, db, id)
 		if err != nil {
-			return fiber.NewError(fiber.StatusNotFound, ErrorMessage404)
+			return c.JSON(fiber.NewError(fiber.StatusNotFound, ErrorMessage404))
 		}
 		return c.JSON(result.RewardToJSON())
 	}
