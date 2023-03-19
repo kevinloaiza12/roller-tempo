@@ -15,7 +15,7 @@ func Attractions(c *fiber.Ctx) error {
 	})
 }
 
-func AttractionInfo(ctx context.Context, db *sql.DB) fiber.Handler {
+func GetAttractionInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		idStr := c.Params("id")
 		id, err := strconv.Atoi(idStr)

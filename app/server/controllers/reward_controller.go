@@ -15,7 +15,7 @@ func Rewards(c *fiber.Ctx) error {
 	})
 }
 
-func RewardInfo(ctx context.Context, db *sql.DB) fiber.Handler {
+func GetRewardInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		idStr := c.Params("id")
 		id, err := strconv.Atoi(idStr)

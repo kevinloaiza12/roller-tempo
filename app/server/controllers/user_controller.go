@@ -15,7 +15,7 @@ func Users(c *fiber.Ctx) error {
 	})
 }
 
-func UserInfo(ctx context.Context, db *sql.DB) fiber.Handler {
+func GetUserInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		idStr := c.Params("id")
 		id, err := strconv.Atoi(idStr)
