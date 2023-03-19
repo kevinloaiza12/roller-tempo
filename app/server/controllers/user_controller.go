@@ -20,11 +20,11 @@ func GetUserInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 		idStr := c.Params("id")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).SendString("ID no válido")
+			return fiber.NewError(fiber.StatusBadRequest, ErrorMessage400)
 		}
 		result, err := database.GetUserByID(ctx, db, id)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).SendString("Error al obtener información del usuario")
+			return fiber.NewError(fiber.StatusNotFound, ErrorMessage404)
 		}
 		return c.JSON(result.UserToJSON())
 	}
