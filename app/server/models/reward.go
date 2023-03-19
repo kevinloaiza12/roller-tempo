@@ -7,7 +7,7 @@ type Reward struct {
 	price       int
 }
 
-func (obj *Reward) ToJSON() map[string]interface{} {
+func (obj *Reward) RewardToJSON() map[string]interface{} {
 	return map[string]interface{}{
 		"id":          obj.id,
 		"name":        obj.name,
