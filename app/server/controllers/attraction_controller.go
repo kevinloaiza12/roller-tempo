@@ -20,11 +20,11 @@ func GetAttractionInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 		idStr := c.Params("id")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).SendString("ID no válido")
+			return fiber.NewError(fiber.StatusBadRequest, ErrorMessage400)
 		}
 		result, err := database.GetAttractionByID(ctx, db, id)
 		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).SendString("Error al obtener información de la atracción")
+			return fiber.NewError(fiber.StatusNotFound, ErrorMessage404)
 		}
 		return c.JSON(result.AttractionToJSON())
 	}
