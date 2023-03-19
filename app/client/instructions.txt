@@ -1,0 +1,11 @@
+Here are the instructions for the correct setup of the client
+
+1. Install node v16.19.1 and npm 8.19.3. This is import as other versions have given problems
+
+
+2. Inside the client folder install all dependencies 
+        run: npm i
+
+
+3. Inside the same folder execute the react app 
+        run: npm run dev
