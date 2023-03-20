@@ -31,9 +31,8 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 
 	if err != nil {
 		return false, err
-	} else {
-		return true, nil
 	}
+  return true, nil
 }
 
 // Getter
@@ -68,16 +67,15 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*mode
 
 	if err != nil {
 		return nil, err
-	} else {
-		return models.NewAttraction(
-			id,
-			name,
-			description,
-			duration,
-			capacity,
-			nextTurn,
-		), nil
 	}
+  return models.NewAttraction(
+    id,
+    name,
+    description,
+    duration,
+    capacity,
+    nextTurn,
+  ), nil
 }
 
 // Update
@@ -97,7 +95,6 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 
 	if _, err := db.ExecContext(ctx, query, attraction.GetAttractionID()); err != nil {
 		return false, err
-	} else {
-		return true, nil
 	}
+  return true, nil
 }

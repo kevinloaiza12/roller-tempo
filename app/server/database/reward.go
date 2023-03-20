@@ -26,9 +26,8 @@ func CreateNewReward(ctx context.Context, db *sql.DB, data *models.Reward) (bool
 
 	if err != nil {
 		return false, err
-	} else {
-		return true, nil
 	}
+  return true, nil
 }
 
 // Getter
@@ -57,14 +56,13 @@ func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*models.Rewar
 
 	if err != nil {
 		return nil, err
-	} else {
-		return models.NewReward(
-			id,
-			name,
-			description,
-			price,
-		), nil
 	}
+  return models.NewReward(
+    id,
+    name,
+    description,
+    price,
+  ), nil
 }
 
 // Update
@@ -81,7 +79,6 @@ func RewardsUpdateQuery(ctx context.Context, db *sql.DB, reward *models.Reward) 
 
 	if _, err := db.ExecContext(ctx, query, reward.GetRewardID()); err != nil {
 		return false, err
-	} else {
-		return true, nil
-	}
+	} 
+  return true, nil
 }
