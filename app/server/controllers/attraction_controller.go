@@ -44,7 +44,7 @@ func PostAttractionRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 
 		var info AttractionRegisterRequest
 		if err := c.BodyParser(&info); err != nil {
-			return err
+			return c.JSON(fiber.NewError(fiber.StatusBadRequest, err.Error()))
 		}
 
 		if _, attractionExists := database.GetAttractionByID(ctx, db, int(info.Id)); attractionExists != sql.ErrNoRows {

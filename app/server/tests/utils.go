@@ -16,6 +16,10 @@ const (
 	DBName     = "rollertempo"
 )
 
+type ResponseBody struct {
+	Message string `json:"message"`
+}
+
 func runMigrations(t *testing.T, db *sql.DB, order string) error {
 
 	driver, err := postgres.WithInstance(db, &postgres.Config{})

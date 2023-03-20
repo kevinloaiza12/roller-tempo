@@ -41,7 +41,7 @@ func PostUserRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 
 		var info UserRegisterRequest
 		if err := c.BodyParser(&info); err != nil {
-			return err
+			return c.JSON(fiber.NewError(fiber.StatusBadRequest, err.Error()))
 		}
 
 		if _, userExists := database.GetUserByID(ctx, db, info.Id); userExists != sql.ErrNoRows {

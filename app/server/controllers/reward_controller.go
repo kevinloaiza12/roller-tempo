@@ -42,7 +42,7 @@ func PostRewardRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 
 		var info RewardRegisterRequest
 		if err := c.BodyParser(&info); err != nil {
-			return err
+			return c.JSON(fiber.NewError(fiber.StatusBadRequest, err.Error()))
 		}
 
 		if _, rewardExists := database.GetRewardByID(ctx, db, int(info.Id)); rewardExists != sql.ErrNoRows {
