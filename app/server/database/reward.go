@@ -33,23 +33,20 @@ func CreateNewReward(ctx context.Context, db *sql.DB, data *models.Reward) (bool
 
 // Getter
 
-func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*models.Reward, error) {
+func GetRewardByName(ctx context.Context, db *sql.DB, rewardName string) (*models.Reward, error) {
 
 	query := fmt.Sprintf(
-		"SELECT %s,%s,%s,%s FROM premios WHERE id = $1",
-		"id",
+		"SELECT %s,%s,%s FROM premios WHERE nombre = $1",
 		"nombre",
 		"descripcion",
 		"precio",
 	)
 
-	var id int64
 	var name string
 	var description string
 	var price int
 
-	err := db.QueryRowContext(ctx, query, rewardID).Scan(
-		&id,
+	err := db.QueryRowContext(ctx, query, rewardName).Scan(
 		&name,
 		&description,
 		&price,
@@ -60,7 +57,6 @@ func GetRewardByID(ctx context.Context, db *sql.DB, rewardID int) (*models.Rewar
 	}
 
 	return models.NewReward(
-		id,
 		name,
 		description,
 		price,
@@ -73,13 +69,13 @@ func RewardsUpdateQuery(ctx context.Context, db *sql.DB, reward *models.Reward) 
 
 	query := fmt.Sprintf(
 		"UPDATE premios SET nombre = '%s', descripcion = '%s' , precio = %d "+
-			"WHERE id = $1",
+			"WHERE nombre = $1",
 		reward.GetRewardName(),
 		reward.GetRewardDescription(),
 		reward.GetRewardPrice(),
 	)
 
-	if _, err := db.ExecContext(ctx, query, reward.GetRewardID()); err != nil {
+	if _, err := db.ExecContext(ctx, query, reward.GetRewardName()); err != nil {
 		return false, err
 	}
 

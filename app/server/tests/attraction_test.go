@@ -11,15 +11,15 @@ import (
 	"testing"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/joho/godotenv"
 	"github.com/kevinloaiza12/roller-tempo/app/controllers"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
 	"github.com/kevinloaiza12/roller-tempo/app/models"
-	"github.com/joho/godotenv"
 )
 
 func TestAttraction(t *testing.T) {
-  envFile, envErr := godotenv.Read("../.env")
-  failOnError(t, envErr)
+	envFile, envErr := godotenv.Read("../config.env")
+	failOnError(t, envErr)
 
 	input := models.NewAttraction(1, "Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
 

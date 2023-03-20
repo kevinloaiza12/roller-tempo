@@ -21,7 +21,7 @@ func TestReward(t *testing.T) {
 	envFile, envErr := godotenv.Read("../config.env")
 	failOnError(t, envErr)
 
-	input := models.NewReward(1, "Peluche", "Es un lindo peluche", 1235)
+	input := models.NewReward("Peluche", "Es un lindo peluche", 1235)
 
 	ctx := context.Background()
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", envFile["DBUser"], envFile["DBPassword"], envFile["DBHost"], envFile["DBPort"], envFile["DBName"])
@@ -35,7 +35,7 @@ func TestReward(t *testing.T) {
 	_, err = database.CreateNewReward(ctx, db, input)
 	failOnError(t, err)
 
-	output, err := database.GetRewardByID(ctx, db, 1)
+	output, err := database.GetRewardByName(ctx, db, "Peluche")
 	failOnError(t, err)
 
 	if !reflect.DeepEqual(output, input) {
