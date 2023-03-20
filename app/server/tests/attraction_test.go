@@ -14,14 +14,17 @@ import (
 	"github.com/kevinloaiza12/roller-tempo/app/controllers"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
 	"github.com/kevinloaiza12/roller-tempo/app/models"
+	"github.com/joho/godotenv"
 )
 
 func TestAttraction(t *testing.T) {
+  envFile, envErr := godotenv.Read("../.env")
+  failOnError(t, envErr)
 
 	input := models.NewAttraction(1, "Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
 
 	ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", DBUser, DBPassword, DBHost, DBPort, DBName)
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", envFile["DBUser"], envFile["DBPassword"], envFile["DBHost"], envFile["DBPort"], envFile["DBName"])
 	db, err := sql.Open("postgres", connStr)
 	failOnError(t, err)
 	defer db.Close()
