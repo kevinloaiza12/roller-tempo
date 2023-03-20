@@ -16,10 +16,10 @@ import (
 )
 
 func main() {
-  envFile, envErr := godotenv.Read(".env")
-  if envErr != nil{
-    log.Fatal(envErr)
-  }
+	envFile, envErr := godotenv.Read("config.env")
+	if envErr != nil {
+		log.Fatal(envErr)
+	}
 
 	ctx := context.Background()
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", envFile["DBUser"], envFile["DBPassword"], envFile["DBHost"], envFile["DBPort"], envFile["DBName"])
