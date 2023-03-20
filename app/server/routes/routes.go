@@ -15,4 +15,6 @@ func Register(app *fiber.App, ctx context.Context, db *sql.DB) {
 	app.Get("/api/rewardinfo/:id", controllers.GetRewardInfo(ctx, db))
 
 	app.Post("/api/userregister/", controllers.PostUserRegister(ctx, db))
+	app.Post("/api/attractionregister/", controllers.PostAttractionRegister(ctx, db))
+	app.Post("/api/rewardregister/", controllers.PostRewardRegister(ctx, db))
 }
