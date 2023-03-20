@@ -29,3 +29,9 @@ func GetAttractionInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 		return c.JSON(result.AttractionToJSON())
 	}
 }
+
+func PostAttractionRegister(ctx context.Context, db *sql.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		return nil
+	}
+}

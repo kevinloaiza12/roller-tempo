@@ -29,3 +29,26 @@ func GetUserInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 		return c.JSON(result.UserToJSON())
 	}
 }
+
+func PostUserRegister(ctx context.Context, db *sql.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		type UserRegisterRequest struct {
+			Id    int `json:"id"`
+			Coins int `json:"coins"`
+			Turn  int `json:"turn"`
+		}
+
+		var info UserRegisterRequest
+		if err := c.BodyParser(&info); err != nil {
+			return err
+		}
+
+		if _, userExists := database.GetUserByID(ctx, db, info.Id); userExists != sql.ErrNoRows {
+			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessageRegisteredUser))
+		}
+
+		return c.JSON(fiber.Map{
+			"message": OkMessageRegistry,
+		})
+	}
+}
