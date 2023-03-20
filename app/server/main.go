@@ -11,21 +11,18 @@ import (
 	_ "github.com/lib/pq"
 
 	//"google.golang.org/genproto/googleapis/cloud/functions/v1"
+	"github.com/joho/godotenv"
 	"github.com/kevinloaiza12/roller-tempo/app/routes"
 )
 
-const (
-	DBHost     = "localhost"
-	DBPort     = "5432"
-	DBUser     = "postgres"
-	DBPassword = "secret"
-	DBName     = "rollertempo"
-)
-
 func main() {
+  envFile, envErr := godotenv.Read(".env")
+  if envErr != nil{
+    log.Fatal(envErr)
+  }
 
 	ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", DBUser, DBPassword, DBHost, DBPort, DBName)
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", envFile["DBUser"], envFile["DBPassword"], envFile["DBHost"], envFile["DBPort"], envFile["DBName"])
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)

@@ -8,14 +8,6 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 )
 
-const (
-	DBHost     = "localhost"
-	DBPort     = "5432"
-	DBUser     = "postgres"
-	DBPassword = "secret"
-	DBName     = "rollertempo"
-)
-
 type ResponseBody struct {
 	Message string `json:"message"`
 }
