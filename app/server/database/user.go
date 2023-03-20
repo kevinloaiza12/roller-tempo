@@ -27,8 +27,9 @@ func CreateNewUser(ctx context.Context, db *sql.DB, data *models.User) (bool, er
 
 	if err != nil {
 		return false, err
-	} 
-  return true, nil
+	}
+
+	return true, nil
 }
 
 // Getters
@@ -55,18 +56,19 @@ func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*models.User, err
 	if err != nil {
 		return nil, err
 	}
-  return models.NewUser(
-    id,
-    coins,
-    turn,
-  ), nil
+
+	return models.NewUser(
+		id,
+		coins,
+		turn,
+	), nil
 }
 
 // Update
 
 func UsersUpdateQuery(ctx context.Context, db *sql.DB, user *models.User) (bool, error) {
-	var query string
-	query = fmt.Sprintf(
+
+	query := fmt.Sprintf(
 		"UPDATE usuarios SET monedas = %d, turno = %d "+
 			"WHERE id = $1",
 		user.GetUserCoins(),
@@ -76,5 +78,6 @@ func UsersUpdateQuery(ctx context.Context, db *sql.DB, user *models.User) (bool,
 	if _, err := db.ExecContext(ctx, query, user.GetUserID()); err != nil {
 		return false, err
 	}
-  return true, nil
+
+	return true, nil
 }
