@@ -33,7 +33,6 @@ func GetAttractionInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 
 func PostAttractionRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-
 		type AttractionRegisterRequest struct {
 			Id          int64  `json:"id"`
 			Name        string `json:"name"`
