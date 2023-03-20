@@ -2,15 +2,21 @@ package tests
 
 import (
 	"bytes"
+	"context"
+	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/kevinloaiza12/roller-tempo/app/controllers"
+	"github.com/kevinloaiza12/roller-tempo/app/database"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 )
 
-/*func TestUser(t *testing.T) {
+func TestUser(t *testing.T) {
 
 	input := models.NewUser(1193132710, 15000, 0)
 
@@ -32,7 +38,7 @@ import (
 	if !reflect.DeepEqual(output, input) {
 		t.Error("input difers from output")
 	}
-}*/
+}
 
 func TestPostUser(t *testing.T) {
 

@@ -2,15 +2,21 @@ package tests
 
 import (
 	"bytes"
+	"context"
+	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/kevinloaiza12/roller-tempo/app/controllers"
+	"github.com/kevinloaiza12/roller-tempo/app/database"
+	"github.com/kevinloaiza12/roller-tempo/app/models"
 )
 
-/*func TestReward(t *testing.T) {
+func TestReward(t *testing.T) {
 
 	input := models.NewReward(1, "Peluche", "Es un lindo peluche", 1235)
 
@@ -32,7 +38,7 @@ import (
 	if !reflect.DeepEqual(output, input) {
 		t.Error("input difers from output")
 	}
-}*/
+}
 
 func TestPostReward(t *testing.T) {
 
