@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"database/sql"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
@@ -18,12 +17,8 @@ func Rewards(c *fiber.Ctx) error {
 
 func GetRewardInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		idStr := c.Params("id")
-		id, err := strconv.Atoi(idStr)
-		if err != nil {
-			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessage400))
-		}
-		result, err := database.GetRewardByID(ctx, db, id)
+		name := c.Params("name")
+		result, err := database.GetRewardByName(ctx, db, name)
 		if err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusNotFound, ErrorMessage404))
 		}
@@ -34,7 +29,6 @@ func GetRewardInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 func PostRewardRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		type RewardRegisterRequest struct {
-			Id          int64  `json:"id"`
 			Name        string `json:"name"`
 			Description string `json:"description"`
 			Price       int    `json:"price"`
@@ -45,11 +39,11 @@ func PostRewardRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 			return c.JSON(fiber.NewError(fiber.StatusBadRequest, err.Error()))
 		}
 
-		if _, rewardExists := database.GetRewardByID(ctx, db, int(info.Id)); rewardExists != sql.ErrNoRows {
+		if _, rewardExists := database.GetRewardByName(ctx, db, info.Name); rewardExists != sql.ErrNoRows {
 			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessageRegisteredUser))
 		}
 
-		reward := models.NewReward(info.Id, info.Name, info.Description, info.Price)
+		reward := models.NewReward(info.Name, info.Description, info.Price)
 		if _, err := database.CreateNewReward(ctx, db, reward); err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusServiceUnavailable, err.Error()))
 		}

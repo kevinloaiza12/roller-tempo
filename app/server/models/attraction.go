@@ -1,7 +1,6 @@
 package models
 
 type Attraction struct {
-	id          int64
 	name        string
 	description string
 	duration    int
@@ -11,16 +10,16 @@ type Attraction struct {
 
 func (obj *Attraction) AttractionToJSON() map[string]interface{} {
 	return map[string]interface{}{
-		"id":          obj.id,
 		"name":        obj.name,
 		"description": obj.description,
+		"duration":    obj.duration,
+		"capacity":    obj.capacity,
 		"nextTurn":    obj.nextTurn,
 	}
 }
 
-func NewAttraction(id int64, name string, description string, duration int, capacity int, nextTurn int) *Attraction {
+func NewAttraction(name string, description string, duration int, capacity int, nextTurn int) *Attraction {
 	return &Attraction{
-		id,
 		name,
 		description,
 		duration,
@@ -30,10 +29,6 @@ func NewAttraction(id int64, name string, description string, duration int, capa
 }
 
 // Setters
-
-func (obj *Attraction) SetAttractionID(id int64) {
-	obj.id = id
-}
 
 func (obj *Attraction) SetAttractionName(name string) {
 	obj.name = name
@@ -56,10 +51,6 @@ func (obj *Attraction) SetAttractionNextTurn(turn int) {
 }
 
 // Getters
-
-func (obj *Attraction) GetAttractionID() *int64 {
-	return &obj.id
-}
 
 func (obj *Attraction) GetAttractionName() string {
 	return obj.name

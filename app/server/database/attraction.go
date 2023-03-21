@@ -38,11 +38,10 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 
 // Getter
 
-func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*models.Attraction, error) {
+func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string) (*models.Attraction, error) {
 
 	query := fmt.Sprintf(
-		"SELECT %s,%s,%s,%s,%s,%s FROM atracciones WHERE id = $1",
-		"id",
+		"SELECT %s,%s,%s,%s,%s FROM atracciones WHERE nombre = $1",
 		"nombre",
 		"descripcion",
 		"duracion",
@@ -50,15 +49,13 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*mode
 		"siguiente_turno",
 	)
 
-	var id int64
 	var name string
 	var description string
 	var duration int
 	var capacity int
 	var nextTurn int
 
-	err := db.QueryRowContext(ctx, query, attractionID).Scan(
-		&id,
+	err := db.QueryRowContext(ctx, query, attractionName).Scan(
 		&name,
 		&description,
 		&duration,
@@ -71,7 +68,6 @@ func GetAttractionByID(ctx context.Context, db *sql.DB, attractionID int) (*mode
 	}
 
 	return models.NewAttraction(
-		id,
 		name,
 		description,
 		duration,
@@ -86,7 +82,7 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 
 	query := fmt.Sprintf(
 		"UPDATE atracciones SET nombre = '%s', descripcion = '%s' , duracion = %d, capacidad = %d, siguiente_turno = %d "+
-			"WHERE id = $1",
+			"WHERE nombre = $1",
 		attraction.GetAttractionName(),
 		attraction.GetAttractionDescription(),
 		attraction.GetAttractionDuration(),
@@ -94,7 +90,7 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 		attraction.GetAttractionNextTurn(),
 	)
 
-	if _, err := db.ExecContext(ctx, query, attraction.GetAttractionID()); err != nil {
+	if _, err := db.ExecContext(ctx, query, attraction.GetAttractionName()); err != nil {
 		return false, err
 	}
 

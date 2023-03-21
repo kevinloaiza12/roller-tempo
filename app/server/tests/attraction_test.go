@@ -11,17 +11,17 @@ import (
 	"testing"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/joho/godotenv"
 	"github.com/kevinloaiza12/roller-tempo/app/controllers"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
 	"github.com/kevinloaiza12/roller-tempo/app/models"
-	"github.com/joho/godotenv"
 )
 
 func TestAttraction(t *testing.T) {
-  envFile, envErr := godotenv.Read("../.env")
-  failOnError(t, envErr)
+	envFile, envErr := godotenv.Read("../config.env")
+	failOnError(t, envErr)
 
-	input := models.NewAttraction(1, "Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
+	input := models.NewAttraction("Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
 
 	ctx := context.Background()
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", envFile["DBUser"], envFile["DBPassword"], envFile["DBHost"], envFile["DBPort"], envFile["DBName"])
@@ -35,7 +35,7 @@ func TestAttraction(t *testing.T) {
 	_, err = database.CreateNewAttraction(ctx, db, input)
 	failOnError(t, err)
 
-	output, err := database.GetAttractionByID(ctx, db, 1)
+	output, err := database.GetAttractionByName(ctx, db, "Ruleta Rusa")
 	failOnError(t, err)
 
 	if !reflect.DeepEqual(output, input) {
@@ -46,8 +46,7 @@ func TestAttraction(t *testing.T) {
 func TestPostAttractionRegister(t *testing.T) {
 
 	requestBody, _ := json.Marshal(map[string]interface{}{
-		"id":          12345,
-		"name":        "Disney",
+		"name":        "Disneyyyyy",
 		"description": "Juego de Disney",
 		"duration":    15,
 		"capacity":    25,

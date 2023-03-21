@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"database/sql"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
@@ -18,12 +17,8 @@ func Attractions(c *fiber.Ctx) error {
 
 func GetAttractionInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		idStr := c.Params("id")
-		id, err := strconv.Atoi(idStr)
-		if err != nil {
-			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessage400))
-		}
-		result, err := database.GetAttractionByID(ctx, db, id)
+		name := c.Params("name")
+		result, err := database.GetAttractionByName(ctx, db, name)
 		if err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusNotFound, ErrorMessage404))
 		}
@@ -34,7 +29,6 @@ func GetAttractionInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 func PostAttractionRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		type AttractionRegisterRequest struct {
-			Id          int64  `json:"id"`
 			Name        string `json:"name"`
 			Description string `json:"description"`
 			Duration    int    `json:"duration"`
@@ -47,11 +41,11 @@ func PostAttractionRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 			return c.JSON(fiber.NewError(fiber.StatusBadRequest, err.Error()))
 		}
 
-		if _, attractionExists := database.GetAttractionByID(ctx, db, int(info.Id)); attractionExists != sql.ErrNoRows {
+		if _, attractionExists := database.GetAttractionByName(ctx, db, info.Name); attractionExists != sql.ErrNoRows {
 			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessageRegisteredUser))
 		}
 
-		attraction := models.NewAttraction(info.Id, info.Name, info.Description, info.Duration, info.Capacity, info.NextTurn)
+		attraction := models.NewAttraction(info.Name, info.Description, info.Duration, info.Capacity, info.NextTurn)
 		if _, err := database.CreateNewAttraction(ctx, db, attraction); err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusServiceUnavailable, err.Error()))
 		}
