@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/kevinloaiza12/roller-tempo/app/models"
 	_ "github.com/lib/pq"
@@ -37,6 +38,52 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 }
 
 // Getter
+
+func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{}, error) {
+
+	query := "SELECT * FROM atracciones"
+
+	rows, err := db.QueryContext(ctx, query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var atracciones []map[string]interface{}
+
+	for rows.Next() {
+
+		var name string
+		var description string
+		var duration int
+		var capacity int
+		var nextTurn int
+
+		err := rows.Scan(
+			&name,
+			&description,
+			&duration,
+			&capacity,
+			&nextTurn,
+		)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		temp := models.NewAttraction(
+			name,
+			description,
+			duration,
+			capacity,
+			nextTurn,
+		)
+
+		atracciones = append(atracciones, temp.AttractionToJSON())
+	}
+
+	return atracciones, nil
+}
 
 func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string) (*models.Attraction, error) {
 
