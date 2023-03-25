@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -16,13 +17,13 @@ import (
 )
 
 func main() {
-	envFile, envErr := godotenv.Read("config.env")
+	envErr := godotenv.Load("config.env")
 	if envErr != nil {
 		log.Fatal(envErr)
 	}
 
 	ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", envFile["DBUser"], envFile["DBPassword"], envFile["DBHost"], envFile["DBPort"], envFile["DBName"])
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)

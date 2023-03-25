@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"reflect"
 	"testing"
 
@@ -18,13 +19,13 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	envFile, envErr := godotenv.Read("../config.env")
+	envErr := godotenv.Load("../config.env")
 	failOnError(t, envErr)
 
 	input := models.NewUser(1193132710, 15000, 0)
 
 	ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", envFile["DBUser"], envFile["DBPassword"], envFile["DBHost"], envFile["DBPort"], envFile["DBName"])
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
 	db, err := sql.Open("postgres", connStr)
 	failOnError(t, err)
 	defer db.Close()

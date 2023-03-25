@@ -39,7 +39,7 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 
 // Getter
 
-func GetAllAttractions(ctx context.Context, db *sql.DB) ([]*models.Attraction, error) {
+func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{}, error) {
 
 	query := "SELECT * FROM atracciones"
 
@@ -49,7 +49,7 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]*models.Attraction, e
 		return nil, err
 	}
 
-	var atracciones []*models.Attraction
+	var atracciones []map[string]interface{}
 
 	for rows.Next() {
 
@@ -79,7 +79,7 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]*models.Attraction, e
 			nextTurn,
 		)
 
-		atracciones = append(atracciones, temp)
+		atracciones = append(atracciones, temp.AttractionToJSON())
 	}
 
 	return atracciones, nil
