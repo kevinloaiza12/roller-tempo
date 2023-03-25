@@ -30,9 +30,6 @@ func TestAttraction(t *testing.T) {
 	failOnError(t, err)
 	defer db.Close()
 
-	failOnError(t, runMigrations(t, db, "down"))
-	failOnError(t, runMigrations(t, db, "up"))
-
 	_, err = database.CreateNewAttraction(ctx, db, input)
 	failOnError(t, err)
 

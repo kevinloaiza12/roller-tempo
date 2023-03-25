@@ -12,14 +12,28 @@ type ResponseBody struct {
 	Message string `json:"message"`
 }
 
-func runMigrations(t *testing.T, db *sql.DB, order string) error {
+func TestMain(m *testing.M) {
+	envErr := godotenv.Load("../config.env")
+
+	ctx := context.Background()
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
+	db, err := sql.Open("postgres", connStr)
+	defer db.Close()
+
+	runMigrations(db, "down")
+	runMigrations(db, "up")
+
+	exitCode := m.Run()
+
+	os.Exit(exitCode)
+}
+
+func runMigrations(db *sql.DB, order string) error {
 
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
-	failOnError(t, err)
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://../../migrations/scripts",
 		"postgres", driver)
-	failOnError(t, err)
 
 	switch order {
 	case "up":

@@ -19,19 +19,8 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	envErr := godotenv.Load("../config.env")
-	failOnError(t, envErr)
 
 	input := models.NewUser(1193132710, 15000, 0)
-
-	ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
-	db, err := sql.Open("postgres", connStr)
-	failOnError(t, err)
-	defer db.Close()
-
-	failOnError(t, runMigrations(t, db, "down"))
-	failOnError(t, runMigrations(t, db, "up"))
 
 	_, err = database.CreateNewUser(ctx, db, input)
 	failOnError(t, err)

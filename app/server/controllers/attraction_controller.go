@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
@@ -22,7 +21,7 @@ func GetAllAttractionsInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 		if err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusNotFound, ErrorMessage404))
 		}
-		
+
 		return c.JSON(result)
 	}
 }
