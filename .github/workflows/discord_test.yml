@@ -18,8 +18,8 @@ jobs:
       - name: Run Tests
         working-directory: ./app/server/tests
         run: go test
-      - name: Notify Discord
-        uses: Ilshidur/action-discord@master
+      - name: Actions for Discord
+        uses: Ilshidur/action-discord@0.3.2
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           status: success
