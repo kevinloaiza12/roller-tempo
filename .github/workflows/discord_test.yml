@@ -25,3 +25,5 @@ jobs:
           status: success
           name: 'Tests'
           message: 'The tests ran successfully!'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
