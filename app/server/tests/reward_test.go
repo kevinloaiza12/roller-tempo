@@ -17,14 +17,14 @@ func TestReward(t *testing.T) {
 
 	input := models.NewReward("Peluche", "Es un lindo peluche", 1235)
 
-	_, err := database.CreateNewReward(ctx, db, input)
+	_, err = database.CreateNewReward(ctx, db, input)
 	failOnError(t, err)
 
 	output, err := database.GetRewardByName(ctx, db, "Peluche")
 	failOnError(t, err)
 
 	if !reflect.DeepEqual(output, input) {
-		t.Error("input difers from output")
+		t.Error("Input difers from output")
 	}
 }
 
@@ -52,7 +52,7 @@ func TestPostReward(t *testing.T) {
 	}
 
 	var responseBody ResponseBody
-	if err := json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
 		t.Fatalf("Error al decodificar respuesta: %v", err)
 	}
 

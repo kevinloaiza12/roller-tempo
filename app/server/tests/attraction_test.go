@@ -15,23 +15,23 @@ import (
 
 func TestAttraction(t *testing.T) {
 
-	input := models.NewAttraction("Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
+	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0)
 
-	_, err := database.CreateNewAttraction(ctx, db, input)
+	_, err = database.CreateNewAttraction(ctx, db, input)
 	failOnError(t, err)
 
-	output, err := database.GetAttractionByName(ctx, db, "Ruleta Rusa")
+	output, err := database.GetAttractionByName(ctx, db, "Ruleta de la suerte")
 	failOnError(t, err)
 
 	if !reflect.DeepEqual(output, input) {
-		t.Error("input difers from output")
+		t.Error("Input difers from output")
 	}
 }
 
 func TestPostAttractionRegister(t *testing.T) {
 
 	requestBody, _ := json.Marshal(map[string]interface{}{
-		"name":        "Disneyyyyy",
+		"name":        "Disney",
 		"description": "Juego de Disney",
 		"duration":    15,
 		"capacity":    25,
@@ -53,7 +53,7 @@ func TestPostAttractionRegister(t *testing.T) {
 	}
 
 	var responseBody ResponseBody
-	if err := json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
 		t.Fatalf("Error al decodificar respuesta: %v", err)
 	}
 

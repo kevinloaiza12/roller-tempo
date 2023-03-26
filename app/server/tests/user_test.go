@@ -17,14 +17,14 @@ func TestUser(t *testing.T) {
 
 	input := models.NewUser(1193132710, 15000, 0)
 
-	_, err := database.CreateNewUser(ctx, db, input)
+	_, err = database.CreateNewUser(ctx, db, input)
 	failOnError(t, err)
 
 	output, err := database.GetUserByID(ctx, db, 1193132710)
 	failOnError(t, err)
 
 	if !reflect.DeepEqual(output, input) {
-		t.Error("input difers from output")
+		t.Error("Input difers from output")
 	}
 }
 
@@ -51,7 +51,7 @@ func TestPostUser(t *testing.T) {
 	}
 
 	var responseBody ResponseBody
-	if err := json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
 		t.Fatalf("Error al decodificar respuesta: %v", err)
 	}
 
