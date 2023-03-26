@@ -14,7 +14,7 @@ jobs:
         run: cd ./docker && ./service.sh up
       - name: Run Go server
         working-directory: ./app/server
-        run: go run .
+        run: go run . &
       - name: Run Tests
         working-directory: ./app/server/tests
         run: go test
