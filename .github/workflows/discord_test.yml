@@ -1,0 +1,27 @@
+name: Run Tests and Notify via Discord
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start Docker service
+        run: cd ./Docker && ./service.sh up
+      - name: Run Go server
+        working-directory: ./app/server
+        run: go run .
+      - name: Run Tests
+        working-directory: ./app/server/tests
+        run: go test
+      - name: Notify Discord
+        uses: Ilshidur/actions-for-discord@master
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          status: success
+          name: 'Tests'
+          message: 'The tests ran successfully!'
