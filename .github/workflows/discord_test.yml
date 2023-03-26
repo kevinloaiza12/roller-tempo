@@ -18,10 +18,9 @@ jobs:
       - name: Run Tests
         working-directory: ./app/server/tests
         run: go test
-      - name: Actions for Discord
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@0.3.2
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
-          status: success
-          name: 'Tests'
-          message: 'The tests ran successfully!'
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
