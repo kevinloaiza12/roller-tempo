@@ -2,36 +2,20 @@ package tests
 
 import (
 	"bytes"
-	"context"
-	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
-	"os"
 	"reflect"
 	"testing"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/joho/godotenv"
 	"github.com/kevinloaiza12/roller-tempo/app/controllers"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
 	"github.com/kevinloaiza12/roller-tempo/app/models"
 )
 
 func TestReward(t *testing.T) {
-	envErr := godotenv.Load("../config.env")
-	failOnError(t, envErr)
 
 	input := models.NewReward("Peluche", "Es un lindo peluche", 1235)
-
-	ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
-	db, err := sql.Open("postgres", connStr)
-	failOnError(t, err)
-	defer db.Close()
-
-	failOnError(t, runMigrations(t, db, "down"))
-	failOnError(t, runMigrations(t, db, "up"))
 
 	_, err = database.CreateNewReward(ctx, db, input)
 	failOnError(t, err)
@@ -40,7 +24,7 @@ func TestReward(t *testing.T) {
 	failOnError(t, err)
 
 	if !reflect.DeepEqual(output, input) {
-		t.Error("input difers from output")
+		t.Error("Input difers from output")
 	}
 }
 
@@ -68,7 +52,7 @@ func TestPostReward(t *testing.T) {
 	}
 
 	var responseBody ResponseBody
-	if err := json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
+	if err = json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
 		t.Fatalf("Error al decodificar respuesta: %v", err)
 	}
 
