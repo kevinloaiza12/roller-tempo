@@ -2,17 +2,12 @@ package tests
 
 import (
 	"bytes"
-	"context"
-	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
-	"os"
 	"reflect"
 	"testing"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/joho/godotenv"
 	"github.com/kevinloaiza12/roller-tempo/app/controllers"
 	"github.com/kevinloaiza12/roller-tempo/app/database"
 	"github.com/kevinloaiza12/roller-tempo/app/models"
@@ -20,24 +15,12 @@ import (
 
 func TestUser(t *testing.T) {
 
-	ctx := context.Background()
-	envErr := godotenv.Load("../config.env")
-	if envErr != nil {
-		os.Exit(1)
-	}
-
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		os.Exit(1)
-	}
-
 	input := models.NewUser(1193132710, 15000, 0)
 
-	_, err = database.CreateNewUser(ctx, db, input)
+	_, err := database.CreateNewUser(ctx, db, input)
 	failOnError(t, err)
 
-	output, err := database.GetUserByID(Ctx, db, 1193132710)
+	output, err := database.GetUserByID(ctx, db, 1193132710)
 	failOnError(t, err)
 
 	if !reflect.DeepEqual(output, input) {

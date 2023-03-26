@@ -10,8 +10,8 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 )
 
-var Db *sql.DB = nil
-var Ctx context.Context = nil
+var db *sql.DB
+var ctx context.Context
 
 type ResponseBody struct {
 	Message string `json:"message"`
@@ -43,6 +43,6 @@ func runMigrations(db *sql.DB, order string) error {
 
 func failOnError(t *testing.T, err error) {
 	if err != nil {
-		t.Error(err)
+		t.Fatalf(err.Error())
 	}
 }
