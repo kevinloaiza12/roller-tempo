@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Start Docker service
-        run: cd ./Docker && ./service.sh up
+        run: cd ./docker && ./service.sh up
       - name: Run Go server
         working-directory: ./app/server
         run: go run .
