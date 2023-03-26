@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"reflect"
@@ -20,13 +21,33 @@ import (
 
 func TestReward(t *testing.T) {
 
+	ctx := context.Background()
+	envErr := godotenv.Load("../config.env")
+	if envErr != nil {
+		os.Exit(1)
+	}
+
+	log.Println("Aquí cargó la config!")
+
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		os.Exit(1)
+	}
+
+	log.Println("Aquí ya se conectó a la base de datos!")
+
 	input := models.NewReward("Peluche", "Es un lindo peluche", 1235)
 
 	_, err = database.CreateNewReward(ctx, db, input)
 	failOnError(t, err)
 
+	log.Println("Aquí ya hizo el primer query (crear)!")
+
 	output, err := database.GetRewardByName(ctx, db, "Peluche")
 	failOnError(t, err)
+
+	log.Println("Aquí ya hizo el segundo query (obtener)!")
 
 	if !reflect.DeepEqual(output, input) {
 		t.Error("input difers from output")

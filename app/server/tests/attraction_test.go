@@ -19,16 +19,20 @@ import (
 )
 
 func TestAttraction(t *testing.T) {
-	envErr := godotenv.Load("../config.env")
-	failOnError(t, envErr)
-
-	input := models.NewAttraction("Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
 
 	ctx := context.Background()
+	envErr := godotenv.Load("../config.env")
+	if envErr != nil {
+		os.Exit(1)
+	}
+
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
 	db, err := sql.Open("postgres", connStr)
-	failOnError(t, err)
-	defer db.Close()
+	if err != nil {
+		os.Exit(1)
+	}
+
+	input := models.NewAttraction("Ruleta Rusa", "Es una gran ruleta", 150, 30, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
 	failOnError(t, err)
