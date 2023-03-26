@@ -21,9 +21,7 @@ jobs:
       - name: Actions for Discord
         uses: Ilshidur/action-discord@0.3.2
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
           status: success
           name: 'Tests'
           message: 'The tests ran successfully!'
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
