@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/kevinloaiza12/roller-tempo/app/models"
 )
@@ -32,6 +33,46 @@ func CreateNewReward(ctx context.Context, db *sql.DB, data *models.Reward) (bool
 }
 
 // Getter
+
+func GetAllRewards(ctx context.Context, db *sql.DB) ([]map[string]interface{}, error) {
+
+	query := "SELECT * FROM premios"
+
+	rows, err := db.QueryContext(ctx, query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var premios []map[string]interface{}
+
+	for rows.Next() {
+
+		var name string
+		var description string
+		var price int
+
+		err := rows.Scan(
+			&name,
+			&description,
+			&price,
+		)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		temp := models.NewReward(
+			name,
+			description,
+			price,
+		)
+
+		premios = append(premios, temp.RewardToJSON())
+	}
+
+	return premios, nil
+}
 
 func GetRewardByName(ctx context.Context, db *sql.DB, rewardName string) (*models.Reward, error) {
 
