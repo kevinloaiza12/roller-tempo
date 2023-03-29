@@ -113,3 +113,20 @@ h1, h2, h3{
     left: 20px;
 }
 
+#welcome_page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+#logo{
+    width: 200px;
+    height: auto;
+}
+
+#logo_title{
+    color: red;
+    font-weight: 100;
+}
