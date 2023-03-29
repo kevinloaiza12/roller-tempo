@@ -26,6 +26,17 @@ func GetRewardInfo(ctx context.Context, db *sql.DB) fiber.Handler {
 	}
 }
 
+func GetAllRewards(ctx context.Context, db *sql.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		result, err := database.GetAllRewards(ctx, db)
+		if err != nil {
+			return c.JSON(fiber.NewError(fiber.StatusNotFound, ErrorMessage404))
+		}
+
+		return c.JSON(result)
+	}
+}
+
 func PostRewardRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		type RewardRegisterRequest struct {
