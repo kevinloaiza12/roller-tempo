@@ -146,8 +146,8 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 		attraction.GetAttractionCurrentTurn(),
 		attraction.GetAttractionNextTurn(),
 	)
-  print(query)
-	if _, err := db.ExecContext(ctx, query); err != nil {
+
+	if _, err := db.ExecContext(ctx, query, attraction.GetAttractionName()); err != nil {
 		return false, err
 	}
 
