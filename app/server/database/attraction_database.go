@@ -23,7 +23,7 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 
 	_, err := db.ExecContext(
 		ctx,
-		"INSERT INTO atracciones (nombre, descripcion, duracion, capacidad, siguiente_turno) VALUES ($1,$2,$3,$4,$5)",
+		"INSERT INTO atracciones (nombre, descripcion, duracion, capacidad, turno_actual, siguiente_turno) VALUES ($1,$2,$3,$4,$5,$6)",
 		nombre,
 		descripcion,
 		duracion,
