@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS premios;
+DROP TABLE IF EXISTS rewards;
