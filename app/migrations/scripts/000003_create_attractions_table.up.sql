@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS attractions (
   AttractionCapacity           INT NOT NULL,
   AttractionDuration           INT NOT NULL,
   AttractionCurrentTurn        INT DEFAULT 1,
-  AttractionNextTurn           INT DEFAULT
-)
+  AttractionNextTurn           INT DEFAULT 1
+);
