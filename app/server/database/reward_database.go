@@ -13,16 +13,16 @@ import (
 
 func CreateNewReward(ctx context.Context, db *sql.DB, data *models.Reward) (bool, error) {
 
-	nombre := data.GetRewardName()
-	descripcion := data.GetRewardDescription()
-	precio := data.GetRewardPrice()
+	name := data.GetRewardName()
+	description := data.GetRewardDescription()
+	price := data.GetRewardPrice()
 
 	_, err := db.ExecContext(
 		ctx,
-		"INSERT INTO premios (nombre, descripcion, precio) VALUES ($1,$2,$3)",
-		nombre,
-		descripcion,
-		precio,
+		"INSERT INTO rewards (RewardName, RewardDescription, RewardPrice) VALUES ($1,$2,$3)",
+		name,
+		description,
+		price,
 	)
 
 	if err != nil {
@@ -36,7 +36,7 @@ func CreateNewReward(ctx context.Context, db *sql.DB, data *models.Reward) (bool
 
 func GetAllRewards(ctx context.Context, db *sql.DB) ([]map[string]interface{}, error) {
 
-	query := "SELECT * FROM premios"
+	query := "SELECT * FROM rewards"
 
 	rows, err := db.QueryContext(ctx, query)
 
@@ -44,7 +44,7 @@ func GetAllRewards(ctx context.Context, db *sql.DB) ([]map[string]interface{}, e
 		return nil, err
 	}
 
-	var premios []map[string]interface{}
+	var rewards []map[string]interface{}
 
 	for rows.Next() {
 
@@ -68,19 +68,19 @@ func GetAllRewards(ctx context.Context, db *sql.DB) ([]map[string]interface{}, e
 			price,
 		)
 
-		premios = append(premios, temp.RewardToJSON())
+		rewards = append(rewards, temp.RewardToJSON())
 	}
 
-	return premios, nil
+	return rewards, nil
 }
 
 func GetRewardByName(ctx context.Context, db *sql.DB, rewardName string) (*models.Reward, error) {
 
 	query := fmt.Sprintf(
-		"SELECT %s,%s,%s FROM premios WHERE nombre = $1",
-		"nombre",
-		"descripcion",
-		"precio",
+		"SELECT %s,%s,%s FROM rewards WHERE RewardName = $1",
+		"RewardName",
+		"RewardDescription",
+		"RewardPrice",
 	)
 
 	var name string
@@ -109,8 +109,8 @@ func GetRewardByName(ctx context.Context, db *sql.DB, rewardName string) (*model
 func RewardsUpdateQuery(ctx context.Context, db *sql.DB, reward *models.Reward) (bool, error) {
 
 	query := fmt.Sprintf(
-		"UPDATE premios SET nombre = '%s', descripcion = '%s' , precio = %d "+
-			"WHERE nombre = $1",
+		"UPDATE rewards SET RewardName = '%s', RewardDescription = '%s' , RewardPrice = %d "+
+			"WHERE RewardName = $1",
 		reward.GetRewardName(),
 		reward.GetRewardDescription(),
 		reward.GetRewardPrice(),

@@ -14,15 +14,15 @@ import (
 func CreateNewUser(ctx context.Context, db *sql.DB, data *models.User) (bool, error) {
 
 	id := data.GetUserID()
-	monedas := data.GetUserCoins()
-	turno := data.GetUserTurn()
+	coins := data.GetUserCoins()
+	turn := data.GetUserTurn()
 
 	_, err := db.ExecContext(
 		ctx,
-		"INSERT INTO usuarios (id, monedas, turno) VALUES ($1,$2,$3)",
+		"INSERT INTO users (UserID, UserCoins, UserTurn) VALUES ($1,$2,$3)",
 		id,
-		monedas,
-		turno,
+		coins,
+		turn,
 	)
 
 	if err != nil {
@@ -37,10 +37,10 @@ func CreateNewUser(ctx context.Context, db *sql.DB, data *models.User) (bool, er
 func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*models.User, error) {
 
 	query := fmt.Sprintf(
-		"SELECT %s,%s,%s FROM usuarios WHERE id = $1",
-		"id",
-		"monedas",
-		"turno",
+		"SELECT %s,%s,%s FROM users WHERE UserID = $1",
+		"UserID",
+		"UserCoins",
+		"UserTurn",
 	)
 
 	var id int
@@ -69,8 +69,8 @@ func GetUserByID(ctx context.Context, db *sql.DB, userID int) (*models.User, err
 func UsersUpdateQuery(ctx context.Context, db *sql.DB, user *models.User) (bool, error) {
 
 	query := fmt.Sprintf(
-		"UPDATE usuarios SET monedas = %d, turno = %d "+
-			"WHERE id = $1",
+		"UPDATE users SET UserCoins = %d, UserTurn = %d "+
+			"WHERE UserID = $1",
 		user.GetUserCoins(),
 		user.GetUserTurn(),
 	)
