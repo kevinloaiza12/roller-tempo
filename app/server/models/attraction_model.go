@@ -5,7 +5,7 @@ type Attraction struct {
 	description string
 	duration    int
 	capacity    int
-  currentTurn int
+	currentTurn int
 	nextTurn    int
 }
 
@@ -15,18 +15,18 @@ func (obj *Attraction) AttractionToJSON() map[string]interface{} {
 		"description": obj.description,
 		"duration":    obj.duration,
 		"capacity":    obj.capacity,
-    "currentTurn": obj.currentTurn,
+		"currentTurn": obj.currentTurn,
 		"nextTurn":    obj.nextTurn,
 	}
 }
 
-func NewAttraction(name string, description string, duration int, capacity int,currentTurn int, nextTurn int) *Attraction {
+func NewAttraction(name string, description string, duration int, capacity int, currentTurn int, nextTurn int) *Attraction {
 	return &Attraction{
 		name,
 		description,
 		duration,
 		capacity,
-    currentTurn,
+		currentTurn,
 		nextTurn,
 	}
 }
