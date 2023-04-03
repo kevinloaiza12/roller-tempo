@@ -1,8 +1,8 @@
-CREATE TABLE IF NOT EXISTS atracciones (
-  Nombre             VARCHAR(255) PRIMARY KEY,
-  Descripcion        VARCHAR(255) DEFAULT '',
-  Duracion           INT NOT NULL,
-  Capacidad          INT NOT NULL,
-  Turno_Actual       INT DEFAULT 1,
-  Siguiente_Turno    INT DEFAULT 1
-);
+CREATE TABLE IF NOT EXISTS attractions (
+  AttractionName               VARCHAR(255) PRIMARY KEY,
+  AttractionDescription        VARCHAR(255) DEFAULT '',
+  AttractionCapacity           INT NOT NULL,
+  AttractionDuration           INT NOT NULL,
+  AttractionCurrentTurn        INT DEFAULT 1,
+  AttractionNextTurn           INT DEFAULT
+)

@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS atracciones;
+DROP TABLE IF EXISTS attractions;
