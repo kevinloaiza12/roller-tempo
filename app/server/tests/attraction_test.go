@@ -15,10 +15,10 @@ import (
 
 func TestAttraction(t *testing.T) {
 
-	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30,0, 0)
+	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
-  print("asgd")
+
 	failOnError(t, err)
 
 	output, err := database.GetAttractionByName(ctx, db, "Ruleta de la suerte")

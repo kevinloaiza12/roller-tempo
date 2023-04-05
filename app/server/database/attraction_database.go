@@ -14,22 +14,29 @@ import (
 
 func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attraction) (bool, error) {
 
-	nombre := data.GetAttractionName()
-	descripcion := data.GetAttractionDescription()
-	duracion := data.GetAttractionDuration()
-	capacidad := data.GetAttractionCapacity()
-	turno_actual := data.GetAttractionCurrentTurn()
-	siguiente_turno := data.GetAttractionNextTurn()
+	name := data.GetAttractionName()
+	description := data.GetAttractionDescription()
+	duration := data.GetAttractionDuration()
+	capacity := data.GetAttractionCapacity()
+	currentTurn := data.GetAttractionCurrentTurn()
+	nextTurn := data.GetAttractionNextTurn()
 
 	_, err := db.ExecContext(
 		ctx,
-		"INSERT INTO atracciones (nombre, descripcion, duracion, capacidad, turno_actual, siguiente_turno) VALUES ($1,$2,$3,$4,$5,$6)",
-		nombre,
-		descripcion,
-		duracion,
-		capacidad,
-    turno_actual,
-		siguiente_turno,
+		"INSERT INTO attractions ("+
+			"AttractionName,"+
+			"AttractionDescription,"+
+			"AttractionDuration,"+
+			"AttractionCapacity,"+
+			"AttractionCurrentTurn,"+
+			"AttractionNextTurn) "+
+			"VALUES ($1,$2,$3,$4,$5,$6)",
+		name,
+		description,
+		duration,
+		capacity,
+		currentTurn,
+		nextTurn,
 	)
 
 	if err != nil {
@@ -43,7 +50,7 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 
 func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{}, error) {
 
-	query := "SELECT * FROM atracciones"
+	query := "SELECT * FROM attractions"
 
 	rows, err := db.QueryContext(ctx, query)
 
@@ -51,7 +58,7 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 		return nil, err
 	}
 
-	var atracciones []map[string]interface{}
+	var attractions []map[string]interface{}
 
 	for rows.Next() {
 
@@ -84,22 +91,22 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 			nextTurn,
 		)
 
-		atracciones = append(atracciones, temp.AttractionToJSON())
+		attractions = append(attractions, temp.AttractionToJSON())
 	}
 
-	return atracciones, nil
+	return attractions, nil
 }
 
 func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string) (*models.Attraction, error) {
 
 	query := fmt.Sprintf(
-		"SELECT %s,%s,%s,%s,%s,%s FROM atracciones WHERE nombre = $1",
-		"nombre",
-		"descripcion",
-		"duracion",
-		"capacidad",
-    "turno_actual",
-		"siguiente_turno",
+		"SELECT %s,%s,%s,%s,%s,%s FROM attractions WHERE AttractionName = $1",
+		"AttractionName",
+		"AttractionDescription",
+		"AttractionDuration",
+		"AttractionCapacity",
+		"AttractionCurrentTurn",
+		"AttractionNextTurn",
 	)
 
 	var name string
@@ -114,7 +121,7 @@ func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string)
 		&description,
 		&duration,
 		&capacity,
-    &currentTurn,
+		&currentTurn,
 		&nextTurn,
 	)
 
@@ -137,8 +144,14 @@ func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string)
 func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.Attraction) (bool, error) {
 
 	query := fmt.Sprintf(
-		"UPDATE atracciones SET nombre = '%s', descripcion = '%s' , duracion = %d, capacidad = %d, turno_actual = %d, siguiente_turno = %d "+
-			"WHERE nombre = $1",
+		"UPDATE attractions SET "+
+			"AttractionName = '%s', "+
+			"AttractionDescription = '%s', "+
+			"AttractionDuration = %d, "+
+			"AttractionCapacity = %d, "+
+			"AttractionCurrentTurn = %d, "+
+			"AttractionNextTurn = %d "+
+			"WHERE AttractionName = $1",
 		attraction.GetAttractionName(),
 		attraction.GetAttractionDescription(),
 		attraction.GetAttractionDuration(),

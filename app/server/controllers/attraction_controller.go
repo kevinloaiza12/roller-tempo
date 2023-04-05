@@ -44,20 +44,20 @@ func GetNextTurn(ctx context.Context, db *sql.DB) fiber.Handler {
 		if err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusNotFound, ErrorMessage404))
 		}
-    currentTurn := result.GetAttractionCurrentTurn()
-    nextTurn := currentTurn+1
+		currentTurn := result.GetAttractionCurrentTurn()
+		nextTurn := currentTurn + 1
 
-    result.SetAttractionCurrentTurn(nextTurn)
-    
-    _, updateErr := database.AttractionsUpdateQuery(ctx, db, result)
+		result.SetAttractionCurrentTurn(nextTurn)
+
+		_, updateErr := database.AttractionsUpdateQuery(ctx, db, result)
 		if updateErr != nil {
 			return c.JSON("Error updating next turn in database")
 		}
 
-    turn := map[string]int{
-        "turn": nextTurn,
-    }
-    return c.JSON(turn)
+		turn := map[string]int{
+			"turn": nextTurn,
+		}
+		return c.JSON(turn)
 	}
 }
 
