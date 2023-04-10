@@ -18,11 +18,14 @@ func TestAttraction(t *testing.T) {
 	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
-
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	output, err := database.GetAttractionByName(ctx, db, "Ruleta de la suerte")
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	if !reflect.DeepEqual(output, input) {
 		t.Error("Input difers from output")

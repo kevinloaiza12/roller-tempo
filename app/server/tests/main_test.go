@@ -74,12 +74,6 @@ func runMigrations(db *sql.DB, order string) error {
 	return nil
 }
 
-func failOnError(t *testing.T, err error) {
-	if err != nil {
-		t.Fatalf(err.Error())
-	}
-}
-
 func TestCoinsAccum(t *testing.T) {
 
 	initialCoins := 15000
@@ -88,15 +82,21 @@ func TestCoinsAccum(t *testing.T) {
 	inputUsr := models.NewUser(1193132712, initialCoins, 0)
 
 	_, err = database.CreateNewUser(ctx, db, inputUsr)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	inputUsr.SetUserCoins(rewardedCoins)
 
 	_, err = database.UsersUpdateQuery(ctx, db, inputUsr)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	outputUsr, err := database.GetUserByID(ctx, db, 1193132712)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	outputVal := outputUsr.GetUserCoins()
 
@@ -111,12 +111,19 @@ func TestAllAttractionView(t *testing.T) {
 	input2 := models.NewAttraction("Canal del amor", "Un romántico paseo en bote para los más tortolitos", 260, 20, 0, 1)
 
 	_, err = database.CreateNewAttraction(ctx, db, input1)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
 	_, err = database.CreateNewAttraction(ctx, db, input2)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	output, err := database.GetAllAttractions(ctx, db)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	log.Println(output)
 
 }
