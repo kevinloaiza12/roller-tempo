@@ -14,7 +14,6 @@ import (
 )
 
 func TestAttraction(t *testing.T) {
-
 	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
@@ -33,7 +32,6 @@ func TestAttraction(t *testing.T) {
 }
 
 func TestPostAttractionRegister(t *testing.T) {
-
 	requestBody, _ := json.Marshal(map[string]interface{}{
 		"name":        "Disney",
 		"description": "Juego de Disney",
@@ -68,7 +66,6 @@ func TestPostAttractionRegister(t *testing.T) {
 }
 
 func TestAllAttractionView(t *testing.T) {
-
 	input1 := models.NewAttraction("Ruleta #2", "Es una gran ruleta", 150, 30, 0, 0)
 	input2 := models.NewAttraction("Canal del amor", "Un romántico paseo en bote para los más tortolitos", 260, 20, 0, 1)
 

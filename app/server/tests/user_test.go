@@ -14,7 +14,6 @@ import (
 )
 
 func TestUser(t *testing.T) {
-
 	input := models.NewUser(1193132710, 15000, 0)
 
 	_, err = database.CreateNewUser(ctx, db, input)
@@ -33,7 +32,6 @@ func TestUser(t *testing.T) {
 }
 
 func TestPostUser(t *testing.T) {
-
 	requestBody, _ := json.Marshal(map[string]interface{}{
 		"id":    100022,
 		"coins": 4220,
@@ -65,7 +63,6 @@ func TestPostUser(t *testing.T) {
 }
 
 func TestCoinsUpdate(t *testing.T) {
-
 	inputVal := 15000
 	reward := 500
 

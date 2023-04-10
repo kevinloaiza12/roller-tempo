@@ -14,7 +14,6 @@ import (
 )
 
 func TestReward(t *testing.T) {
-
 	input := models.NewReward("Peluche", "Es un lindo peluche", 1235)
 
 	_, err = database.CreateNewReward(ctx, db, input)
@@ -33,7 +32,6 @@ func TestReward(t *testing.T) {
 }
 
 func TestPostReward(t *testing.T) {
-
 	requestBody, _ := json.Marshal(map[string]interface{}{
 		"id":          12345,
 		"name":        "Peluchito",
