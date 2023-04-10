@@ -3,7 +3,6 @@ package tests
 import (
 	"bytes"
 	"encoding/json"
-	"log"
 	"net/http"
 	"reflect"
 	"testing"
@@ -69,24 +68,22 @@ func TestPostUser(t *testing.T) {
 
 func TestCoinsView(t *testing.T) {
 
-	inputVal := 15000
-	log.Println("Saldo ingresado: ", inputVal)
-	input := models.NewUser(1193132710, inputVal, 0)
+	initialCoins := 15000
+	inputUser := models.NewUser(1193132713, initialCoins, 0)
 
-	_, err = database.CreateNewUser(ctx, db, input)
+	_, err = database.CreateNewUser(ctx, db, inputUser)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
-	output, err := database.GetUserByID(ctx, db, 1193132710)
+	output, err := database.GetUserByID(ctx, db, 1193132713)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
-	outputVal := output.GetUserCoins()
-	log.Println("Saldo servidor: ", outputVal)
+	db_coins := output.GetUserCoins()
 
-	if !reflect.DeepEqual(outputVal, inputVal) {
+	if db_coins != initialCoins {
 		t.Error("Input difers from output")
 	}
 }
@@ -96,30 +93,25 @@ func TestCoinsUpdate(t *testing.T) {
 	inputVal := 15000
 	reward := 500
 
-	input := models.NewUser(1193132712, inputVal, 0)
-	log.Println("Saldo ingresado: ", inputVal)
+	input := models.NewUser(1193132716, inputVal, 0)
 	_, err = database.CreateNewUser(ctx, db, input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
-	log.Println("Se ha subido al servidor un usuario con saldo : ", inputVal)
 	inputVal = inputVal + reward
-	log.Println("Saldo modificado: ", inputVal)
 	input.SetUserCoins(inputVal)
 
 	_, err = database.UsersUpdateQuery(ctx, db, input)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
-	log.Println("Se ha actualizado el saldo.")
 
-	output, err := database.GetUserByID(ctx, db, 1193132712)
+	output, err := database.GetUserByID(ctx, db, 1193132716)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
 
 	outputVal := output.GetUserCoins()
-	log.Println("Saldo servidor: ", outputVal)
 
 	if !reflect.DeepEqual(outputVal, inputVal) {
 		t.Error("Input difers from output")

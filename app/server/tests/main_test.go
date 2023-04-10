@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"reflect"
 	"testing"
@@ -40,12 +39,12 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	code := m.Run()
-
 	defer db.Close()
 
 	runMigrations(db, "down")
 	runMigrations(db, "up")
+
+	code := m.Run()
 
 	os.Exit(code)
 }
@@ -107,7 +106,7 @@ func TestCoinsAccum(t *testing.T) {
 
 func TestAllAttractionView(t *testing.T) {
 
-	input1 := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0, 0)
+	input1 := models.NewAttraction("Ruleta #2", "Es una gran ruleta", 150, 30, 0, 0)
 	input2 := models.NewAttraction("Canal del amor", "Un romántico paseo en bote para los más tortolitos", 260, 20, 0, 1)
 
 	_, err = database.CreateNewAttraction(ctx, db, input1)
@@ -120,12 +119,10 @@ func TestAllAttractionView(t *testing.T) {
 		t.Fatalf(err.Error())
 	}
 
-	output, err := database.GetAllAttractions(ctx, db)
+	_, err := database.GetAllAttractions(ctx, db)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
-	log.Println(output)
-
 }
 
 func TestMeanTimeView(t *testing.T) {
@@ -147,26 +144,6 @@ func TestMeanTimeView(t *testing.T) {
 		t.Error("Input difers from output")
 	}
 
-	log.Println("Tiempo de espera promedio:", outputMeanTime)
-
-}
-
-func TestTurnsView(t *testing.T) {
-
-	input := models.NewAttraction("Casa de los espejos", "Piérdete con los espejos.", 150, 30, 24, 25)
-
-	_, err = database.CreateNewAttraction(ctx, db, input)
-	if err != nil {
-		t.Fatalf(err.Error())
-	}
-	output, err := database.GetAttractionByName(ctx, db, "Casa de los espejos")
-	if err != nil {
-		t.Fatalf(err.Error())
-	}
-	turns_available := output.GetAttractionCapacity() - output.GetAttractionCurrentTurn()
-
-	log.Println(turns_available)
-
 }
 
 func TestGetTurn(t *testing.T) {
@@ -183,10 +160,12 @@ func TestGetTurn(t *testing.T) {
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
+
 	outputAtt, err := database.GetAttractionByName(ctx, db, "Carritos chocones")
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
+
 	currentTurn := outputAtt.GetAttractionCurrentTurn()
 	nextTurn := currentTurn + 1
 
@@ -198,10 +177,12 @@ func TestGetTurn(t *testing.T) {
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
+
 	outputUsr, err := database.GetUserByID(ctx, db, 1193132714)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
+
 	outputCurrentTurn := outputUsr.GetUserTurn()
 
 	if !reflect.DeepEqual(outputUsr, inputUsr) {
@@ -210,6 +191,4 @@ func TestGetTurn(t *testing.T) {
 	if !reflect.DeepEqual(outputCurrentTurn, currentTurn) {
 		t.Error("Input difers from output")
 	}
-	log.Println("turno tomado:", currentTurn)
-	log.Println("actual turno del usuario:", outputCurrentTurn)
 }
