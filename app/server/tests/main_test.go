@@ -134,11 +134,13 @@ func TestMeanTimeView(t *testing.T) {
 	input := models.NewAttraction("Kamikaze", "Atracción que pondrá a prueba tus nervios.", inputMeanTime, 20, 0, 1)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	output, err := database.GetAttractionByName(ctx, db, "Kamikaze")
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	outputMeanTime := output.GetAttractionDuration()
 
 	if !reflect.DeepEqual(outputMeanTime, inputMeanTime) {
@@ -154,11 +156,13 @@ func TestTurnsView(t *testing.T) {
 	input := models.NewAttraction("Casa de los espejos", "Piérdete con los espejos.", 150, 30, 24, 25)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	output, err := database.GetAttractionByName(ctx, db, "Casa de los espejos")
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	turns_available := output.GetAttractionCapacity() - output.GetAttractionCurrentTurn()
 
 	log.Println(turns_available)
@@ -171,13 +175,18 @@ func TestGetTurn(t *testing.T) {
 	inputUsr := models.NewUser(1193132714, 16900, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, inputAtt)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
 	_, err = database.CreateNewUser(ctx, db, inputUsr)
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	outputAtt, err := database.GetAttractionByName(ctx, db, "Carritos chocones")
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	currentTurn := outputAtt.GetAttractionCurrentTurn()
 	nextTurn := currentTurn + 1
 
@@ -186,11 +195,13 @@ func TestGetTurn(t *testing.T) {
 	inputUsr.SetUserTurn(currentTurn)
 
 	_, err = database.UsersUpdateQuery(ctx, db, inputUsr)
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	outputUsr, err := database.GetUserByID(ctx, db, 1193132714)
-	failOnError(t, err)
-
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	outputCurrentTurn := outputUsr.GetUserTurn()
 
 	if !reflect.DeepEqual(outputUsr, inputUsr) {
