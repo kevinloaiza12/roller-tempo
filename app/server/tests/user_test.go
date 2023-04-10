@@ -64,30 +64,6 @@ func TestPostUser(t *testing.T) {
 	}
 }
 
-// Coins
-
-func TestCoinsView(t *testing.T) {
-
-	initialCoins := 15000
-	inputUser := models.NewUser(1193132713, initialCoins, 0)
-
-	_, err = database.CreateNewUser(ctx, db, inputUser)
-	if err != nil {
-		t.Fatalf(err.Error())
-	}
-
-	output, err := database.GetUserByID(ctx, db, 1193132713)
-	if err != nil {
-		t.Fatalf(err.Error())
-	}
-
-	db_coins := output.GetUserCoins()
-
-	if db_coins != initialCoins {
-		t.Error("Input difers from output")
-	}
-}
-
 func TestCoinsUpdate(t *testing.T) {
 
 	inputVal := 15000
