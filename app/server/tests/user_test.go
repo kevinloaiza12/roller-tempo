@@ -3,6 +3,7 @@ package tests
 import (
 	"bytes"
 	"encoding/json"
+	"log"
 	"net/http"
 	"reflect"
 	"testing"
@@ -57,5 +58,56 @@ func TestPostUser(t *testing.T) {
 
 	if responseBody.Message != controllers.OkMessageRegistry {
 		t.Errorf("El valor de 'message' esperado era distinto, se recibió: %s", responseBody.Message)
+	}
+}
+
+// Coins
+
+func TestCoinsView(t *testing.T) {
+
+	inputVal := 15000
+	log.Println("Saldo ingresado: ", inputVal)
+	input := models.NewUser(1193132710, inputVal, 0)
+
+	_, err = database.CreateNewUser(ctx, db, input)
+	failOnError(t, err)
+
+	output, err := database.GetUserByID(ctx, db, 1193132710)
+	failOnError(t, err)
+
+	outputVal := output.GetUserCoins()
+	log.Println("Saldo servidor: ", outputVal)
+
+	if !reflect.DeepEqual(outputVal, inputVal) {
+		t.Error("Input difers from output")
+	}
+}
+
+func TestCoinsUpdate(t *testing.T) {
+
+	inputVal := 15000
+	reward := 500
+
+	input := models.NewUser(1193132712, inputVal, 0)
+	log.Println("Saldo ingresado: ", inputVal)
+	_, err = database.CreateNewUser(ctx, db, input)
+	failOnError(t, err)
+	log.Println("Se ha subido al servidor un usuario con saldo : ", inputVal)
+	inputVal = inputVal + reward
+	log.Println("Saldo modificado: ", inputVal)
+	input.SetUserCoins(inputVal)
+
+	_, err = database.UsersUpdateQuery(ctx, db, input)
+	failOnError(t, err)
+	log.Println("Se ha actualizado el saldo.")
+
+	output, err := database.GetUserByID(ctx, db, 1193132712)
+	failOnError(t, err)
+
+	outputVal := output.GetUserCoins()
+	log.Println("Saldo servidor: ", outputVal)
+
+	if !reflect.DeepEqual(outputVal, inputVal) {
+		t.Error("Input difers from output")
 	}
 }
