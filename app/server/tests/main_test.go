@@ -22,7 +22,6 @@ type ResponseBody struct {
 }
 
 func TestMain(m *testing.M) {
-
 	ctx = context.Background()
 	envErr := godotenv.Load("../config.env")
 	if envErr != nil {
@@ -47,7 +46,6 @@ func TestMain(m *testing.M) {
 }
 
 func runMigrations(db *sql.DB, order string) error {
-
 	driver, _ := postgres.WithInstance(db, &postgres.Config{})
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://../../migrations/scripts",
@@ -68,10 +66,4 @@ func runMigrations(db *sql.DB, order string) error {
 	}
 
 	return nil
-}
-
-func failOnError(t *testing.T, err error) {
-	if err != nil {
-		t.Fatalf(err.Error())
-	}
 }

@@ -14,14 +14,17 @@ import (
 )
 
 func TestUser(t *testing.T) {
-
 	input := models.NewUser(1193132710, 15000, 0)
 
 	_, err = database.CreateNewUser(ctx, db, input)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	output, err := database.GetUserByID(ctx, db, 1193132710)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	if !reflect.DeepEqual(output, input) {
 		t.Error("Input difers from output")
@@ -29,7 +32,6 @@ func TestUser(t *testing.T) {
 }
 
 func TestPostUser(t *testing.T) {
-
 	requestBody, _ := json.Marshal(map[string]interface{}{
 		"id":    100022,
 		"coins": 4220,
@@ -57,5 +59,34 @@ func TestPostUser(t *testing.T) {
 
 	if responseBody.Message != controllers.OkMessageRegistry {
 		t.Errorf("El valor de 'message' esperado era distinto, se recibió: %s", responseBody.Message)
+	}
+}
+
+func TestCoinsUpdate(t *testing.T) {
+	inputVal := 15000
+	reward := 500
+
+	input := models.NewUser(1193132716, inputVal, 0)
+	_, err = database.CreateNewUser(ctx, db, input)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	inputVal = inputVal + reward
+	input.SetUserCoins(inputVal)
+
+	_, err = database.UsersUpdateQuery(ctx, db, input)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	output, err := database.GetUserByID(ctx, db, 1193132716)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	outputVal := output.GetUserCoins()
+
+	if !reflect.DeepEqual(outputVal, inputVal) {
+		t.Error("Input difers from output")
 	}
 }

@@ -14,15 +14,17 @@ import (
 )
 
 func TestAttraction(t *testing.T) {
-
 	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
-
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	output, err := database.GetAttractionByName(ctx, db, "Ruleta de la suerte")
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	if !reflect.DeepEqual(output, input) {
 		t.Error("Input difers from output")
@@ -30,7 +32,6 @@ func TestAttraction(t *testing.T) {
 }
 
 func TestPostAttractionRegister(t *testing.T) {
-
 	requestBody, _ := json.Marshal(map[string]interface{}{
 		"name":        "Disney",
 		"description": "Juego de Disney",
@@ -61,5 +62,25 @@ func TestPostAttractionRegister(t *testing.T) {
 
 	if responseBody.Message != controllers.OkMessageRegistry {
 		t.Errorf("El valor de 'message' esperado era distinto, se recibió: %s", responseBody.Message)
+	}
+}
+
+func TestAllAttractionView(t *testing.T) {
+	input1 := models.NewAttraction("Ruleta #2", "Es una gran ruleta", 150, 30, 0, 0)
+	input2 := models.NewAttraction("Canal del amor", "Un romántico paseo en bote para los más tortolitos", 260, 20, 0, 1)
+
+	_, err = database.CreateNewAttraction(ctx, db, input1)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	_, err = database.CreateNewAttraction(ctx, db, input2)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+	_, err := database.GetAllAttractions(ctx, db)
+	if err != nil {
+		t.Fatalf(err.Error())
 	}
 }

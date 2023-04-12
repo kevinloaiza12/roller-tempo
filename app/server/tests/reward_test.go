@@ -14,14 +14,17 @@ import (
 )
 
 func TestReward(t *testing.T) {
-
 	input := models.NewReward("Peluche", "Es un lindo peluche", 1235)
 
 	_, err = database.CreateNewReward(ctx, db, input)
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	output, err := database.GetRewardByName(ctx, db, "Peluche")
-	failOnError(t, err)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 
 	if !reflect.DeepEqual(output, input) {
 		t.Error("Input difers from output")
@@ -29,7 +32,6 @@ func TestReward(t *testing.T) {
 }
 
 func TestPostReward(t *testing.T) {
-
 	requestBody, _ := json.Marshal(map[string]interface{}{
 		"id":          12345,
 		"name":        "Peluchito",
