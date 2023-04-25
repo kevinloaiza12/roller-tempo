@@ -190,3 +190,22 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 
 	return true, nil
 }
+
+func GetNextTurn(ctx context.Context, db *sql.DB, name string) (int, error) {
+		result, err := GetAttractionByName(ctx, db, name)
+		if err != nil {
+			return 0, err 
+		}
+
+		currentTurn := result.GetAttractionCurrentTurn()
+		nextTurn := currentTurn + 1
+
+		result.SetAttractionCurrentTurn(nextTurn)
+
+		_, updateErr := AttractionsUpdateQuery(ctx, db, result)
+		if updateErr != nil {
+			return 0, err
+		}
+
+		return nextTurn, nil
+}

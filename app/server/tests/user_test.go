@@ -14,7 +14,7 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	input := models.NewUser(1193132710, 15000, 0)
+	input := models.NewUser(1193132710, 15000, 0, "")
 
 	_, err = database.CreateNewUser(ctx, db, input)
 	if err != nil {
@@ -36,6 +36,7 @@ func TestPostUser(t *testing.T) {
 		"id":    100022,
 		"coins": 4220,
 		"turn":  12,
+        "attraction": "cars",
 	})
 
 	request, _ := http.NewRequest("POST", "http://127.0.0.1:3000/api/userregister", bytes.NewBuffer(requestBody))
@@ -66,7 +67,7 @@ func TestCoinsUpdate(t *testing.T) {
 	inputVal := 15000
 	reward := 500
 
-	input := models.NewUser(1193132716, inputVal, 0)
+    input := models.NewUser(1193132716, inputVal, 0, "")
 	_, err = database.CreateNewUser(ctx, db, input)
 	if err != nil {
 		t.Fatalf(err.Error())

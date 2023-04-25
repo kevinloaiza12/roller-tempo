@@ -4,13 +4,15 @@ type User struct {
 	id    int
 	coins int
 	turn  int
+    attraction string
 }
 
-func NewUser(id int, coins int, turn int) *User {
+func NewUser(id int, coins int, turn int, attraction string) *User {
 	return &User{
 		id,
 		coins,
 		turn,
+        attraction,
 	}
 }
 
@@ -19,6 +21,7 @@ func (obj *User) UserToJSON() map[string]interface{} {
 		"id":    obj.id,
 		"coins": obj.coins,
 		"turn":  obj.turn,
+		"attraction":  obj.attraction,
 	}
 }
 
@@ -36,6 +39,10 @@ func (obj *User) SetUserTurn(turn int) {
 	obj.turn = turn
 }
 
+func (obj *User) SetUserAttraction(attraction string) {
+	obj.attraction = attraction
+}
+
 // Getters
 
 func (obj *User) GetUserID() int {
@@ -48,4 +55,8 @@ func (obj *User) GetUserCoins() int {
 
 func (obj *User) GetUserTurn() int {
 	return obj.turn
+}
+
+func (obj *User) GetUserAttraction() string {
+	return obj.attraction
 }
