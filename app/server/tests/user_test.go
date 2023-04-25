@@ -91,3 +91,55 @@ func TestCoinsUpdate(t *testing.T) {
 		t.Error("Input difers from output")
 	}
 }
+
+func TestNextTurn(t *testing.T) {
+    initialTurn := 0
+    userID := 1004626964
+    user := models.NewUser(userID, 5000, initialTurn, "")
+	_, err = database.CreateNewUser(ctx, db, user)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+
+    attraction := models.NewAttraction("carrusel","es un carrusel", 500, 50, 0, 50, 2.0, 8.0)
+    _, attraction_err := database.CreateNewAttraction(ctx, db, attraction)
+    if attraction_err != nil {
+		t.Fatalf(attraction_err.Error())
+    }
+
+	requestBody, _ := json.Marshal(map[string]interface{}{
+		"id":         userID,
+        "attraction": attraction.GetAttractionName(),
+	})
+
+	request, _ := http.NewRequest("POST", "http://127.0.0.1:3000/api/usernextturn", bytes.NewBuffer(requestBody))
+	request.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		t.Fatalf("Error al enviar solicitud: %v", err)
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		t.Errorf("Código de estado esperado %d pero se recibió: %d", http.StatusOK, response.StatusCode)
+	}
+
+	var responseBody ResponseBody
+	if err = json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
+		t.Fatalf("Error al decodificar respuesta: %v", err)
+	}
+
+	if responseBody.Message != controllers.OkMessageRegistry {
+		t.Errorf("El valor de 'message' esperado era distinto, se recibió: %s", responseBody.Message)
+	}
+    updatedUser, newUserErr := database.GetUserByID(ctx, db, userID)
+    if newUserErr != nil {
+        t.Errorf("Error al obtener usuario actualizado: %s", responseBody.Message)
+    }
+
+    if initialTurn == updatedUser.GetUserTurn() {
+		t.Error("Initial turn does not change")
+    }
+}
