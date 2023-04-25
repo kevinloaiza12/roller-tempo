@@ -60,3 +60,43 @@ func PostUserRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 		})
 	}
 }
+
+func PostUserNextTurn(ctx context.Context, db *sql.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		type UserTurnUpdate struct {
+			Id    int `json:"id"`
+			//Coins int `json:"coins"`
+			//Turn  int `json:"turn"`
+            Attraction string `json:"attraction"`
+
+		}
+
+		var info UserTurnUpdate
+		if err := c.BodyParser(&info); err != nil {
+			return c.JSON(fiber.NewError(fiber.StatusBadRequest, err.Error()))
+		}
+        name := info.Attraction
+
+		user, userExists := database.GetUserByID(ctx, db, info.Id)
+		//if user, userExists := database.GetUserByID(ctx, db, info.Id); userExists != nil {
+        if userExists != nil {
+			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessageRegisteredUser))
+		}
+
+        turn, errTurn := database.GetNextTurn(ctx, db, name)    
+        if errTurn != nil {
+			return c.JSON(fiber.NewError(fiber.StatusServiceUnavailable, ErrorMessage500))
+        }
+
+        user.SetUserTurn(turn)
+        user.SetUserAttraction(name)
+
+        if _, err := database.UsersUpdateQuery(ctx, db, user); err != nil {
+			return c.JSON(fiber.NewError(fiber.StatusServiceUnavailable, ErrorMessage500))
+        }
+
+		return c.JSON(fiber.Map{
+			"message": OkMessageRegistry,
+		})
+	}
+}

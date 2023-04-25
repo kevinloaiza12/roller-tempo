@@ -88,3 +88,4 @@ func UsersUpdateQuery(ctx context.Context, db *sql.DB, user *models.User) (bool,
 
 	return true, nil
 }
+
