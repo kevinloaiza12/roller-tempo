@@ -37,6 +37,8 @@ func PostUserRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 			Id    int `json:"id"`
 			Coins int `json:"coins"`
 			Turn  int `json:"turn"`
+            Attraction string `json:"attraction"`
+
 		}
 
 		var info UserRegisterRequest
@@ -48,7 +50,7 @@ func PostUserRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessageRegisteredUser))
 		}
 
-		user := models.NewUser(info.Id, info.Coins, info.Turn)
+		user := models.NewUser(info.Id, info.Coins, info.Turn, info.Attraction)
 		if _, err := database.CreateNewUser(ctx, db, user); err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusServiceUnavailable, err.Error()))
 		}
