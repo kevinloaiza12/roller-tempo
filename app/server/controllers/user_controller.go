@@ -65,8 +65,6 @@ func PostUserNextTurn(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		type UserTurnUpdate struct {
 			Id    int `json:"id"`
-			//Coins int `json:"coins"`
-			//Turn  int `json:"turn"`
             Attraction string `json:"attraction"`
 
 		}
@@ -78,7 +76,6 @@ func PostUserNextTurn(ctx context.Context, db *sql.DB) fiber.Handler {
         name := info.Attraction
 
 		user, userExists := database.GetUserByID(ctx, db, info.Id)
-		//if user, userExists := database.GetUserByID(ctx, db, info.Id); userExists != nil {
         if userExists != nil {
 			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessageRegisteredUser))
 		}
