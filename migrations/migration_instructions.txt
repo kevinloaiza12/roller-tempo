@@ -1,0 +1,25 @@
+1. Migrations will help to manage the db of the app
+
+
+
+2. add_migration, this will help us create new migration files 
+
+    run: sh add_migration.sh "Name of new migration"
+
+    
+
+3. up_migration, this will help us to execute our migrations on the db
+
+    run: sh up_migrations.sh
+
+
+
+4. down_migration, this will help us to remove all our migrations from the db
+
+    run: sh down_migrations.sh 
+
+    
+
+5. force_migration, when encountering an unexpected error when executing up migration execute this command
+
+    run: sh force_migrations.sh 
