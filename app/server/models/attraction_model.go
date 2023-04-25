@@ -7,6 +7,8 @@ type Attraction struct {
 	capacity    int
 	currentTurn int
 	nextTurn    int
+	x           float64
+	y           float64
 }
 
 func (obj *Attraction) AttractionToJSON() map[string]interface{} {
@@ -17,10 +19,12 @@ func (obj *Attraction) AttractionToJSON() map[string]interface{} {
 		"capacity":    obj.capacity,
 		"currentTurn": obj.currentTurn,
 		"nextTurn":    obj.nextTurn,
+		"x":           obj.x,
+		"y":           obj.y,
 	}
 }
 
-func NewAttraction(name string, description string, duration int, capacity int, currentTurn int, nextTurn int) *Attraction {
+func NewAttraction(name string, description string, duration int, capacity int, currentTurn int, nextTurn int, x float64, y float64) *Attraction {
 	return &Attraction{
 		name,
 		description,
@@ -28,6 +32,8 @@ func NewAttraction(name string, description string, duration int, capacity int, 
 		capacity,
 		currentTurn,
 		nextTurn,
+		x,
+		y,
 	}
 }
 
@@ -57,6 +63,14 @@ func (obj *Attraction) SetAttractionNextTurn(turn int) {
 	obj.nextTurn = turn
 }
 
+func (obj *Attraction) SetAttractionPositionX(x float64) {
+	obj.x = x
+}
+
+func (obj *Attraction) SetAttractionPositionY(y float64) {
+	obj.y = y
+}
+
 // Getters
 
 func (obj *Attraction) GetAttractionName() string {
@@ -81,4 +95,12 @@ func (obj *Attraction) GetAttractionCurrentTurn() int {
 
 func (obj *Attraction) GetAttractionNextTurn() int {
 	return obj.nextTurn
+}
+
+func (obj *Attraction) GetAttractionPositionX() float64 {
+	return obj.x
+}
+
+func (obj *Attraction) GetAttractionPositionY() float64 {
+	return obj.y
 }

@@ -20,6 +20,8 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 	capacity := data.GetAttractionCapacity()
 	currentTurn := data.GetAttractionCurrentTurn()
 	nextTurn := data.GetAttractionNextTurn()
+	posX := data.GetAttractionPositionX()
+	posY := data.GetAttractionPositionY()
 
 	_, err := db.ExecContext(
 		ctx,
@@ -29,14 +31,18 @@ func CreateNewAttraction(ctx context.Context, db *sql.DB, data *models.Attractio
 			"AttractionDuration,"+
 			"AttractionCapacity,"+
 			"AttractionCurrentTurn,"+
-			"AttractionNextTurn) "+
-			"VALUES ($1,$2,$3,$4,$5,$6)",
+			"AttractionNextTurn,"+
+			"AttractionPosX,"+
+			"AttractionPosY)"+
+			"VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
 		name,
 		description,
 		duration,
 		capacity,
 		currentTurn,
 		nextTurn,
+		posX,
+		posY,
 	)
 
 	if err != nil {
@@ -68,6 +74,8 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 		var capacity int
 		var currentTurn int
 		var nextTurn int
+		var posX float64
+		var posY float64
 
 		err := rows.Scan(
 			&name,
@@ -76,6 +84,8 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 			&capacity,
 			&currentTurn,
 			&nextTurn,
+			&posX,
+			&posY,
 		)
 
 		if err != nil {
@@ -89,6 +99,8 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 			capacity,
 			currentTurn,
 			nextTurn,
+			posX,
+			posY,
 		)
 
 		attractions = append(attractions, temp.AttractionToJSON())
@@ -100,13 +112,15 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string) (*models.Attraction, error) {
 
 	query := fmt.Sprintf(
-		"SELECT %s,%s,%s,%s,%s,%s FROM attractions WHERE AttractionName = $1",
+		"SELECT %s,%s,%s,%s,%s,%s,%s,%s FROM attractions WHERE AttractionName = $1",
 		"AttractionName",
 		"AttractionDescription",
 		"AttractionDuration",
 		"AttractionCapacity",
 		"AttractionCurrentTurn",
 		"AttractionNextTurn",
+		"AttractionPosX",
+		"AttractionPosY",
 	)
 
 	var name string
@@ -115,6 +129,8 @@ func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string)
 	var capacity int
 	var currentTurn int
 	var nextTurn int
+	var posX float64
+	var posY float64
 
 	err := db.QueryRowContext(ctx, query, attractionName).Scan(
 		&name,
@@ -123,6 +139,8 @@ func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string)
 		&capacity,
 		&currentTurn,
 		&nextTurn,
+		&posX,
+		&posY,
 	)
 
 	if err != nil {
@@ -136,6 +154,8 @@ func GetAttractionByName(ctx context.Context, db *sql.DB, attractionName string)
 		capacity,
 		currentTurn,
 		nextTurn,
+		posX,
+		posY,
 	), nil
 }
 
@@ -150,7 +170,9 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 			"AttractionDuration = %d, "+
 			"AttractionCapacity = %d, "+
 			"AttractionCurrentTurn = %d, "+
-			"AttractionNextTurn = %d "+
+			"AttractionNextTurn = %d, "+
+			"AttractionPosX = %f, "+
+			"AttractionPosY = %f "+
 			"WHERE AttractionName = $1",
 		attraction.GetAttractionName(),
 		attraction.GetAttractionDescription(),
@@ -158,6 +180,8 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 		attraction.GetAttractionCapacity(),
 		attraction.GetAttractionCurrentTurn(),
 		attraction.GetAttractionNextTurn(),
+		attraction.GetAttractionPositionX(),
+		attraction.GetAttractionPositionY(),
 	)
 
 	if _, err := db.ExecContext(ctx, query, attraction.GetAttractionName()); err != nil {
