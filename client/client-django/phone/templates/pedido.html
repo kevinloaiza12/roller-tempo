@@ -1,0 +1,15 @@
+{% extends 'phone.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/premio.css' %}" type="text/css" />
+{% endblock %}
+{% block content %}
+<main>
+    <header>
+        <a href="{% url 'premios' %}">
+            <i class="fa-solid fa-arrow-left fa-xl header-back"></i>
+        </a>
+        <h1 id="header-text"> Premios </h1>
+    </header>
+  </main>
+{%endblock%}

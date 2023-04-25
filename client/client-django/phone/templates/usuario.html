@@ -1,0 +1,31 @@
+{% extends 'phone.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/usuarios.css' %}" type="text/css" />
+{% endblock %}
+{% block content %}
+<main>
+  <header>
+    <h1 id="header-text"> Usuarios </h1>
+  </header>
+  <form action="/buscar/" method="POST" id="user-form"> {% csrf_token %}
+    <label htmlFor="user-input"> <p id="input-label">Ingrese su ID</p></label>
+    <input id="user-input" type="number" name="id" required/>
+    <input type="submit" onClick={handle} value="Consultar" id="user-submit">
+  </form>
+  {% if data %}
+  <div id="user_info_container">
+    <p class="info_tittle">Puntos adquiridos</p>
+    <div class="user_info">
+        <i class="fa-sharp fa-solid fa-coins price_icon_3"></i>
+        <p id ="coins_user">{{data.coins}}</p>
+    </div>
+    <p class="info_tittle">Fila Actual</p>
+    <div id="image_container"> 
+    <img class="atraccion_image"src="{% static 'images/placeholder.jpg' %}"/>
+    </div>
+    <p id="user_turn_info">{{data.atraction}}: Turno {{data.turn}}</p>
+  </div>
+  {% endif %}
+</main>
+{%endblock%}

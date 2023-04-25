@@ -1,0 +1,97 @@
+#atraccion-container{
+    margin: 0px;
+    margin-top: 5px;
+}
+
+.header-back{
+    color:red !important;
+}
+
+#atraccion-image{
+    height: 50%;
+    width: 100%;
+    object-fit: contain;
+}
+
+#atraccion-title{
+
+    font-weight: 100;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#atraccion-desc{
+    font-weight: 100;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+
+#fila-container{
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
+
+.fila-sub-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon{
+    font-size: 50px;
+    margin: 0;
+    color: red;
+}
+
+.icon-text{
+    font-size: 16px;
+}
+
+#user-turn{
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+#user-turn-button{
+    margin-top: 20px;
+    width: 40%;
+    height: 40px;
+    border-radius: 15px;
+    background-color: #FF0303;
+    font-size: 22px;
+    color: white;
+    border: none;
+}
+
+#map{
+    height: 130px !important;
+    width: 80%;
+}
+
+#map_container{
+    display: flex;
+    justify-content: center;
+}
+
+#user-turn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+
+}
+
+#user_id{
+    width: 60%;
+    height: 20px;
+    border-radius: 15px;
+    border: none;
+    background-color: #d6d6d6;
+    margin-top: 5px;
+
+}

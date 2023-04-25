@@ -1,0 +1,52 @@
+.premios-image{
+    width: 100px;
+    height: auto;
+    border-radius: 10px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    vertical-align:bottom;
+}
+
+.premios-container{
+    border-radius: 10px;
+    margin-top: 20px;
+    display: flex;
+    height: 100px;
+    background-color: white;
+    
+}
+
+.premios-title{
+    font-size: 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#premios{
+    background-color: rgb(238, 235, 235) ;
+    height: 100%;
+}
+
+.premios-info{
+    display: flex;
+    flex-direction: column;
+}
+
+#price_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-left: 40px;
+}
+
+.price_icon_2{
+    color: red;
+    font-size: 36px;
+    margin-right: 16px;
+}
+
+.premios_title_2{
+    font-size: 24px;
+    font-weight: 100;
+}

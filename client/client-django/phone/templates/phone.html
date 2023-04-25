@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/eea4a3a7bd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static './css/phone.css' %}">
+    {% block css %}
+
+    {%endblock%}
+</head>
+      <body>
+        <div class="smartphone">
+          <div class="content">
+            {% block content %}
+            {% endblock %}
+            <nav>
+              <a href="{% url 'mapa' %}" class="nav-link">
+                <img class="nav-image"src="{% static './images/icon_map.png' %}"/>
+                <p class="nav-item">Atraciones</p>
+              </a>
+              <a href="{% url 'usuarios' %}"  class="nav-link">
+                <img class="nav-image"src="{% static './images/icon_user.png' %}"/>
+                <p class="nav-item">Usuarios</p>
+              </a>
+              <a href="{% url 'premios' %}"  class="nav-link">
+                <img class="nav-image"src="{% static './images/icon_price.png' %}"/>
+                <p class="nav-item">Premios</p>
+              </a>
+              <a href="{% url 'pqr' %}"  class="nav-link"> 
+                <img class="nav-image"src="{% static './images/icon_pqr.png' %}"/>
+                <p class="nav-item">PQR</p>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </body>
+</html>
