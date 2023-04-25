@@ -64,12 +64,14 @@ func GetNextTurn(ctx context.Context, db *sql.DB) fiber.Handler {
 func PostAttractionRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		type AttractionRegisterRequest struct {
-			Name        string `json:"name"`
-			Description string `json:"description"`
-			Duration    int    `json:"duration"`
-			Capacity    int    `json:"capacity"`
-			CurrentTurn int    `json:"currentTurn"`
-			NextTurn    int    `json:"nextTurn"`
+			Name        string  `json:"name"`
+			Description string  `json:"description"`
+			Duration    int     `json:"duration"`
+			Capacity    int     `json:"capacity"`
+			CurrentTurn int     `json:"currentTurn"`
+			NextTurn    int     `json:"nextTurn"`
+			PosX        float64 `json:"x"`
+			PosY        float64 `json:"y"`
 		}
 
 		var info AttractionRegisterRequest
@@ -81,7 +83,7 @@ func PostAttractionRegister(ctx context.Context, db *sql.DB) fiber.Handler {
 			return c.JSON(fiber.NewError(fiber.StatusBadRequest, ErrorMessageRegisteredUser))
 		}
 
-		attraction := models.NewAttraction(info.Name, info.Description, info.Duration, info.Capacity, info.CurrentTurn, info.NextTurn)
+		attraction := models.NewAttraction(info.Name, info.Description, info.Duration, info.Capacity, info.CurrentTurn, info.NextTurn, info.PosX, info.PosY)
 		if _, err := database.CreateNewAttraction(ctx, db, attraction); err != nil {
 			return c.JSON(fiber.NewError(fiber.StatusServiceUnavailable, err.Error()))
 		}

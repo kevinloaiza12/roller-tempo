@@ -14,7 +14,7 @@ import (
 )
 
 func TestAttraction(t *testing.T) {
-	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0, 0)
+	input := models.NewAttraction("Ruleta de la suerte", "Es una gran ruleta", 150, 30, 0, 0, 0, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, input)
 	if err != nil {
@@ -39,6 +39,8 @@ func TestPostAttractionRegister(t *testing.T) {
 		"capacity":    25,
 		"currentTurn": 1,
 		"nextTurn":    1,
+		"x":           0,
+		"y":           0,
 	})
 
 	request, _ := http.NewRequest("POST", "http://127.0.0.1:3000/api/attractionregister", bytes.NewBuffer(requestBody))
@@ -66,8 +68,8 @@ func TestPostAttractionRegister(t *testing.T) {
 }
 
 func TestAllAttractionView(t *testing.T) {
-	input1 := models.NewAttraction("Ruleta #2", "Es una gran ruleta", 150, 30, 0, 0)
-	input2 := models.NewAttraction("Canal del amor", "Un romántico paseo en bote para los más tortolitos", 260, 20, 0, 1)
+	input1 := models.NewAttraction("Ruleta #2", "Es una gran ruleta", 150, 30, 0, 0, 0, 0)
+	input2 := models.NewAttraction("Canal del amor", "Un romántico paseo en bote para los más tortolitos", 260, 20, 0, 1, 0, 0)
 
 	_, err = database.CreateNewAttraction(ctx, db, input1)
 	if err != nil {
