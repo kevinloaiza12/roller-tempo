@@ -70,8 +70,8 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 
 		var name string
 		var description string
-		var capacity int
 		var duration int
+		var capacity int
 		var currentTurn int
 		var nextTurn int
 		var posX float64
@@ -80,8 +80,8 @@ func GetAllAttractions(ctx context.Context, db *sql.DB) ([]map[string]interface{
 		err := rows.Scan(
 			&name,
 			&description,
-			&capacity,
 			&duration,
+			&capacity,
 			&currentTurn,
 			&nextTurn,
 			&posX,
@@ -192,20 +192,20 @@ func AttractionsUpdateQuery(ctx context.Context, db *sql.DB, attraction *models.
 }
 
 func GetNextTurn(ctx context.Context, db *sql.DB, name string) (int, error) {
-	result, err := GetAttractionByName(ctx, db, name)
-	if err != nil {
-		return 0, err
-	}
+		result, err := GetAttractionByName(ctx, db, name)
+		if err != nil {
+			return 0, err 
+		}
 
-	currentTurn := result.GetAttractionCurrentTurn()
-	nextTurn := currentTurn + 1
+		currentTurn := result.GetAttractionCurrentTurn()
+		nextTurn := currentTurn + 1
 
-	result.SetAttractionCurrentTurn(nextTurn)
+		result.SetAttractionCurrentTurn(nextTurn)
 
-	_, updateErr := AttractionsUpdateQuery(ctx, db, result)
-	if updateErr != nil {
-		return 0, err
-	}
+		_, updateErr := AttractionsUpdateQuery(ctx, db, result)
+		if updateErr != nil {
+			return 0, err
+		}
 
-	return nextTurn, nil
+		return nextTurn, nil
 }

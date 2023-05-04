@@ -1,0 +1,26 @@
+{% extends 'phone.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/premios.css' %}" type="text/css" />
+{% endblock %}
+{% block content %}
+<main id="premios">
+  <header>
+    <h1 id="header-text"> Premios </h1>
+  </header>
+  {% for premio in premios %}
+  <a href="{% url 'premio' nombre=premio.name %}" class="atraccion_link">
+    <div class="premios-container">
+      <Image class="premios-image"src="{% static 'images/premio_placeholder.jpg' %}"/>
+      <div class="premios-info">
+        <h1 class="premios-title">{{premio.name}}</h1>
+        <div id="price_container">
+          <i class="fa-sharp fa-solid fa-coins price_icon_2"></i>
+          <h1 class="premios_title_2">{{premio.price}}</h1>      
+        </div>
+      </div>
+    </div>
+  </a>
+{% endfor %}
+</main>
+{%endblock%}

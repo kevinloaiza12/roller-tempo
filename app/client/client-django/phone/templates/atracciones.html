@@ -1,0 +1,22 @@
+{% extends 'phone.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/atracciones.css' %}" type="text/css" />
+{% endblock %}
+{% block content %}
+<main id="atracciones">
+    <header>
+      <h1 id="header-text"> Atracciones </h1>
+    </header>
+    {% for atraccion in atracciones %}
+      <a href="{% url 'atraccion' nombre=atraccion.name %}" class="atraccion_link">
+        <div class="atraccion-container">
+          <img class="atraccion-image"src="{% static 'images/placeholder.jpg' %}"/>
+          <div class="atraccion-info">
+            <h1 class="atraccion-title">{{atraccion.name}}</h1>
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </main>
+{%endblock%}

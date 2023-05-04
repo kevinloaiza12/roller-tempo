@@ -1,0 +1,58 @@
+{% extends 'phone.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/mapa.css' %}" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+{% endblock %}
+{% block content %}
+<div class="wrapper">
+    <div id="map">
+    </div>
+    <a href="{% url 'atracciones' %}">
+        <div id="test">
+            <i class="fa-solid fa-magnifying-glass map_search"></i>
+        </div>
+    </a>
+</div>
+
+<script type="text/javascript">
+    var map = L.map('map', {
+        maxZoom: 24,
+        minZoom: 1,
+        crs: L.CRS.Simple,
+    }).setView([0, 0], 1);
+
+    map.setMaxBounds(new L.LatLngBounds([0,360], [360,0]));
+
+    var imageUrl = "{% static 'images/map.jpg' %}"
+    var placeholder = "{% static 'images/placeholder.jpg' %}"
+    var imageBounds = [[360,0], [0,360]];
+    L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    var atracc = {{ atracciones|safe }}
+    var times = {{times|safe}}
+    console.log(atracc);
+    for (let i = 0; i < atracc.length; i++){
+        var marker = L.marker([atracc[i]['x'], atracc[i]['y']]).addTo(map);
+        var customOptions =
+            {
+            'maxWidth': '100',
+            'width': '50',
+            'className' : 'marker_image'
+            }
+        marker.bindPopup("<a class='link_container' href='/atraccion/"+ atracc[i]['name'] +"'><img class='image' src=" + placeholder + "/><p class='title'>" + atracc[i]['name'] + "</p><div class='time_container'> <i class='fa-regular fa-clock icon'></i> <p class='time_text'>" +times[i] + " </p></div></a>");
+    }
+    // var marker = L.marker([20, 50]).addTo(map);
+    // var marker2 = L.marker([100, 100]).addTo(map);
+    // L.marker([200, 200]).addTo(map);
+    // L.marker([300, 300]).addTo(map);
+    
+    // marker2.bindPopup("Hi!!!");
+    // markers.clearLayers();
+</script>
+{%endblock%}
+
