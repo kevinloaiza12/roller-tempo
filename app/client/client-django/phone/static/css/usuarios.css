@@ -76,3 +76,10 @@
 #user_turn_info{
     margin-left: 40px;
 }
+
+.separator{
+    height: 5px;
+    width: 100%;
+    background-color: #d6d6d6;
+    margin-top: 10px;
+}

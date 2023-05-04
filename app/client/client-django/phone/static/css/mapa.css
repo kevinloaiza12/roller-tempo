@@ -51,6 +51,10 @@
 
 .map_search{
     font-size: 36px;
+    color:rgb(110, 110, 110);
+}
+.map_search:hover{
+    font-size: 36px;
     color:red;
 }
 

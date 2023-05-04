@@ -24,6 +24,8 @@
     font-weight: 100;
     margin-left: 30px;
     margin-top: 5px;
+    text-align: justify;
+    width: 80%;
 }
 
 #fila-container{
@@ -94,4 +96,11 @@
     background-color: #d6d6d6;
     margin-top: 5px;
 
+}
+
+.separator{
+    height: 5px;
+    width: 100%;
+    background-color: #d6d6d6;
+    margin-top: 10px;
 }

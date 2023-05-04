@@ -121,7 +121,7 @@ def buscar(request):
     print(response)
     
     if result != 0:
-        return usuario_info(request, result)
+        return usuario_info(request, response)
     else:
         return usuario_info(request, 0)
 
