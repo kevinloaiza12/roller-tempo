@@ -23,3 +23,6 @@ go.work
 #Database config
 docker/config.env
 docker/data
+
+# DB config
+app/server/config.env
