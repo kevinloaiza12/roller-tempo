@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"roller-tempo/routes"
+	"roller-tempo/utils"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -32,6 +33,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	utils.AutoMigrate(gormDb)
 
 	app := echo.New()
 	ctx := context.Background()
