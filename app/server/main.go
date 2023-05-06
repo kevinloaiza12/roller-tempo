@@ -1,39 +1,43 @@
 package main
 
 import (
-	"context"
-	"database/sql"
-	"fmt"
-	"log"
-	"os"
+	"net/http"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	_ "github.com/lib/pq"
-
-	//"google.golang.org/genproto/googleapis/cloud/functions/v1"
-	"github.com/joho/godotenv"
-	"github.com/kevinloaiza12/roller-tempo/app/routes"
+	"github.com/labstack/echo/v4"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
-	envErr := godotenv.Load("config.env")
-	if envErr != nil {
-		log.Fatal(envErr)
-	}
 
-	ctx := context.Background()
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
-	db, err := sql.Open("postgres", connStr)
+	e := echo.New()
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
+	e.Logger.Fatal(e.Start(":3000"))
+
+	db, err := gorm.Open(postgres.Open("test.db"), &gorm.Config{})
 	if err != nil {
-		log.Fatal(err)
+		panic("failed to connect database")
 	}
-	defer db.Close()
 
-	app := fiber.New()
-	app.Use(cors.New())
-	routes.Register(app, ctx, db)
+	// Migrate the schema
+	db.AutoMigrate(&Attraction{})
 
-	app.Listen(":3000")
-	fmt.Println("Server listening on port 3000")
+	// Create
+	db.Create(&Product{Code: "D42", Price: 100})
+
+	// Read
+	var product Product
+	db.First(&product, 1)                 // find product with integer primary key
+	db.First(&product, "code = ?", "D42") // find product with code D42
+
+	// Update - update product's price to 200
+	db.Model(&product).Update("Price", 200)
+	// Update - update multiple fields
+	db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
+	db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
+
+	// Delete - delete product
+	db.Delete(&product, 1)
 }
