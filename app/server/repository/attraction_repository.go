@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"roller-tempo/dto"
 	"roller-tempo/model"
 
 	"gorm.io/gorm"
@@ -12,6 +13,31 @@ type AttractionRepository struct {
 
 func NewAttractionRepository(db *gorm.DB) *AttractionRepository {
 	return &AttractionRepository{db: db}
+}
+
+func (ur *AttractionRepository) GetAllAttractions() ([]*dto.AttractionDTO, error) {
+	var attractions []*model.Attraction
+	err := ur.db.Find(&attractions).Error
+	if err != nil {
+		return nil, err
+	}
+
+	var attractionDTOs []*dto.AttractionDTO
+	for _, attraction := range attractions {
+		attractionDTO := &dto.AttractionDTO{
+			Name:        attraction.Name,
+			Description: attraction.Description,
+			Duration:    attraction.Duration,
+			Capacity:    attraction.Capacity,
+			CurrentTurn: attraction.CurrentTurn,
+			NextTurn:    attraction.NextTurn,
+			X:           attraction.X,
+			Y:           attraction.Y,
+		}
+		attractionDTOs = append(attractionDTOs, attractionDTO)
+	}
+
+	return attractionDTOs, nil
 }
 
 func (ur *AttractionRepository) CreateAttraction(attraction *model.Attraction) error {
