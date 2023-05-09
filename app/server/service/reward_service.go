@@ -26,5 +26,5 @@ func (rs *RewardService) DeleteReward(reward *model.Reward) error {
 }
 
 func (rs *RewardService) GetRewardByID(id int) (*model.Reward, error) {
-	return rs.rewardRepo.GetRewardById(id)
+	return rs.rewardRepo.GetRewardByID(id)
 }
