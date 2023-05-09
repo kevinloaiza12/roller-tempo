@@ -26,7 +26,14 @@ func main() {
 		log.Fatal(envErr)
 	}
 
-	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", os.Getenv("DBHost"), os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBName"), os.Getenv("DBPort"))
+	connStr := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		os.Getenv("DBHost"),
+		os.Getenv("DBUser"),
+		os.Getenv("DBPassword"),
+		os.Getenv("DBName"),
+		os.Getenv("DBPort"),
+	)
 
 	gormDb, err := gorm.Open(postgres.New(postgres.Config{DSN: connStr}), &gorm.Config{})
 
