@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -14,25 +13,22 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
-	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func main() {
+
+	ctx := context.Background()
+
 	envErr := godotenv.Load("config.env")
 	if envErr != nil {
 		log.Fatal(envErr)
 	}
 
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBHost"), os.Getenv("DBPort"), os.Getenv("DBName"))
-	dbConn, err := sql.Open("postgres", connStr)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer dbConn.Close()
+	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", os.Getenv("DBHost"), os.Getenv("DBUser"), os.Getenv("DBPassword"), os.Getenv("DBName"), os.Getenv("DBPort"))
 
-	gormDb, err := gorm.Open(postgres.New(postgres.Config{Conn: dbConn}), &gorm.Config{})
+	gormDb, err := gorm.Open(postgres.New(postgres.Config{DSN: connStr}), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err)
@@ -53,7 +49,6 @@ func main() {
 	userController := controller.NewUserController(userService)
 
 	app := echo.New()
-	ctx := context.Background()
 	routes.RegisterAttractionRoutes(app, ctx, attractionController)
 	routes.RegisterRewardRoutes(app, ctx, rewardController)
 	routes.RegisterUserRoutes(app, ctx, userController)

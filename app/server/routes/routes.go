@@ -8,15 +8,15 @@ import (
 )
 
 func RegisterAttractionRoutes(app *echo.Echo, ctx context.Context, controller *controller.AttractionController) {
-	app.GET("/attractions", controller.Attractions)
+	app.GET("/api/attractions", controller.Attractions)
 }
 
 func RegisterRewardRoutes(app *echo.Echo, ctx context.Context, controller *controller.RewardController) {
-	app.GET("/rewards", controller.Rewards)
+	app.GET("/api/rewards", controller.Rewards)
 }
 
 func RegisterUserRoutes(app *echo.Echo, ctx context.Context, controller *controller.UserController) {
-	app.GET("/users", controller.Users)
+	app.GET("/api/users", controller.Users)
 }
 
 /*
