@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
 	"strconv"
@@ -77,7 +78,7 @@ func (ac *AttractionController) GetAttractionByID(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, attraction)
+	return ctx.JSON(http.StatusOK, mapper.ToAttractionDTO(attraction))
 }
 
 func (ac *AttractionController) GetNextRoundTurns(ctx echo.Context) error {

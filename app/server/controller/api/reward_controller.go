@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
 	"strconv"
@@ -66,5 +67,5 @@ func (rc *RewardController) GetRewardByID(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, reward)
+	return ctx.JSON(http.StatusOK, mapper.ToRewardDTO(reward))
 }

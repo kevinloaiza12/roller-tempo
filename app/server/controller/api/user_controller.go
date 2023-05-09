@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
 	"strconv"
@@ -68,7 +69,7 @@ func (uc *UserController) GetUserByID(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, user)
+	return ctx.JSON(http.StatusOK, mapper.ToUserDTO(user))
 }
 
 func (uc *UserController) UpdateUserTurn(ctx echo.Context) error {
@@ -88,5 +89,5 @@ func (uc *UserController) UpdateUserTurn(ctx echo.Context) error {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": "User turn and attraction updated successfully"})
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": "User turn updated successfully"})
 }

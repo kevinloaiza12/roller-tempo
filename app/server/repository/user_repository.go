@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"roller-tempo/dto"
 	"roller-tempo/model"
 
 	"gorm.io/gorm"
@@ -15,25 +14,14 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
-func (ur *UserRepository) GetAllUsers() ([]*dto.UserDTO, error) {
+func (ur *UserRepository) GetAllUsers() ([]*model.User, error) {
 	var users []*model.User
 	err := ur.db.Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
 
-	var userDTOs []*dto.UserDTO
-	for _, user := range users {
-		userDTO := &dto.UserDTO{
-			Identification: user.Identification,
-			Coins:          user.Coins,
-			Turn:           user.Coins,
-			Attraction:     user.Attraction,
-		}
-		userDTOs = append(userDTOs, userDTO)
-	}
-
-	return userDTOs, nil
+	return users, nil
 }
 
 func (ur *UserRepository) CreateUser(user *model.User) error {
