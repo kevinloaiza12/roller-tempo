@@ -73,18 +73,24 @@ func (uc *UserController) GetUserByID(ctx echo.Context) error {
 }
 
 func (uc *UserController) UpdateUserTurn(ctx echo.Context) error {
+	type updateUserTurnRequest struct {
+		UserID       int `json:"userID"`
+		AttractionID int `json:"attractionID"`
+	}
 
-	id, err := strconv.Atoi(ctx.Param("id"))
+	var request updateUserTurnRequest
+
+	err := ctx.Bind(&request)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	attractionID, err := strconv.Atoi(ctx.Param("attractionID"))
-	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	if request.UserID <= 0 || request.AttractionID <= 0 {
+		errorMessage := "Invalid request body. Please provide all the required fields."
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": errorMessage})
 	}
 
-	err = uc.userService.UpdateUserTurnAndAttraction(id, attractionID)
+	err = uc.userService.UpdateUserTurnAndAttraction(request.UserID, request.AttractionID)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}

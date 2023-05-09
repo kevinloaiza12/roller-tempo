@@ -35,7 +35,7 @@ func (as *AttractionService) GetNextAvailableTurn(attractionID int) (int, error)
 		return 0, err
 	}
 
-	nextTurn := attraction.CurrentRoundTurn + 1
+	nextTurn := attraction.NextTurn
 
 	return nextTurn, nil
 }

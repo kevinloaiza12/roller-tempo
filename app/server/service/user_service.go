@@ -39,15 +39,21 @@ func (us *UserService) UpdateUserTurnAndAttraction(id int, attractionID int) err
 		return err
 	}
 
-	nextTurn, err := us.attractionService.GetNextAvailableTurn(attractionID)
+	attraction, err := us.attractionService.GetAttractionByID(attractionID)
 	if err != nil {
 		return err
 	}
 
-	user.Turn = nextTurn
+	user.Turn = attraction.NextTurn
 	user.Attraction = attractionID
 
 	err = us.userRepository.UpdateUser(user)
+	if err != nil {
+		return err
+	}
+
+	attraction.NextTurn += 1
+	err = us.attractionService.UpdateAttraction(attraction)
 	if err != nil {
 		return err
 	}
