@@ -1,12 +1,12 @@
 package dto
 
 type AttractionDTO struct {
-	Name        string  `gorm:"column:name"`
-	Description string  `gorm:"column:description"`
-	Duration    int     `gorm:"column:duration"`
-	Capacity    int     `gorm:"column:capacity"`
-	CurrentTurn int     `gorm:"column:currentTurn"`
-	NextTurn    int     `gorm:"column:nextTurn"`
-	PosX        float64 `gorm:"column:x"`
-	PosY        float64 `gorm:"column:y"`
+	Name             string
+	Description      string
+	Duration         int
+	Capacity         int
+	CurrentRoundTurn int
+	NextTurn         int
+	PosX             float64
+	PosY             float64
 }

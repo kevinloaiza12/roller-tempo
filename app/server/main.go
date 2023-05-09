@@ -45,14 +45,15 @@ func main() {
 
 	attractionRepository := repository.NewAttractionRepository(gormDb)
 	attractionService := service.NewAttractionService(attractionRepository)
-	attractionController := controller.NewAttractionController(attractionService)
 
 	rewardRepository := repository.NewRewardRepository(gormDb)
 	rewardService := service.NewRewardService(rewardRepository)
-	rewardController := controller.NewRewardController(rewardService)
 
 	userRepository := repository.NewUserRepository(gormDb)
-	userService := service.NewUserService(userRepository)
+	userService := service.NewUserService(userRepository, attractionService)
+
+	attractionController := controller.NewAttractionController(attractionService)
+	rewardController := controller.NewRewardController(rewardService)
 	userController := controller.NewUserController(userService)
 
 	app := echo.New()

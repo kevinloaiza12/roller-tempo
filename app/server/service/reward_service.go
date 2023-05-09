@@ -6,25 +6,25 @@ import (
 )
 
 type RewardService struct {
-	rewardRepo *repository.RewardRepository
+	rewardRepository *repository.RewardRepository
 }
 
 func NewRewardService(rewardRepo *repository.RewardRepository) *RewardService {
-	return &RewardService{rewardRepo: rewardRepo}
+	return &RewardService{rewardRepository: rewardRepo}
 }
 
 func (rs *RewardService) CreateReward(reward *model.Reward) error {
-	return rs.rewardRepo.CreateReward(reward)
+	return rs.rewardRepository.CreateReward(reward)
 }
 
 func (rs *RewardService) UpdateReward(reward *model.Reward) error {
-	return rs.rewardRepo.UpdateReward(reward)
+	return rs.rewardRepository.UpdateReward(reward)
 }
 
 func (rs *RewardService) DeleteReward(reward *model.Reward) error {
-	return rs.rewardRepo.DeleteReward(reward)
+	return rs.rewardRepository.DeleteReward(reward)
 }
 
 func (rs *RewardService) GetRewardByID(id int) (*model.Reward, error) {
-	return rs.rewardRepo.GetRewardByID(id)
+	return rs.rewardRepository.GetRewardByID(id)
 }

@@ -9,7 +9,9 @@ import (
 
 func RegisterAttractionRoutes(app *echo.Echo, ctx context.Context, controller *controller.AttractionController) {
 	app.GET("/api/attractions", controller.Attractions)
-	app.GET("/api/attractions/:id", controller.Attractions)
+	app.GET("/api/attractions/:id", controller.GetAttractionByID)
+
+	app.POST("/api/attractions/register", controller.CreateNewAttraction)
 }
 
 func RegisterRewardRoutes(app *echo.Echo, ctx context.Context, controller *controller.RewardController) {
@@ -21,18 +23,14 @@ func RegisterRewardRoutes(app *echo.Echo, ctx context.Context, controller *contr
 
 func RegisterUserRoutes(app *echo.Echo, ctx context.Context, controller *controller.UserController) {
 	app.GET("/api/users", controller.Users)
+	app.GET("/api/users/:id", controller.GetUserByID)
+
+	app.POST("/api/users/register", controller.CreateNewUser)
 }
 
 /*
-
 	MISSING ROUTES:
 
-	app.GET("/api/userinfo/:id", controllers.GetUserInfo(ctx, db))
-	app.GET("/api/attractioninfo/:name", controllers.GetAttractionInfo(ctx, db))
-	app.GET("/api/rewardinfo/:name", controllers.GetRewardInfo(ctx, db))
-
-	app.POST("/api/userregister/", controllers.PostUserRegister(ctx, db))
 	app.POST("/api/usernextturn/", controllers.PostUserNextTurn(ctx, db))
-	app.POST("/api/attractionregister/", controllers.PostAttractionRegister(ctx, db))
-	app.POST("/api/rewardregister/", controllers.PostRewardRegister(ctx, db))
+	app.GET("/attractionturns/:name", controllers.GetAttractionTurns(ctx, db))
 */

@@ -25,14 +25,14 @@ func (ur *AttractionRepository) GetAllAttractions() ([]*dto.AttractionDTO, error
 	var attractionDTOs []*dto.AttractionDTO
 	for _, attraction := range attractions {
 		attractionDTO := &dto.AttractionDTO{
-			Name:        attraction.Name,
-			Description: attraction.Description,
-			Duration:    attraction.Duration,
-			Capacity:    attraction.Capacity,
-			CurrentTurn: attraction.CurrentTurn,
-			NextTurn:    attraction.NextTurn,
-			PosX:        attraction.PosX,
-			PosY:        attraction.PosY,
+			Name:             attraction.Name,
+			Description:      attraction.Description,
+			Duration:         attraction.Duration,
+			Capacity:         attraction.Capacity,
+			CurrentRoundTurn: attraction.CurrentRoundTurn,
+			NextTurn:         attraction.NextTurn,
+			PosX:             attraction.PosX,
+			PosY:             attraction.PosY,
 		}
 		attractionDTOs = append(attractionDTOs, attractionDTO)
 	}
