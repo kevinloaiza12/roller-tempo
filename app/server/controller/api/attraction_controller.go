@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	controller "roller-tempo/controller/request"
 	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
@@ -23,18 +24,8 @@ func (ac *AttractionController) Attractions(ctx echo.Context) error {
 }
 
 func (ac *AttractionController) CreateNewAttraction(ctx echo.Context) error {
-	type createAttractionRequest struct {
-		Name             string  `json:"name"`
-		Description      string  `json:"description"`
-		Duration         int     `json:"duration"`
-		Capacity         int     `json:"capacity"`
-		CurrentRoundTurn int     `json:"currentRoundTurn"`
-		NextTurn         int     `json:"nextTurn"`
-		PosX             float64 `json:"x"`
-		PosY             float64 `json:"y"`
-	}
 
-	var request createAttractionRequest
+	var request controller.CreateAttractionRequest
 
 	err := ctx.Bind(&request)
 	if err != nil {

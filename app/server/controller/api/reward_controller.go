@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	controller "roller-tempo/controller/request"
 	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
@@ -23,13 +24,8 @@ func (rc *RewardController) Rewards(ctx echo.Context) error {
 }
 
 func (rc *RewardController) CreateNewReward(ctx echo.Context) error {
-	type createRewardRequest struct {
-		Name        string `json:"name"`
-		Description string `json:"description"`
-		Price       int    `json:"price"`
-	}
 
-	var request createRewardRequest
+	var request controller.CreateRewardRequest
 
 	err := ctx.Bind(&request)
 	if err != nil {

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	controller "roller-tempo/controller/request"
 	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
@@ -23,14 +24,8 @@ func (uc *UserController) Users(ctx echo.Context) error {
 }
 
 func (uc *UserController) CreateNewUser(ctx echo.Context) error {
-	type createUserRequest struct {
-		Identification int `json:"identification"`
-		Coins          int `json:"coins"`
-		Turn           int `json:"turn"`
-		Attraction     int `json:"attraction"`
-	}
 
-	var request createUserRequest
+	var request controller.CreateUserRequest
 
 	err := ctx.Bind(&request)
 	if err != nil {
@@ -73,12 +68,8 @@ func (uc *UserController) GetUserByID(ctx echo.Context) error {
 }
 
 func (uc *UserController) UpdateUserTurn(ctx echo.Context) error {
-	type updateUserTurnRequest struct {
-		UserID       int `json:"userID"`
-		AttractionID int `json:"attractionID"`
-	}
 
-	var request updateUserTurnRequest
+	var request controller.UpdateUserTurnRequest
 
 	err := ctx.Bind(&request)
 	if err != nil {
