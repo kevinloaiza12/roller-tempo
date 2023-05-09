@@ -26,7 +26,7 @@ func (ur *AttractionRepository) DeleteAttraction(attraction *model.Attraction) e
 	return ur.db.Delete(attraction).Error
 }
 
-func (ur *UserRepository) GetAttractionById(id int) (*model.Attraction, error) {
+func (ur *AttractionRepository) GetAttractionByID(id int) (*model.Attraction, error) {
 	var attraction model.Attraction
 	err := ur.db.First(&attraction, id).Error
 	if err != nil {

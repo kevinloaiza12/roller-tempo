@@ -26,7 +26,7 @@ func (ur *RewardRepository) DeleteReward(reward *model.Reward) error {
 	return ur.db.Delete(reward).Error
 }
 
-func (ur *UserRepository) GetRewardById(id int) (*model.Reward, error) {
+func (ur *RewardRepository) GetRewardByID(id int) (*model.Reward, error) {
 	var reward model.Reward
 	err := ur.db.First(&reward, id).Error
 	if err != nil {
