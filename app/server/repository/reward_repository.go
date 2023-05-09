@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"roller-tempo/dto"
 	"roller-tempo/model"
 
 	"gorm.io/gorm"
@@ -12,6 +13,26 @@ type RewardRepository struct {
 
 func NewRewardRepository(db *gorm.DB) *RewardRepository {
 	return &RewardRepository{db: db}
+}
+
+func (ur *RewardRepository) GetAllRewards() ([]*dto.RewardDTO, error) {
+	var rewards []*model.Reward
+	err := ur.db.Find(&rewards).Error
+	if err != nil {
+		return nil, err
+	}
+
+	var rewardDTOs []*dto.RewardDTO
+	for _, reward := range rewards {
+		rewardDTO := &dto.RewardDTO{
+			Name:        reward.Name,
+			Description: reward.Description,
+			Price:       reward.Price,
+		}
+		rewardDTOs = append(rewardDTOs, rewardDTO)
+	}
+
+	return rewardDTOs, nil
 }
 
 func (ur *RewardRepository) CreateReward(reward *model.Reward) error {
