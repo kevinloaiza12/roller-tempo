@@ -6,7 +6,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	controller "roller-tempo/controller/api"
+	"roller-tempo/repository"
 	"roller-tempo/routes"
+	"roller-tempo/service"
 	"roller-tempo/utils"
 
 	"github.com/joho/godotenv"
@@ -27,6 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer dbConn.Close()
 
 	gormDb, err := gorm.Open(postgres.New(postgres.Config{Conn: dbConn}), &gorm.Config{})
 
@@ -36,8 +40,22 @@ func main() {
 
 	utils.AutoMigrate(gormDb)
 
+	attractionRepository := repository.NewAttractionRepository(gormDb)
+	attractionService := service.NewAttractionService(attractionRepository)
+	attractionController := controller.NewAttractionController(attractionService)
+
+	rewardRepository := repository.NewRewardRepository(gormDb)
+	rewardService := service.NewRewardService(rewardRepository)
+	rewardController := controller.NewRewardController(rewardService)
+
+	userRepository := repository.NewUserRepository(gormDb)
+	userService := service.NewUserService(userRepository)
+	userController := controller.NewUserController(userService)
+
 	app := echo.New()
 	ctx := context.Background()
-	routes.Register(app, ctx, gormDb)
+	routes.RegisterAttractionRoutes(app, ctx, attractionController)
+	routes.RegisterRewardRoutes(app, ctx, rewardController)
+	routes.RegisterUserRoutes(app, ctx, userController)
 	app.Logger.Fatal(app.Start(":3000"))
 }
