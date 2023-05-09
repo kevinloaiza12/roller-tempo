@@ -2,23 +2,30 @@ package routes
 
 import (
 	"context"
-	"database/sql"
+	controller "roller-tempo/controller/api"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/kevinloaiza12/roller-tempo/app/controllers"
+	"github.com/labstack/echo/v4"
 )
 
-func Register(app *fiber.App, ctx context.Context, db *sql.DB) {
-	app.Get("/users", controllers.Users)
-	app.Get("/attractions", controllers.GetAllAttractionsInfo(ctx, db))
-	app.Get("/rewards", controllers.GetAllRewards(ctx, db))
-	//app.Get("/attractionturns/:name", controllers.GetAttractionTurns(ctx, db))
-	app.Get("/api/userinfo/:id", controllers.GetUserInfo(ctx, db))
-	app.Get("/api/attractioninfo/:name", controllers.GetAttractionInfo(ctx, db))
-	app.Get("/api/rewardinfo/:name", controllers.GetRewardInfo(ctx, db))
+func RegisterAttractionRoutes(app *echo.Echo, ctx context.Context, controller *controller.AttractionController) {
+	app.GET("/api/attractions", controller.Attractions)
+	app.GET("/api/attractions/:id", controller.GetAttractionByID)
+	app.GET("/api/attractions/:id/turns", controller.GetNextRoundTurns)
 
-	app.Post("/api/userregister/", controllers.PostUserRegister(ctx, db))
-    app.Post("/api/usernextturn/", controllers.PostUserNextTurn(ctx, db))
-	app.Post("/api/attractionregister/", controllers.PostAttractionRegister(ctx, db))
-	app.Post("/api/rewardregister/", controllers.PostRewardRegister(ctx, db))
+	app.POST("/api/attractions/register", controller.CreateNewAttraction)
+}
+
+func RegisterRewardRoutes(app *echo.Echo, ctx context.Context, controller *controller.RewardController) {
+	app.GET("/api/rewards", controller.Rewards)
+	app.GET("/api/rewards/:id", controller.GetRewardByID)
+
+	app.POST("/api/rewards/register", controller.CreateNewReward)
+}
+
+func RegisterUserRoutes(app *echo.Echo, ctx context.Context, controller *controller.UserController) {
+	app.GET("/api/users", controller.Users)
+	app.GET("/api/users/:id", controller.GetUserByID)
+
+	app.POST("/api/users/register", controller.CreateNewUser)
+	app.POST("/api/users/turn", controller.UpdateUserTurn)
 }
