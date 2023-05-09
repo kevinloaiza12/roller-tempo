@@ -47,7 +47,7 @@ func (as *AttractionService) GetNextRoundTurns(attractionID int) ([]int, error) 
 		return nil, err
 	}
 
-	nextRoundFirstTurn := (attraction.CurrentRoundTurn/attraction.Capacity + 1) * attraction.Capacity
+	nextRoundFirstTurn := (attraction.CurrentRoundTurn/attraction.Capacity+1)*attraction.Capacity + 1
 
 	nextRoundTurns := []int{}
 

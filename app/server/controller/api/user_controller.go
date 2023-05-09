@@ -60,32 +60,32 @@ func (uc *UserController) GetUserByID(ctx echo.Context) error {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	user, err := uc.userService.GetUserByID(id)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	return ctx.JSON(http.StatusOK, user)
 }
 
-func (uc *UserController) UpdateUserTurnAndAttraction(ctx echo.Context) error {
+func (uc *UserController) UpdateUserTurn(ctx echo.Context) error {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	attractionID, err := strconv.Atoi(ctx.Param("attractionID"))
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	err = uc.userService.UpdateUserTurnAndAttraction(id, attractionID)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": "User turn and attraction updated successfully"})

@@ -69,12 +69,12 @@ func (ac *AttractionController) GetAttractionByID(ctx echo.Context) error {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	attraction, err := ac.attractionService.GetAttractionByID(id)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	return ctx.JSON(http.StatusOK, attraction)
@@ -84,12 +84,12 @@ func (ac *AttractionController) GetNextRoundTurns(ctx echo.Context) error {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	turns, err := ac.attractionService.GetNextRoundTurns(id)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	return ctx.JSON(http.StatusOK, turns)

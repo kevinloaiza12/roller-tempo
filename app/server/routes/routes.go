@@ -10,6 +10,7 @@ import (
 func RegisterAttractionRoutes(app *echo.Echo, ctx context.Context, controller *controller.AttractionController) {
 	app.GET("/api/attractions", controller.Attractions)
 	app.GET("/api/attractions/:id", controller.GetAttractionByID)
+	app.GET("/api/attractions/:id/turns", controller.GetNextRoundTurns)
 
 	app.POST("/api/attractions/register", controller.CreateNewAttraction)
 }
@@ -26,11 +27,5 @@ func RegisterUserRoutes(app *echo.Echo, ctx context.Context, controller *control
 	app.GET("/api/users/:id", controller.GetUserByID)
 
 	app.POST("/api/users/register", controller.CreateNewUser)
+	app.POST("/api/users/turn", controller.UpdateUserTurn)
 }
-
-/*
-	MISSING ROUTES:
-
-	app.POST("/api/usernextturn/", controllers.PostUserNextTurn(ctx, db))
-	app.GET("/attractionturns/:name", controllers.GetAttractionTurns(ctx, db))
-*/

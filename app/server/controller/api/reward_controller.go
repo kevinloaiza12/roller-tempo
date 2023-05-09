@@ -58,12 +58,12 @@ func (rc *RewardController) GetRewardByID(ctx echo.Context) error {
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	reward, err := rc.rewardService.GetRewardByID(id)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
 	return ctx.JSON(http.StatusOK, reward)
