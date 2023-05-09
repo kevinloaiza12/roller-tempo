@@ -11,6 +11,6 @@ type Attraction struct {
 	Capacity    int     `gorm:"column:capacity"`
 	CurrentTurn int     `gorm:"column:currentTurn"`
 	NextTurn    int     `gorm:"column:nextTurn"`
-	X           float64 `gorm:"column:x"`
-	Y           float64 `gorm:"column:y"`
+	PosX        float64 `gorm:"column:x"`
+	PosY        float64 `gorm:"column:y"`
 }

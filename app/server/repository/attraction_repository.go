@@ -31,8 +31,8 @@ func (ur *AttractionRepository) GetAllAttractions() ([]*dto.AttractionDTO, error
 			Capacity:    attraction.Capacity,
 			CurrentTurn: attraction.CurrentTurn,
 			NextTurn:    attraction.NextTurn,
-			X:           attraction.X,
-			Y:           attraction.Y,
+			PosX:        attraction.PosX,
+			PosY:        attraction.PosY,
 		}
 		attractionDTOs = append(attractionDTOs, attractionDTO)
 	}
