@@ -88,6 +88,20 @@ func (uc *UserController) UpdateUserTurn(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
 }
 
+func (uc *UserController) RemoveUserTurn(ctx echo.Context) error {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	err = uc.userService.RemoveTurn(id)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
+}
+
 func (uc *UserController) RewardUser(ctx echo.Context) error {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {

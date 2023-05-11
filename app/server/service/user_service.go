@@ -96,6 +96,17 @@ func (us *UserService) ValidateTurn(userID int, attractionID int) (bool, error) 
 	return false, nil
 }
 
+func (us *UserService) RemoveTurn(id int) error {
+	user, err := us.userRepository.GetUserByID(id)
+	if err != nil {
+		return err
+	}
+
+	user.Turn = 0
+
+	return us.UpdateUser(user)
+}
+
 func (us *UserService) RewardUser(userID int, amount int) error {
 	user, err := us.userRepository.GetUserByID(userID)
 	if err != nil {
