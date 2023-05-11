@@ -28,4 +28,6 @@ func RegisterUserRoutes(app *echo.Echo, ctx context.Context, controller *control
 
 	app.POST("/api/users/register", controller.CreateNewUser)
 	app.POST("/api/users/turn", controller.UpdateUserTurn)
+	app.POST("/api/users/:id/reward", controller.RewardUser)
+	app.POST("/api/users/:id/penalize", controller.PenalizeUser)
 }

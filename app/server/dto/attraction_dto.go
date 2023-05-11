@@ -9,4 +9,5 @@ type AttractionDTO struct {
 	NextTurn         int
 	PosX             float64
 	PosY             float64
+	ImagePath        string
 }

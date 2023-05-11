@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	controller "roller-tempo/controller/request"
+	utils "roller-tempo/controller/utils"
 	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
@@ -20,7 +21,12 @@ func NewAttractionController(attractionService *service.AttractionService) *Attr
 }
 
 func (ac *AttractionController) Attractions(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "Hello, World!")
+	attractions, err := ac.attractionService.GetAllAttractions()
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": attractions})
 }
 
 func (ac *AttractionController) CreateNewAttraction(ctx echo.Context) error {
@@ -34,8 +40,7 @@ func (ac *AttractionController) CreateNewAttraction(ctx echo.Context) error {
 
 	if request.Name == "" || request.Description == "" || request.Duration <= 0 ||
 		request.Capacity <= 0 || request.CurrentRoundTurn < 0 || request.NextTurn < 0 {
-		errorMessage := "Invalid request body. Please provide all the required fields."
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": errorMessage})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": utils.BadRequest})
 	}
 
 	attraction := model.Attraction{
@@ -47,6 +52,7 @@ func (ac *AttractionController) CreateNewAttraction(ctx echo.Context) error {
 		NextTurn:         request.NextTurn,
 		PosX:             request.PosX,
 		PosY:             request.PosY,
+		ImagePath:        request.Name + ".jpg",
 	}
 
 	err = ac.attractionService.CreateAttraction(&attraction)
@@ -54,7 +60,7 @@ func (ac *AttractionController) CreateNewAttraction(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": "Attraction created successfully"})
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
 }
 
 func (ac *AttractionController) GetAttractionByID(ctx echo.Context) error {
