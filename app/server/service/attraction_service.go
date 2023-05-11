@@ -13,20 +13,24 @@ func NewAttractionService(attractionRepo *repository.AttractionRepository) *Attr
 	return &AttractionService{attractionRepository: attractionRepo}
 }
 
-func (rs *AttractionService) CreateAttraction(attraction *model.Attraction) error {
-	return rs.attractionRepository.CreateAttraction(attraction)
+func (as *AttractionService) CreateAttraction(attraction *model.Attraction) error {
+	return as.attractionRepository.CreateAttraction(attraction)
 }
 
-func (rs *AttractionService) UpdateAttraction(attraction *model.Attraction) error {
-	return rs.attractionRepository.UpdateAttraction(attraction)
+func (as *AttractionService) UpdateAttraction(attraction *model.Attraction) error {
+	return as.attractionRepository.UpdateAttraction(attraction)
 }
 
-func (rs *AttractionService) DeleteAttraction(attraction *model.Attraction) error {
-	return rs.attractionRepository.DeleteAttraction(attraction)
+func (as *AttractionService) DeleteAttraction(attraction *model.Attraction) error {
+	return as.attractionRepository.DeleteAttraction(attraction)
 }
 
-func (rs *AttractionService) GetAttractionByID(id int) (*model.Attraction, error) {
-	return rs.attractionRepository.GetAttractionByID(id)
+func (as *AttractionService) GetAllAttractions() ([]*model.Attraction, error) {
+	return as.attractionRepository.GetAllAttractions()
+}
+
+func (as *AttractionService) GetAttractionByID(id int) (*model.Attraction, error) {
+	return as.attractionRepository.GetAttractionByID(id)
 }
 
 func (as *AttractionService) GetNextAvailableTurn(attractionID int) (int, error) {
@@ -35,7 +39,7 @@ func (as *AttractionService) GetNextAvailableTurn(attractionID int) (int, error)
 		return 0, err
 	}
 
-	nextTurn := attraction.CurrentRoundTurn + 1
+	nextTurn := attraction.NextTurn
 
 	return nextTurn, nil
 }
@@ -47,11 +51,11 @@ func (as *AttractionService) GetNextRoundTurns(attractionID int) ([]int, error) 
 		return nil, err
 	}
 
-	nextRoundFirstTurn := (attraction.CurrentRoundTurn/attraction.Capacity+1)*attraction.Capacity + 1
+	nextRoundFiastTurn := (attraction.CurrentRoundTurn/attraction.Capacity+1)*attraction.Capacity + 1
 
 	nextRoundTurns := []int{}
 
-	for i := nextRoundFirstTurn; i < nextRoundFirstTurn+attraction.Capacity; i++ {
+	for i := nextRoundFiastTurn; i < nextRoundFiastTurn+attraction.Capacity; i++ {
 		nextRoundTurns = append(nextRoundTurns, i)
 	}
 

@@ -2,6 +2,8 @@ package controller
 
 import (
 	"net/http"
+	controller "roller-tempo/controller/request"
+	utils "roller-tempo/controller/utils"
 	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
@@ -19,34 +21,29 @@ func NewUserController(userService *service.UserService) *UserController {
 }
 
 func (uc *UserController) Users(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "Hello, World!")
+	users, err := uc.userService.GetAllUsers()
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": users})
 }
 
 func (uc *UserController) CreateNewUser(ctx echo.Context) error {
-	type createUserRequest struct {
-		Identification int `json:"identification"`
-		Coins          int `json:"coins"`
-		Turn           int `json:"turn"`
-		Attraction     int `json:"attraction"`
-	}
-
-	var request createUserRequest
+	var request controller.CreateUserRequest
 
 	err := ctx.Bind(&request)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	if request.Identification <= 0 || request.Coins <= 0 || request.Turn <= 0 || request.Attraction <= 0 {
-		errorMessage := "Invalid request body. Please provide all the required fields."
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": errorMessage})
+	if request.Identification <= 0 || request.Coins <= 0 {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": utils.BadRequest})
 	}
 
 	user := model.User{
 		Identification: request.Identification,
 		Coins:          request.Coins,
-		Turn:           request.Turn,
-		Attraction:     request.Attraction,
 	}
 
 	err = uc.userService.CreateUser(&user)
@@ -54,11 +51,10 @@ func (uc *UserController) CreateNewUser(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": "User created successfully"})
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
 }
 
 func (uc *UserController) GetUserByID(ctx echo.Context) error {
-
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
@@ -73,21 +69,73 @@ func (uc *UserController) GetUserByID(ctx echo.Context) error {
 }
 
 func (uc *UserController) UpdateUserTurn(ctx echo.Context) error {
+	var request controller.UpdateUserTurnRequest
 
+	err := ctx.Bind(&request)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	if request.UserID <= 0 || request.AttractionID <= 0 {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": utils.BadRequest})
+	}
+
+	err = uc.userService.UpdateUserTurnAndAttraction(request.UserID, request.AttractionID)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
+}
+
+func (uc *UserController) RemoveUserTurn(ctx echo.Context) error {
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	attractionID, err := strconv.Atoi(ctx.Param("attractionID"))
+	err = uc.userService.RemoveTurn(id)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	err = uc.userService.UpdateUserTurnAndAttraction(id, attractionID)
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
+}
+
+func (uc *UserController) RewardUser(ctx echo.Context) error {
+	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": "User turn updated successfully"})
+	amount, err := strconv.Atoi(ctx.QueryParam("amount"))
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	err = uc.userService.RewardUser(id, amount)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
+}
+
+func (uc *UserController) PenalizeUser(ctx echo.Context) error {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	amount, err := strconv.Atoi(ctx.QueryParam("amount"))
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	err = uc.userService.PenalizeUser(id, amount)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
 }

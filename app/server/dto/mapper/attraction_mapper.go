@@ -15,6 +15,7 @@ func ToAttractionDTO(attraction *model.Attraction) *dto.AttractionDTO {
 		NextTurn:         attraction.NextTurn,
 		PosX:             attraction.PosX,
 		PosY:             attraction.PosY,
+		ImagePath:        attraction.ImagePath,
 	}
 
 	return attractionDTO

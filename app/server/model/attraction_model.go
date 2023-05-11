@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 type Attraction struct {
 	gorm.Model
 
-	Name             string  `gorm:"column:name"`
+	Name             string  `gorm:"column:name;unique"`
 	Description      string  `gorm:"column:description"`
 	Duration         int     `gorm:"column:duration"`
 	Capacity         int     `gorm:"column:capacity"`
@@ -13,4 +13,5 @@ type Attraction struct {
 	NextTurn         int     `gorm:"column:next_turn"`
 	PosX             float64 `gorm:"column:x"`
 	PosY             float64 `gorm:"column:y"`
+	ImagePath        string  `gorm:"column:image_path"`
 }

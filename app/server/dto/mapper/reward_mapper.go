@@ -10,6 +10,7 @@ func ToRewardDTO(reward *model.Reward) *dto.RewardDTO {
 		Name:        reward.Name,
 		Description: reward.Description,
 		Price:       reward.Price,
+		ImagePath:   reward.ImagePath,
 	}
 
 	return rewardDTO

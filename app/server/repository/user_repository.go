@@ -38,7 +38,7 @@ func (ur *UserRepository) DeleteUser(user *model.User) error {
 
 func (ur *UserRepository) GetUserByID(id int) (*model.User, error) {
 	var user model.User
-	err := ur.db.First(&user, id).Error
+	err := ur.db.Where("identification = ?", id).First(&user).Error
 	if err != nil {
 		return nil, err
 	}

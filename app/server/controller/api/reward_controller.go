@@ -2,6 +2,8 @@ package controller
 
 import (
 	"net/http"
+	controller "roller-tempo/controller/request"
+	utils "roller-tempo/controller/utils"
 	mapper "roller-tempo/dto/mapper"
 	"roller-tempo/model"
 	"roller-tempo/service"
@@ -19,17 +21,17 @@ func NewRewardController(rewardService *service.RewardService) *RewardController
 }
 
 func (rc *RewardController) Rewards(ctx echo.Context) error {
-	return ctx.String(http.StatusOK, "Hello, World!")
+	rewards, err := rc.rewardService.GetAllRewards()
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": rewards})
 }
 
 func (rc *RewardController) CreateNewReward(ctx echo.Context) error {
-	type createRewardRequest struct {
-		Name        string `json:"name"`
-		Description string `json:"description"`
-		Price       int    `json:"price"`
-	}
 
-	var request createRewardRequest
+	var request controller.CreateRewardRequest
 
 	err := ctx.Bind(&request)
 	if err != nil {
@@ -37,14 +39,14 @@ func (rc *RewardController) CreateNewReward(ctx echo.Context) error {
 	}
 
 	if request.Name == "" || request.Description == "" || request.Price <= 0 {
-		errorMessage := "Invalid request body. Please provide all the required fields."
-		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": errorMessage})
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": utils.BadRequest})
 	}
 
 	reward := model.Reward{
 		Name:        request.Name,
 		Description: request.Description,
 		Price:       request.Price,
+		ImagePath:   request.Name + ".jpg",
 	}
 
 	err = rc.rewardService.CreateReward(&reward)
@@ -52,7 +54,7 @@ func (rc *RewardController) CreateNewReward(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
 	}
 
-	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": "Reward created successfully"})
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
 }
 
 func (rc *RewardController) GetRewardByID(ctx echo.Context) error {
