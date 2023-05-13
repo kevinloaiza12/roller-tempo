@@ -7,32 +7,33 @@ personas = [
      "coins": 50,
      "id": 1012002,
      "turn": 0,
-     "atraction": "NA"
+     "attraction": "NA"
     },
     {
      "coins": 60,
      "id": 123456789,
      "turn": 0,
-     "atraction": "NA"
+     "attraction": "NA"
     },
     {
      "coins": 20,
      "id": 987654321,
      "turn": 0,
-     "atraction": "NA"
+     "attraction": "NA"
     }
 ]
 
 atracciones2 = [
-  {
+    {
     "capacity": 50,
     "description": "Fire",
     "duration": 60,
-    "name": "att1",
+    "name": "5",
     "nextTurn": 50,
-    "turn": 73,
+    "currentTurn": 73,
     "x": 20,
-    "y": 40
+    "y": 40,
+    "image": "logo.png"
   },
   {
     "capacity": 20,
@@ -40,9 +41,10 @@ atracciones2 = [
     "duration": 6,
     "name": "att2",
     "nextTurn": 501,
-    "turn": 781,
+    "currentTurn": 781,
     "x": 80,
-    "y": 120
+    "y": 120,
+    "image": "placeholder.jpg"
   },
   {
     "capacity": 1,
@@ -50,9 +52,10 @@ atracciones2 = [
     "duration": 1,
     "name": "att3",
     "nextTurn": 10,
-    "turn": 86,
+    "currentTurn": 86,
     "x": 100,
-    "y": 200
+    "y": 200,
+    "image": "premio_placeholder.jpg"
   }
 ]
 premios2 = [
@@ -76,25 +79,22 @@ premios2 = [
 
 # Create your views here.
 def phone(request):
-    res = requests.get('http://127.0.0.1:3000/API/rewardinfo/test')
-    response = json.loads(res.text)
-    print(response)
     return render(request, "test.html")
 
 def atracciones(request):
-    #global atracciones2
-    res = requests.get('http://127.0.0.1:3000/attractions')
+    global atracciones2
+    res = requests.get('http://127.0.0.1:3000/api/attractions')
     response = json.loads(res.text)
-    print(response)
-    return render(request, "atracciones.html", {"atracciones":response})
+    print(response['message'])
+    return render(request, "atracciones.html", {"atracciones":response['message']})
 
 def pqr(request):
     return render(request, "pqr.html")
 
 def premios(request):
-    #global premios2
-    res = requests.get('http://127.0.0.1:3000/rewards')
-    response = json.loads(res.text)
+    global premios2
+    res = requests.get('http://127.0.0.1:3000/api/rewards')
+    response = json.loads(res.text)['message']
     print(response)
     return render(request, "premios.html", {"premios":response})
 
@@ -110,46 +110,29 @@ def usuario_info(request, data):
       return render(request, "usuario.html")
     
 def buscar(request):
-    result = 0
-    for person in personas:
-        print(person['id'])
-        print(request.POST["id"])
-        if int(person['id']) == int(request.POST["id"]):
-            result = person
-    res = requests.get('http://127.0.0.1:3000/api/userinfo/'+request.POST["id"])
+    response = 0
+    res = requests.get('http://127.0.0.1:3000/api/users/'+request.POST["id"])
     response = json.loads(res.text)
     print(response)
     
-    if result != 0:
+    if response != 0:
         return usuario_info(request, response)
     else:
         return usuario_info(request, 0)
 
 
 def atraccion(request, nombre):
-    # for a in atracciones2:
-    #     if(a['name'] == nombre):
-    #         atrac = a
-    #         break
-    #next_turn = atrac['nextTurn']+atrac['capacity']
-    # print(atrac['turn']-atrac['nextTurn'])
-    # time = (math.floor((atrac['turn']-atrac['nextTurn'])/atrac['capacity'])*atrac['duration'])
-    res = requests.get('http://127.0.0.1:3000/api/attractioninfo/'+nombre)
+    res = requests.get('http://127.0.0.1:3000/api/attractions/'+nombre)
     response = json.loads(res.text)
-    next_turn = response['nextTurn']+response['capacity']
-    time = (math.floor((response['currentTurn']-response['nextTurn'])/response['capacity'])*response['duration'])
-    print(response)
+    next_turn = response['NextTurn']+response['Capacity']
+    time = (math.floor((response['CurrentRoundTurn']-response['NextTurn'])/response['Capacity'])*response['Duration'])
     if time < 0:
         time = 0
     print(time)
-    return render(request, "atraccion.html", {"atraccion":response, "next_turn":next_turn, "time":time})
+    return render(request, "atraccion.html", {"atraccion":response, "next_turn":next_turn, "time":time, "id":nombre})
 
 def premio(request, nombre):
-    # for a in premios2:
-    #     if(a['name'] == nombre):
-    #         prem = a
-    #         break
-    res = requests.get('http://127.0.0.1:3000/api/rewardinfo/'+nombre)
+    res = requests.get('http://127.0.0.1:3000/api/rewards/'+nombre)
     response = json.loads(res.text)
     print(response)
     return render(request, "premio.html", {"premio":response})
@@ -157,37 +140,36 @@ def premio(request, nombre):
 
 def mapa(request):
     time = []
-    res = requests.get('http://127.0.0.1:3000/attractions')
-    response = json.loads(res.text)
+    response2 = []
+    res = requests.get('http://127.0.0.1:3000/api/attractions')
+    response = json.loads(res.text)['message']
     print(response)
     for atrac in response:
-        time.append(math.floor((atrac['currentTurn']-atrac['nextTurn'])/atrac['capacity'])*atrac['duration'])
+        t = (math.floor((atrac['CurrentRoundTurn']-atrac['NextTurn'])/atrac['Capacity'])*atrac['Duration'])
+        if t > 0:
+            time.append(t)
+        else:
+            time.append(0)
+        del atrac["DeletedAt"]
     return render(request, "mapa.html", {"atracciones": response, "times":time})
 
 
 def pedir_turno(request, nombre):
-    # result = 0
-    # for atrac in atracciones2:
-    #     if atrac['name'] == nombre:
-    #         at = atrac
-    #         break
-    # for person in personas:
-    #     print(person['id'])
-    #     print(request.POST["id"])
-    #     if int(person['id']) == int(request.POST["id"]):
-    #         person['turn'] = atrac['turn']
-    #         person['atraction'] = atrac['name']
-    #         result = person
+    response = 0
+    print(nombre)
+    print(int(request.POST["id"]))
     params ={
-        "Id":int(request.POST["id"]),
-        "Attraction": nombre,
+        "UserID":int(request.POST["id"]),
+        "AttractionID": int(nombre),
     }
-    res = requests.post("http://127.0.0.1:3000/api/usernextturn/", json=params)
+    res = requests.post("http://127.0.0.1:3000/api/users/turn", json=params)
     response = json.loads(res.text)
     print(response)
-    if response['message'] == 'Registro exitoso':
-        res = requests.get('http://127.0.0.1:3000/api/userinfo/'+request.POST["id"])
+    print("hola")
+    if'error' in response:
+        return redirect('atraccion', nombre=nombre)
+    else:
+        res = requests.get('http://127.0.0.1:3000/api/users/'+request.POST["id"])
         response = json.loads(res.text)
         return usuario_info(request, response)
-    else:
-        return usuario_info(request, 0)
+        

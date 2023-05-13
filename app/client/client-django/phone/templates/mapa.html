@@ -37,14 +37,14 @@
     var times = {{times|safe}}
     console.log(atracc);
     for (let i = 0; i < atracc.length; i++){
-        var marker = L.marker([atracc[i]['x'], atracc[i]['y']]).addTo(map);
+        var marker = L.marker([atracc[i]['PosX'], atracc[i]['PosY']]).addTo(map);
         var customOptions =
             {
             'maxWidth': '100',
             'width': '50',
             'className' : 'marker_image'
             }
-        marker.bindPopup("<a class='link_container' href='/atraccion/"+ atracc[i]['name'] +"'><img class='image' src=" + placeholder + "/><p class='title'>" + atracc[i]['name'] + "</p><div class='time_container'> <i class='fa-regular fa-clock icon'></i> <p class='time_text'>" +times[i] + " </p></div></a>");
+        marker.bindPopup("<a class='link_container' href='/atraccion/"+ atracc[i]['ID'] +"'><img class='image' src= /media/" + atracc[i]['ImagePath'] + "><p class='title'>" + atracc[i]['Name'] + "</p><div class='time_container'> <i class='fa-regular fa-clock icon'></i> <p class='time_text'>" +times[i] + " </p></div></a>");
     }
     // var marker = L.marker([20, 50]).addTo(map);
     // var marker2 = L.marker([100, 100]).addTo(map);

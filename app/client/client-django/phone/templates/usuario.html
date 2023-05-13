@@ -18,14 +18,18 @@
     <p class="info_tittle">Puntos adquiridos</p>
     <div class="user_info">
         <i class="fa-sharp fa-solid fa-coins price_icon_3"></i>
-        <p id ="coins_user">{{data.coins}}</p>
+        <p id ="coins_user">{{data.Coins}}</p>
     </div>
     <div class="separator"></div>
     <p class="info_tittle">Fila Actual</p>
     <div id="image_container"> 
-    <img class="atraccion_image"src="{% static 'images/placeholder.jpg' %}"/>
+      <img class="atraccion_image"src="{% static 'images/placeholder.jpg' %}"/>
     </div>
-    <p id="user_turn_info">{{data.attraction}}: Turno {{data.turn}}</p>
+    <div id="info-options">
+      <p id="user_turn_info">{{data.Attraction}}: Turno {{data.Turn}}</p>
+      <a href="Hola chavales" id="cancel-turn"><p id="text-no-margin">Cancel Turn</p></a>
+    </div>
+    
   </div>
   {% endif %}
 </main>

@@ -1,0 +1,11 @@
+{% extends 'desktop_Attr.html' %}
+
+{% block content %}
+
+<p id="take-text">Registra o usa tu turno en esta sección!</p>
+<div id="actions">
+  <a class="submit" href="{% url 'register' nombre=id %}">Registro Turno</a>
+  <a class="submit" href="{% url 'use' nombre=id %}">Uso de Turnos</a>
+</div>
+
+{% endblock %}

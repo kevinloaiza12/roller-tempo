@@ -8,12 +8,12 @@
     <header>
       <h1 id="header-text"> Atracciones </h1>
     </header>
-    {% for atraccion in atracciones %}
-      <a href="{% url 'atraccion' nombre=atraccion.name %}" class="atraccion_link">
+    {% for atraccion in atracciones %}  
+      <a href="{% url 'atraccion' nombre=atraccion.ID %}" class="atraccion_link">
         <div class="atraccion-container">
-          <img class="atraccion-image"src="{% static 'images/placeholder.jpg' %}"/>
+          <img class="atraccion-image"src="/media/{{atraccion.ImagePath}}"/>
           <div class="atraccion-info">
-            <h1 class="atraccion-title">{{atraccion.name}}</h1>
+            <h1 class="atraccion-title">{{atraccion.Name}}</h1>
           </div>
         </div>
       </a>

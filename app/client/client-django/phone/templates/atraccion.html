@@ -18,9 +18,9 @@
         <h1 id="header-text"> Atraccion </h1>
     </header>
     <div id="atraccion-container">
-        <img id="atraccion-image" src="{% static 'images/placeholder.jpg' %}"/>
-        <h1 id="atraccion-title">{{atraccion.name}}</h1>
-        <p id="atraccion-desc">{{atraccion.description}}</p>
+        <img id="atraccion-image" src="/media/{{atraccion.ImagePath}}"/>
+        <h1 id="atraccion-title">{{atraccion.Name}}</h1>
+        <p id="atraccion-desc">{{atraccion.Description}}</p>
         <div class="separator"></div>
         <h1 id="atraccion-title">Ubicacion</h1>
         <div id="map_container">
@@ -37,11 +37,11 @@
             </div>
             <div class="fila-sub-container">
                 <i class="fa-solid fa-light fa-people-line icon"></i>
-            <p class="icon-text">Turnos: {{atraccion.nextTurn}} - {{next_turn}}</p>
+            <p class="icon-text">Turnos: {{atraccion.NextTurn}} - {{next_turn}}</p>
             </div>
         </div>
         <div class="separator"></div>
-        <form id="user-turn" action="{% url 'pedir_turno' atraccion.name%}" method="post">{% csrf_token %}
+        <form id="user-turn" action="{% url 'pedir_turno' id%}" method="post">{% csrf_token %}
             <input type="number" id="user_id" name="id" required/>
             <input type="submit" value="Pedir turno" id="user-turn-button"></input>
         </form>
@@ -54,7 +54,7 @@
         maxZoom: 24,
         minZoom: 0.5,
         crs: L.CRS.Simple,
-    }).setView([atracc['x'], atracc['y']], 1);
+    }).setView([atracc['PosX'], atracc['PosY']], 1);
 
     map.setMaxBounds(new L.LatLngBounds([0,360], [360,0]));
 
@@ -64,7 +64,7 @@
     L.imageOverlay(imageUrl, imageBounds).addTo(map);
     
     console.log(atracc);
-    var marker = L.marker([atracc['x'], atracc['y']]).addTo(map);
+    var marker = L.marker([atracc['PosX'], atracc['PosY']]).addTo(map);
     var customOptions =
         {
         'maxWidth': '100',
