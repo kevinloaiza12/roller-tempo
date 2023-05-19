@@ -16,6 +16,27 @@
 
 }
 
+#text-no-margin{
+    margin: 0px;
+}
+
+#cancel-turn{
+    padding:  3px;
+    background-color: red;
+    color:white;
+    height: 20px;
+    border-radius: 15px;
+
+}
+
+
+#info-options{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #input-label{
     margin: 0px;
     font-size: 25px;

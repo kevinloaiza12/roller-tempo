@@ -14,20 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from phone import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('phone/', views.phone, name='phone'),
-    path('pqr/', views.pqr, name='pqr'),
-    path('atracciones/', views.atracciones, name='atracciones'),
-    path('premios/', views.premios, name='premios'),
-    path('usuario/', views.usuario, name='usuarios'),
-    path('usuario/<slug:nombre>', views.usuario, name='usuarios'),
-    path('atraccion/<slug:nombre>', views.atraccion, name='atraccion'),
-    path('premio/<slug:nombre>', views.premio, name='premio'),
-    path('buscar/', views.buscar, name='buscar'),
-    path('mapa/', views.mapa, name='mapa'),
-    path('pedir_turno/<slug:nombre>', views.pedir_turno, name='pedir_turno'),
-]
+    path('', include('phone.urls')),
+    path('', include('desktop.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

@@ -12,12 +12,12 @@
         <h1 id="header-text"> Premios </h1>
     </header>
     <div id="premio-container">
-        <img id="premio-img" src="{% static 'images/premio_placeholder.jpg' %}"/>
-        <h1 id="premio-title">{{premio.name}}</h1>
-        <p id="premio-desc">{{premio.description}}</p>
+        <img id="premio-img" src="/media/{{premio.ImagePath}}"/>
+        <h1 id="premio-title">{{premio.Name}}</h1>
+        <p id="premio-desc">{{premio.Description}}</p>
         <div id="price">
           <i class="fa-sharp fa-solid fa-coins price_icon"></i>
-          <p id="price_number"> {{premio.price}}</p>
+          <p id="price_number"> {{premio.Price}}</p>
         </div>
     </div>
   </main>

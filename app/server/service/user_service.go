@@ -101,7 +101,7 @@ func (us *UserService) RemoveTurn(id int) error {
 	if err != nil {
 		return err
 	}
-
+	user.Attraction = 0
 	user.Turn = 0
 
 	return us.UpdateUser(user)

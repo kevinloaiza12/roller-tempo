@@ -1,0 +1,11 @@
+{% extends 'desktop_Attr.html' %}
+
+{% block content %}
+
+<p id="take-text">Realiza tu registro ingresando tu ID</p>
+<form action="/desktop/attractiones/registrar/" method="POST" id="user-form"> {% csrf_token %}
+    <input id="user-input" type="number" name="id" required/>
+    <input type="hidden" name="attr" value='{{id}}' required/>
+    <input type="submit" value="Consultar" id="user-submit">
+  </form>
+{% endblock %}
