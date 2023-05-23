@@ -14,4 +14,5 @@ urlpatterns = [
     path('buscar/', views.buscar, name='buscar'),
     path('mapa/', views.mapa, name='mapa'),
     path('pedir_turno/<slug:nombre>', views.pedir_turno, name='pedir_turno'),
+    path('cancel_turn/<slug:nombre>', views.cancelar_turno, name='cancel_turn'),
 ]

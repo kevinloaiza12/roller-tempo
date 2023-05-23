@@ -1,0 +1,49 @@
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+#container{
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    row-gap: 25px;
+    padding: 100px;
+    font-family: sans-serif;
+}
+
+.premios-image{
+    width: 200px;
+}
+
+.premios-container{
+    display: flex;
+    flex-direction: column;
+    border: solid black;
+    border-radius: 15px;
+    width: 250px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.premios-info{
+    display: flex;
+}
+
+#price_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.price_icon_2{
+    color:red;
+}
+
+#title{
+    text-align: center;
+    font-family: sans-serif;
+}

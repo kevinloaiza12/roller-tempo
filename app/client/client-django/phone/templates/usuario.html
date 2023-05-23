@@ -27,7 +27,7 @@
     </div>
     <div id="info-options">
       <p id="user_turn_info">{{data.Attraction}}: Turno {{data.Turn}}</p>
-      <a href="Hola chavales" id="cancel-turn"><p id="text-no-margin">Cancel Turn</p></a>
+      <a href="{% url 'cancel_turn' nombre=data.Identification %}" id="cancel-turn"><p id="text-no-margin">Cancel Turn</p></a>
     </div>
     
   </div>

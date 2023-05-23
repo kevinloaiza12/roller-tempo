@@ -173,3 +173,10 @@ def pedir_turno(request, nombre):
         response = json.loads(res.text)
         return usuario_info(request, response)
         
+
+def cancelar_turno(request, nombre):
+    requests.put("http://127.0.0.1:3000/api/users/"+ nombre +"/removeturn")
+    requests.post("http://127.0.0.1:3000/api/users/"+ nombre +"/penalize?amount=5")
+    res = requests.get('http://127.0.0.1:3000/api/users/'+nombre)
+    response = json.loads(res.text)
+    return usuario_info(request, response)
