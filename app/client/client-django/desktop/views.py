@@ -133,3 +133,16 @@ def usar_t(request):
     return redirect('use', nombre=request.POST['attr'])
 
         
+def rewards(request):
+    global premios2
+    res = requests.get('http://127.0.0.1:3000/api/rewards')
+    response = json.loads(res.text)['message']
+    print(response)
+    return render(request, "rewards.html", {"premios":response})
+
+
+def reward(request, nombre):
+    res = requests.get('http://127.0.0.1:3000/api/rewards/'+nombre)
+    response = json.loads(res.text)
+    print(response)
+    return render(request, "reward.html", {"premio":response})
