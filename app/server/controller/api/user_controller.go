@@ -139,3 +139,23 @@ func (uc *UserController) PenalizeUser(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
 }
+
+func (uc *UserController) BuyReward(ctx echo.Context) error {
+	var request controller.BuyRewardRequest
+
+	err := ctx.Bind(&request)
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	if request.UserID <= 0 || request.RewardID <= 0 {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": utils.BadRequest})
+	}
+
+	err = uc.userService.BuyReward(request.UserID, request.RewardID)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
+}

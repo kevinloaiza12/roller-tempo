@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"roller-tempo/model"
 	"roller-tempo/repository"
 )
@@ -8,12 +9,14 @@ import (
 type UserService struct {
 	userRepository    *repository.UserRepository
 	attractionService *AttractionService
+	rewardService     *RewardService
 }
 
-func NewUserService(userRepo *repository.UserRepository, attractionService *AttractionService) *UserService {
+func NewUserService(userRepo *repository.UserRepository, attractionService *AttractionService, rewardService *RewardService) *UserService {
 	return &UserService{
 		userRepository:    userRepo,
 		attractionService: attractionService,
+		rewardService:     rewardService,
 	}
 }
 
@@ -130,5 +133,24 @@ func (us *UserService) PenalizeUser(userID int, amount int) error {
 		user.Coins = 0
 	}
 
+	return us.UpdateUser(user)
+}
+
+func (us *UserService) BuyReward(userID int, rewardID int) error {
+	user, err := us.userRepository.GetUserByID(userID)
+	if err != nil {
+		return err
+	}
+
+	reward, err := us.rewardService.GetRewardByID(rewardID)
+	if err != nil {
+		return err
+	}
+
+	if user.Coins < reward.Price {
+		return errors.New("Insufficient balance")
+	}
+
+	user.Coins -= reward.Price
 	return us.UpdateUser(user)
 }
