@@ -7,14 +7,20 @@ a{
 #container{
     margin-top: 40px;
     display: grid;
-    grid-template-columns: auto auto auto auto;
-    row-gap: 25px;
+    grid-template-columns: auto auto auto;
+    row-gap: 30px;
     padding: 100px;
     font-family: sans-serif;
+    border: solid black;
+    border-radius: 15px;
+    width: 80%;
+    height: 600px;
+    background-color: rgba(250, 235, 215, 0.856);
+    justify-items: center;
 }
 
 .premios-image{
-    width: 200px;
+    height: 200px;
 }
 
 .premios-container{
@@ -22,9 +28,11 @@ a{
     flex-direction: column;
     border: solid black;
     border-radius: 15px;
-    width: 250px;
+    width: 400px;
+    height: 300px;
     justify-content: center;
     align-items: center;
+    margin: 0px;
     
 }
 
@@ -46,4 +54,14 @@ a{
 #title{
     text-align: center;
     font-family: sans-serif;
+    color: white;
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }

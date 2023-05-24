@@ -9,17 +9,23 @@
     <script src="https://kit.fontawesome.com/eea4a3a7bd.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
-<body>
+<body style="background-image: url('/media/reward.jpg');">
     <div id="premio-container">
         <img id="premio-img" src="/media/{{premio.ImagePath}}"/>
         <div id="info_container">
-            <h1 id="premio-title">{{premio.Name}}</h1>
-            <p id="premio-desc">{{premio.Description}}</p>
             <div id="price">
+                <h1 id="premio-title">{{premio.Name}}</h1>
                 <i class="fa-sharp fa-solid fa-coins price_icon"></i>
                 <p id="price_number"> {{premio.Price}}</p>
             </div>
-            <a id="buy">Comprar</a>
+            <p id="premio-desc">{{premio.Description}}</p>
+            
+            <p id="premio_id">Ingresa tu Id para comprar!</p>
+            <form id="user-turn" action="{% url 'buy_reward'%}" method="post">{% csrf_token %}
+                <input type="number" id="user_id" name="user_id" required/>
+                <input type="number" name="reward_id" value={{id}} hidden/>
+                <input id="buy" type="submit" value="Comprar" id="user-turn-button"></input>
+            </form>
         </div>
     </div>
 </body>

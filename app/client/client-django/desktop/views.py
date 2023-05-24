@@ -145,4 +145,19 @@ def reward(request, nombre):
     res = requests.get('http://127.0.0.1:3000/api/rewards/'+nombre)
     response = json.loads(res.text)
     print(response)
-    return render(request, "reward.html", {"premio":response})
+    return render(request, "reward.html", {"premio":response, "id":nombre})
+
+
+def buy_reward(request):
+    params ={
+        "UserID":int(request.POST["user_id"]),
+        "RewardID": int(request.POST["reward_id"]),
+    }
+    res = requests.post("http://127.0.0.1:3000/api/users/buyreward", json=params)
+    response = json.loads(res.text)
+    print(response)
+    print("hola")
+    if'error' in response:
+        return redirect('reward', nombre=request.POST['reward_id'])
+    else:
+        return redirect('rewards')

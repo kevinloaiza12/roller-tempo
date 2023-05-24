@@ -3,33 +3,76 @@
 }
 
 #premio-container{
-    margin-top: 100px;
-    margin-left: 60px;
     display: flex;
     font-family: sans-serif;
+    margin-top: 40px;
+    display: flex;
+    padding: 100px;
+    border: solid black;
+    border-radius: 15px;
+    width: 80%;
+    height: 600px;
+    background-color: rgba(250, 235, 215, 0.822);
 }
 
 #info_container{
     display: flex;
     flex-direction: column;
-    margin-left: 100px;
     margin-top: 50px;
+    margin-left: 160px;
 }
 
 #price{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: baseline;
 }
 
 #buy{
     border: solid red;
     border-radius: 15px;
     padding: 5px;
+    width: 160px;
 }
 
 #buy:hover{
     
     background-color: #FF0303;
     color: white;
+}
+
+#premio-title{
+    font-size: 48px;
+}
+
+.price_icon{
+    font-size: 24px;
+    margin-left: 20px;
+}
+
+#price_number{
+    font-size: 24px;
+}
+
+#user-turn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#premio-img{
+    width: 800px;
+    object-fit: contain;
+}
+
+#premio_id{
+    text-align: center;
 }
