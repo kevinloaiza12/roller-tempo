@@ -18,7 +18,6 @@ import (
 )
 
 func main() {
-
 	ctx := context.Background()
 
 	envErr := godotenv.Load("config.env")
