@@ -151,7 +151,7 @@ def mapa(request):
     response = json.loads(res.text)['message']
     print(response)
     for atrac in response:
-        t = (math.floor((atrac['CurrentRoundTurn']-atrac['NextTurn'])/atrac['Capacity'])*atrac['Duration'])
+        t = (math.floor((atrac['NextTurn']-atrac['CurrentRoundTurn'])/atrac['Capacity'])*atrac['Duration'])
         if t > 0:
             time.append(t)
         else:
