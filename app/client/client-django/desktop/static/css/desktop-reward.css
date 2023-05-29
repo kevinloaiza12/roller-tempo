@@ -1,18 +1,28 @@
+body, html{
+    margin: 0;
+}
+
 #premio-img{
     width: 600px;
+}
+
+#nav{
+    height: 80px;
+    width: 100%;
+    background-color: rgb(216, 216, 216);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #premio-container{
     display: flex;
     font-family: sans-serif;
-    margin-top: 40px;
     display: flex;
     padding: 100px;
-    border: solid black;
     border-radius: 15px;
     width: 80%;
     height: 600px;
-    background-color: rgba(250, 235, 215, 0.822);
 }
 
 #info_container{
@@ -32,7 +42,17 @@
     border: solid red;
     border-radius: 15px;
     padding: 5px;
-    width: 160px;
+    height: 50px;
+    width: 220px;
+}
+
+#logo{
+    height: 60px;
+}
+
+#nav_title{
+    font-size: 48px;
+    margin: 0;
 }
 
 #buy:hover{
@@ -42,16 +62,24 @@
 }
 
 #premio-title{
-    font-size: 48px;
+    
+    font-size:82px;
+    margin: 0;
+    margin-top: 30px;
 }
 
 .price_icon{
-    font-size: 24px;
+    font-size: 34px;
     margin-left: 20px;
 }
 
 #price_number{
-    font-size: 24px;
+    font-size: 34px;
+
+}
+
+#premio-desc{
+    margin-left: 15px;
 }
 
 #user-turn{
@@ -62,17 +90,19 @@
     align-items: center;
 }
 
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 #premio-img{
     width: 800px;
     object-fit: contain;
 }
 
 #premio_id{
+    margin-top: 120px;
+    font-size: 36px;
     text-align: center;
+}
+
+#user_id{
+    width: 240px;
+    height: 30px;
+    font-size: large;
 }

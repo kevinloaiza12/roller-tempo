@@ -9,10 +9,15 @@
     <script src="https://kit.fontawesome.com/eea4a3a7bd.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
-<body style="background-image: url('/media/reward.jpg');">
+<body>
+    <nav id="nav">
+        <p id="nav_title">RollerTempo</p>
+        <img id="logo"src="{% static './images/logo.png' %}"/>
+      </nav>
     <div id="premio-container">
         <img id="premio-img" src="/media/{{premio.ImagePath}}"/>
         <div id="info_container">
+            
             <div id="price">
                 <h1 id="premio-title">{{premio.Name}}</h1>
                 <i class="fa-sharp fa-solid fa-coins price_icon"></i>

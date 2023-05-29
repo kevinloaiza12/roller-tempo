@@ -9,8 +9,11 @@
     <link rel="stylesheet" href="{% static 'css/desktop-rewards.css' %}" type="text/css" />
     <title>Document</title>
 </head>
-<body style="background-image: url('/media/reward.jpg');">
-  <h1 id="title">Premios</h1>
+<body>
+  <nav id="nav">
+    <p id="nav_title">RollerTempo</p>
+    <img id="logo"src="{% static './images/logo.png' %}"/>
+  </nav>
   <div id="container">
     {% for premio in premios %}
     <a href="{% url 'reward' nombre=premio.ID %}" class="atraccion_link">

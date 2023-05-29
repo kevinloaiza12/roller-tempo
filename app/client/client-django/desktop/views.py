@@ -72,8 +72,8 @@ def atraccion(request, nombre):
     if time < 0:
         time = 0
     print(time)
-    turns = [*range(response['CurrentRoundTurn'], response['CurrentRoundTurn']+response['Capacity'])]
-    return render(request, "Attr_default.html", {"atraccion":response, "turns":turns, "next_turn":next_turn, "time":time, "id":nombre})
+    last_turn = response['CurrentRoundTurn']+response['Capacity']
+    return render(request, "Attr_default.html", {"atraccion":response, "last_turn":last_turn, "next_turn":next_turn, "time":time, "id":nombre})
 
 
 def registrar_turno(request, nombre):
