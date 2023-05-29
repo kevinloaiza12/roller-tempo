@@ -45,7 +45,6 @@ func (as *AttractionService) GetNextAvailableTurn(attractionID int) (int, error)
 }
 
 func (as *AttractionService) GetNextRoundTurns(attractionID int) ([]int, error) {
-
 	attraction, err := as.attractionRepository.GetAttractionByID(attractionID)
 	if err != nil {
 		return nil, err
@@ -60,4 +59,15 @@ func (as *AttractionService) GetNextRoundTurns(attractionID int) ([]int, error) 
 	}
 
 	return nextRoundTurns, nil
+}
+
+func (as *AttractionService) UpdateAttractionTurns(attractionID int) error {
+	attraction, err := as.attractionRepository.GetAttractionByID(attractionID)
+	if err != nil {
+		return err
+	}
+
+	attraction.CurrentRoundTurn = attraction.CurrentRoundTurn + attraction.Capacity
+
+	return as.attractionRepository.UpdateAttraction(attraction)
 }

@@ -30,7 +30,6 @@ func (ac *AttractionController) Attractions(ctx echo.Context) error {
 }
 
 func (ac *AttractionController) CreateNewAttraction(ctx echo.Context) error {
-
 	var request controller.CreateAttractionRequest
 
 	err := ctx.Bind(&request)
@@ -64,7 +63,6 @@ func (ac *AttractionController) CreateNewAttraction(ctx echo.Context) error {
 }
 
 func (ac *AttractionController) GetAttractionByID(ctx echo.Context) error {
-
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
@@ -79,7 +77,6 @@ func (ac *AttractionController) GetAttractionByID(ctx echo.Context) error {
 }
 
 func (ac *AttractionController) GetNextRoundTurns(ctx echo.Context) error {
-
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
@@ -91,4 +88,18 @@ func (ac *AttractionController) GetNextRoundTurns(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, turns)
+}
+
+func (ac *AttractionController) UpdateAttractionTurns(ctx echo.Context) error {
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
+	}
+
+	err = ac.attractionService.UpdateAttractionTurns(id)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"message": utils.OK})
 }
