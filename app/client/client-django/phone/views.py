@@ -105,7 +105,13 @@ def usuario(request):
 def usuario_info(request, data):
     print(data)
     if data != 0:
-      return render(request, "usuario.html", {"data":data})
+      res = requests.get('http://127.0.0.1:3000/api/attractions/'+str(data['Attraction']))
+      response = json.loads(res.text)
+      print(response)
+      if 'error' in response:
+          response['ImagePath'] = '/queue.jpg'
+          response['Name'] = 'No estas en fila'
+      return render(request, "usuario.html", {"data":data, "attraction":response})
     else:
       return render(request, "usuario.html")
     
@@ -124,8 +130,8 @@ def buscar(request):
 def atraccion(request, nombre):
     res = requests.get('http://127.0.0.1:3000/api/attractions/'+nombre)
     response = json.loads(res.text)
-    next_turn = response['NextTurn']+response['Capacity']
-    time = (math.floor((response['CurrentRoundTurn']-response['NextTurn'])/response['Capacity'])*response['Duration'])
+    next_turn = response['CurrentRoundTurn']+response['Capacity']
+    time = (math.floor((response['NextTurn']-response['CurrentRoundTurn'])/response['Capacity'])*response['Duration'])
     if time < 0:
         time = 0
     print(time)
@@ -145,7 +151,7 @@ def mapa(request):
     response = json.loads(res.text)['message']
     print(response)
     for atrac in response:
-        t = (math.floor((atrac['CurrentRoundTurn']-atrac['NextTurn'])/atrac['Capacity'])*atrac['Duration'])
+        t = (math.floor((atrac['NextTurn']-atrac['CurrentRoundTurn'])/atrac['Capacity'])*atrac['Duration'])
         if t > 0:
             time.append(t)
         else:

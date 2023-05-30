@@ -10,7 +10,10 @@
     <title>Document</title>
 </head>
 <body>
-  <h1 id="title">Premios</h1>
+  <nav id="nav">
+    <p id="nav_title">RollerTempo</p>
+    <img id="logo"src="{% static './images/logo.png' %}"/>
+  </nav>
   <div id="container">
     {% for premio in premios %}
     <a href="{% url 'reward' nombre=premio.ID %}" class="atraccion_link">

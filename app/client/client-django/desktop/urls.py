@@ -10,4 +10,6 @@ urlpatterns = [
     path('desktop/attraction/<slug:nombre>/', views.atraccion, name="attraction"),
     path('desktop/rewards/', views.rewards, name="rewards"),
     path('desktop/reward/<slug:nombre>/', views.reward, name="reward"),
+    path('desktop/buy_reward/', views.buy_reward, name="buy_reward"),
+    
 ]

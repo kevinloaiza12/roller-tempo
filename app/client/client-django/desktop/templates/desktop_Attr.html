@@ -10,9 +10,30 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="atraccion-container" style="background-image: url('/media/{{atraccion.ImagePath}}');">
-        <div id="turnos">
-            <h1 id="atraccion-name">{{atraccion.Name}}</h1>
+  <div id="main_container"> 
+    <div id="atraccion-container">
+      <h1 id="atraccion-name">{{atraccion.Name}}</h1>
+      <p id="atraccion_desc">{{atraccion.Description}}</p>
+      <div class="section">
+        <div class="title">
+          <i class="fa-solid fa-light fa-people-line icon"></i>
+          <p class="section_title">Turnos</p>
+        </div>
+        <p class="section_content">{{atraccion.CurrentRoundTurn}}...{{last_turn}}</p>
+      </div>
+      <div class="section">
+        <div class="title">
+          <i class="fa-regular fa-clock icon"></i>
+          <p class="section_title">Tiempo</p>
+        </div>
+        <p class="section_content">{{time}} min</p>
+      </div>
+      <div id="take-turn">
+        {% block content %}
+        {% endblock %}
+      </div> 
+        <!-- <div id="turnos">
+            
             <div id="info-container">
               <i class="fa-solid fa-light fa-people-line icon"></i>
               <h2 id="title">Proximos Turnos</h2>
@@ -23,11 +44,11 @@
               {% endfor %}
             </div>
         </div>
-
-        <div id="take-turn">
-          {% block content %}
-          {% endblock %}
-        </div>
+-->
     </div>
+    <div id="image_container">
+      <img id="attraction_image" src='/media/{{atraccion.ImagePath}}'>
+    </div>
+  </div>
 </body>
 </html>
