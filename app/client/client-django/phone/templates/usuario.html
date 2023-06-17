@@ -23,11 +23,11 @@
     <div class="separator"></div>
     <p class="info_tittle">Fila Actual</p>
     <div id="image_container"> 
-      <img class="atraccion_image"src="{% static 'images/placeholder.jpg' %}"/>
+      <img class="atraccion_image"src="/media/{{attraction.ImagePath}}"/>
     </div>
     <div id="info-options">
-      <p id="user_turn_info">{{data.Attraction}}: Turno {{data.Turn}}</p>
-      <a href="Hola chavales" id="cancel-turn"><p id="text-no-margin">Cancel Turn</p></a>
+      <p id="user_turn_info">{{attraction.Name}}: Turno {{data.Turn}}</p>
+      <a href="{% url 'cancel_turn' nombre=data.Identification %}" id="cancel-turn"><p id="text-no-margin">Cancel Turn</p></a>
     </div>
     
   </div>

@@ -1,0 +1,108 @@
+body, html{
+    margin: 0;
+}
+
+#premio-img{
+    width: 600px;
+}
+
+#nav{
+    height: 80px;
+    width: 100%;
+    background-color: rgb(216, 216, 216);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#premio-container{
+    display: flex;
+    font-family: sans-serif;
+    display: flex;
+    padding: 100px;
+    border-radius: 15px;
+    width: 80%;
+    height: 600px;
+}
+
+#info_container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-left: 160px;
+}
+
+#price{
+    display: flex;
+    justify-content: left;
+    align-items: baseline;
+}
+
+#buy{
+    border: solid red;
+    border-radius: 15px;
+    padding: 5px;
+    height: 50px;
+    width: 220px;
+}
+
+#logo{
+    height: 60px;
+}
+
+#nav_title{
+    font-size: 48px;
+    margin: 0;
+}
+
+#buy:hover{
+    
+    background-color: #FF0303;
+    color: white;
+}
+
+#premio-title{
+    
+    font-size:82px;
+    margin: 0;
+    margin-top: 30px;
+}
+
+.price_icon{
+    font-size: 34px;
+    margin-left: 20px;
+}
+
+#price_number{
+    font-size: 34px;
+
+}
+
+#premio-desc{
+    margin-left: 15px;
+}
+
+#user-turn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#premio-img{
+    width: 800px;
+    object-fit: contain;
+}
+
+#premio_id{
+    margin-top: 120px;
+    font-size: 36px;
+    text-align: center;
+}
+
+#user_id{
+    width: 240px;
+    height: 30px;
+    font-size: large;
+}

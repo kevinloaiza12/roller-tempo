@@ -83,7 +83,7 @@ def phone(request):
 
 def atracciones(request):
     global atracciones2
-    res = requests.get('http://127.0.0.1:3000/api/attractions')
+    res = requests.get('http://35.202.112.126:3000/api/attractions')
     response = json.loads(res.text)
     print(response['message'])
     return render(request, "atracciones.html", {"atracciones":response['message']})
@@ -93,7 +93,7 @@ def pqr(request):
 
 def premios(request):
     global premios2
-    res = requests.get('http://127.0.0.1:3000/api/rewards')
+    res = requests.get('http://35.202.112.126:3000/api/rewards')
     response = json.loads(res.text)['message']
     print(response)
     return render(request, "premios.html", {"premios":response})
@@ -105,13 +105,19 @@ def usuario(request):
 def usuario_info(request, data):
     print(data)
     if data != 0:
-      return render(request, "usuario.html", {"data":data})
+      res = requests.get('http://35.202.112.126:3000/api/attractions/'+str(data['Attraction']))
+      response = json.loads(res.text)
+      print(response)
+      if 'error' in response:
+          response['ImagePath'] = '/queue.jpg'
+          response['Name'] = 'No estas en fila'
+      return render(request, "usuario.html", {"data":data, "attraction":response})
     else:
       return render(request, "usuario.html")
     
 def buscar(request):
     response = 0
-    res = requests.get('http://127.0.0.1:3000/api/users/'+request.POST["id"])
+    res = requests.get('http://35.202.112.126:3000/api/users/'+request.POST["id"])
     response = json.loads(res.text)
     print(response)
     
@@ -122,17 +128,17 @@ def buscar(request):
 
 
 def atraccion(request, nombre):
-    res = requests.get('http://127.0.0.1:3000/api/attractions/'+nombre)
+    res = requests.get('http://35.202.112.126:3000/api/attractions/'+nombre)
     response = json.loads(res.text)
-    next_turn = response['NextTurn']+response['Capacity']
-    time = (math.floor((response['CurrentRoundTurn']-response['NextTurn'])/response['Capacity'])*response['Duration'])
+    next_turn = response['CurrentRoundTurn']+response['Capacity']
+    time = (math.floor((response['NextTurn']-response['CurrentRoundTurn'])/response['Capacity'])*response['Duration'])
     if time < 0:
         time = 0
     print(time)
     return render(request, "atraccion.html", {"atraccion":response, "next_turn":next_turn, "time":time, "id":nombre})
 
 def premio(request, nombre):
-    res = requests.get('http://127.0.0.1:3000/api/rewards/'+nombre)
+    res = requests.get('http://35.202.112.126:3000/api/rewards/'+nombre)
     response = json.loads(res.text)
     print(response)
     return render(request, "premio.html", {"premio":response})
@@ -141,11 +147,11 @@ def premio(request, nombre):
 def mapa(request):
     time = []
     response2 = []
-    res = requests.get('http://127.0.0.1:3000/api/attractions')
+    res = requests.get('http://35.202.112.126:3000/api/attractions')
     response = json.loads(res.text)['message']
     print(response)
     for atrac in response:
-        t = (math.floor((atrac['CurrentRoundTurn']-atrac['NextTurn'])/atrac['Capacity'])*atrac['Duration'])
+        t = (math.floor((atrac['NextTurn']-atrac['CurrentRoundTurn'])/atrac['Capacity'])*atrac['Duration'])
         if t > 0:
             time.append(t)
         else:
@@ -162,14 +168,21 @@ def pedir_turno(request, nombre):
         "UserID":int(request.POST["id"]),
         "AttractionID": int(nombre),
     }
-    res = requests.post("http://127.0.0.1:3000/api/users/turn", json=params)
+    res = requests.post("http://35.202.112.126:3000/api/users/turn", json=params)
     response = json.loads(res.text)
     print(response)
     print("hola")
     if'error' in response:
         return redirect('atraccion', nombre=nombre)
     else:
-        res = requests.get('http://127.0.0.1:3000/api/users/'+request.POST["id"])
+        res = requests.get('http://35.202.112.126:3000/api/users/'+request.POST["id"])
         response = json.loads(res.text)
         return usuario_info(request, response)
         
+
+def cancelar_turno(request, nombre):
+    requests.put("http://35.202.112.126:3000/api/users/"+ nombre +"/removeturn")
+    requests.post("http://35.202.112.126:3000/api/users/"+ nombre +"/penalize?amount=5")
+    res = requests.get('http://35.202.112.126:3000/api/users/'+nombre)
+    response = json.loads(res.text)
+    return usuario_info(request, response)

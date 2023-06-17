@@ -12,14 +12,13 @@ func RegisterAttractionRoutes(app *echo.Echo, ctx context.Context, controller *c
 	app.POST("/api/attractions/register", controller.CreateNewAttraction)
 	app.GET("/api/attractions/:id", controller.GetAttractionByID)
 	app.GET("/api/attractions/:id/turns", controller.GetNextRoundTurns)
-
+	app.POST("/api/attractions/:id/updateturns", controller.UpdateAttractionTurns)
 }
 
 func RegisterRewardRoutes(app *echo.Echo, ctx context.Context, controller *controller.RewardController) {
 	app.GET("/api/rewards", controller.Rewards)
 	app.POST("/api/rewards/register", controller.CreateNewReward)
 	app.GET("/api/rewards/:id", controller.GetRewardByID)
-
 }
 
 func RegisterUserRoutes(app *echo.Echo, ctx context.Context, controller *controller.UserController) {

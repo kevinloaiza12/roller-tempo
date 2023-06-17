@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/desktop-reward.css' %}" type="text/css" />
+    <script src="https://kit.fontawesome.com/eea4a3a7bd.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <nav id="nav">
+        <p id="nav_title">RollerTempo</p>
+        <img id="logo"src="{% static './images/logo.png' %}"/>
+      </nav>
+    <div id="premio-container">
+        <img id="premio-img" src="/media/{{premio.ImagePath}}"/>
+        <div id="info_container">
+            
+            <div id="price">
+                <h1 id="premio-title">{{premio.Name}}</h1>
+                <i class="fa-sharp fa-solid fa-coins price_icon"></i>
+                <p id="price_number"> {{premio.Price}}</p>
+            </div>
+            <p id="premio-desc">{{premio.Description}}</p>
+            
+            <p id="premio_id">Ingresa tu Id para comprar!</p>
+            <form id="user-turn" action="{% url 'buy_reward'%}" method="post">{% csrf_token %}
+                <input type="number" id="user_id" name="user_id" required/>
+                <input type="number" name="reward_id" value={{id}} hidden/>
+                <input id="buy" type="submit" value="Comprar" id="user-turn-button"></input>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
